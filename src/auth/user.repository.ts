@@ -1,6 +1,7 @@
 import { Repository, EntityRepository } from "typeorm";
 import { User } from "./user.entity";
 import { AuthCredentialsDto } from "./dto/auth-credentials.dto";
+import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 
 
 @EntityRepository(User)
@@ -15,7 +16,17 @@ export class UserRepository extends Repository<User>{
         user.username = username;
         user.password = password;
 
-        // do not return anything especially since it contains the password
-        await user.save(); // save our user to the database
+        //try the save query
+        try {
+            await user.save(); //save user to the database
+
+        } catch (error) {
+            // catch our duplicate username typeorm error code 23505 = duplicate values
+            if (error.code === '23505') {
+                throw new ConflictException('Username already exists'); //status code 409
+            }else{
+                throw new InternalServerErrorException(); //status code 500
+            }
+        }
     }
 }
