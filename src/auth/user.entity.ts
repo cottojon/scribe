@@ -1,11 +1,12 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm';
 
 @Entity()
+@Unique(['username']) // expects an array of column names
 export class User extends BaseEntity{
-    @PrimaryGeneratedColumn() // p key and auto generated
+    @PrimaryGeneratedColumn() // primary key and auto generated
     id: number;
 
-    @Column()
+    @Column() 
     username: string;
 
     @Column()
