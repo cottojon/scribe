@@ -1,4 +1,5 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Clip } from "src/clips/clip.entity";
 
 @Entity()
 export class Channel extends BaseEntity{
@@ -16,4 +17,10 @@ export class Channel extends BaseEntity{
 
     @Column()
     program: string;
+
+
+    @OneToMany(type => Clip, clip => clip.channel
+   
+        ) // our relation to clips
+    clip: Clip[];
 }

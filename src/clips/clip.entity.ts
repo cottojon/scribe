@@ -1,12 +1,10 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import { Channel } from "src/channels/channel.entity";
 
 @Entity()
 export class Clip extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Column() //our relation to channel table
-    channel_id: number;
 
     @Column({type:"text"}) //want a text datatype rather than varchar
     text: string;
@@ -32,6 +30,13 @@ export class Clip extends BaseEntity{
 
     @Column()
     path_to_file: string;
+
+
+    @ManyToOne(type => Channel, channel => channel.clip,  {  
+        cascade: true,  
+        onUpdate: "CASCADE" //update if channel id get updated
+    }) //our relation to channel table
+    channel: Channel;
 
 
 
