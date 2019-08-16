@@ -1,7 +1,8 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Get, Query } from '@nestjs/common';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { ChannelsService } from './channels.service';
 import { Channel } from './channel.entity';
+import { GetChannelFilterDto } from './dto/get-channel-filter.dto';
 
 @Controller('channels')
 export class ChannelsController {
@@ -20,6 +21,22 @@ export class ChannelsController {
     }
 
 
+    /*
+    
+    Get All channels or channels by name:
+
+
+    When we get channels by name channel should be in a query string:
+    channels/?name=thenametosearchfor
+
+    When we get all channels we should have no query strings or any thing in the request body
+    channels/
+    The body will just have a name
+    */
+    @Get()
+    getChannels(@Query(ValidationPipe) channelFilterDto: GetChannelFilterDto): Promise<Channel[]>{
+        return this.channelsService.getChannels(channelFilterDto);
+    }
 
 
 

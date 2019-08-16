@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ChannelRepository } from './channel.repository';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { Channel } from './channel.entity';
+import { GetChannelFilterDto } from './dto/get-channel-filter.dto';
 
 @Injectable()
 export class ChannelsService {
@@ -17,5 +18,10 @@ export class ChannelsService {
     async createChannel(createChannelDto: CreateChannelDto): Promise<Channel>{
         return await this.channelRepostory.insertChannel(createChannelDto);
 
+    }
+
+    //service method for getting channel by name or ALL channels
+    async getChannels(channelFilterDto: GetChannelFilterDto): Promise<Channel[]>{
+        return await this.channelRepostory.getChannels(channelFilterDto);
     }
 }
