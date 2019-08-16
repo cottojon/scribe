@@ -8,21 +8,21 @@ export class Clip extends BaseEntity{
     @Column() //our relation to channel table
     channel_id: number;
 
-    @Column("text") //want a text datatype rather than varchar
+    @Column({type:"text"}) //want a text datatype rather than varchar
     text: string;
 
-    @Column("text")
+    @Column({type:"text"})
     revised_text: string;
 
     @Column()
     speaker: string;
 
     //will set itself anytime an entity is created
-    @CreateDateColumn({ type: 'timestamptz' }) //date we a timestamp
+    @CreateDateColumn({ type: 'timestamptz' }) //timestamp with time zone
     created_at: Date;
 
     //will update when entity is saved automatically
-    @UpdateDateColumn({ type: 'timestamptz' })//date with a timestamp
+    @UpdateDateColumn({ type: 'timestamptz' })//timestamp with time zone
     revised_at: Date;
 
 
