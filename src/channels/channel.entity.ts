@@ -19,8 +19,6 @@ export class Channel extends BaseEntity{
     program: string;
 
 
-    @OneToMany(type => Clip, clip => clip.channel
-   
-        ) // our relation to clips
+    @OneToMany(type => Clip, clip => clip.channel) // our relation to clips
     clip: Clip[];
 }
