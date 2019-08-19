@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import {JwtModule} from '@nestjs/jwt';
 import {PassportModule} from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
 @Module({ 
   imports: [ // provide the strategy passport it gonna use
     PassportModule.register({defaultStrategy: 'jwt'}),
@@ -16,6 +17,7 @@ import {PassportModule} from '@nestjs/passport';
   }),
     TypeOrmModule.forFeature([UserRepository])],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy], // want nest to instantiate for us
+  exports: [JwtStrategy, PassportModule] // want to export these to the other modules for authorization
 })
 export class AuthModule {}
