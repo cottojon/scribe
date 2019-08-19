@@ -37,6 +37,23 @@ export class UserRepository extends Repository<User>{
         }
     }
 
+    //sign in method
+    // will return a username is we successfully validate a password
+    async validateUserPassword(authCredentialDto: AuthCredentialsDto): Promise<string>{
+        //destruct 
+        const {username, password} = authCredentialDto;
+
+        //grab user
+        const user = await this.findOne({username});
+
+        //check if the user exist and then validate the user password
+        if(user && user.validatePassword(password)){
+            return user.username;
+        }else{
+            return null;
+        }
+    }
+
 
     // hashing password and salt using bcrypt
     private async hashPassword(password: string, salt: string): Promise<string>{
