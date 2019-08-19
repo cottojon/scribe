@@ -47,7 +47,7 @@ export class UserRepository extends Repository<User>{
         const user = await this.findOne({username});
 
         //check if the user exist and then validate the user password
-        if(user && user.validatePassword(password)){
+        if(user && await user.validatePassword(password)){
             return user.username;
         }else{
             return null;
