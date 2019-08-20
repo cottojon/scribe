@@ -3,10 +3,21 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
-
-@Module({ //import User Repo for dependency injection in the auth module
-  imports: [TypeOrmModule.forFeature([UserRepository])],
+import {JwtModule} from '@nestjs/jwt';
+import {PassportModule} from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
+@Module({ 
+  imports: [ // provide the strategy passport it gonna use
+    PassportModule.register({defaultStrategy: 'jwt'}),
+    JwtModule.register({
+    secret: 'topSecret51', // the secret we will use in our token, we will chane this later
+    signOptions: {
+      expiresIn: 3600, // 3600 seconds == 1 hr
+    },
+  }),
+    TypeOrmModule.forFeature([UserRepository])],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy], // want nest to instantiate for us
+  exports: [JwtStrategy, PassportModule] // want to export these to the other modules for authorization
 })
 export class AuthModule {}

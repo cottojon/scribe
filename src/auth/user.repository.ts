@@ -2,7 +2,7 @@ import { Repository, EntityRepository } from "typeorm";
 import { User } from "./user.entity";
 import { AuthCredentialsDto } from "./dto/auth-credentials.dto";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
-
+import * as bcrypt from 'bcrypt';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
@@ -11,10 +11,17 @@ export class UserRepository extends Repository<User>{
         // descruct fields
         const { username, password } = authCredentialsDto;
 
+        // generate salt
+        // these are async operations and take some time to compute
+        // the salt will always generate a unique salt for us
+        const salt = await bcrypt.genSalt();
+
         // create new user and assign properties
         const user = new User();
         user.username = username;
-        user.password = password;
+        user.salt = salt;
+        // has our password + salt and store into password column
+        user.password = await this.hashPassword(password, salt);
 
         //try the save query
         try {
@@ -28,5 +35,28 @@ export class UserRepository extends Repository<User>{
                 throw new InternalServerErrorException(); //status code 500
             }
         }
+    }
+
+    //sign in method
+    // will return a username is we successfully validate a password
+    async validateUserPassword(authCredentialDto: AuthCredentialsDto): Promise<string>{
+        //destruct 
+        const {username, password} = authCredentialDto;
+
+        //grab user
+        const user = await this.findOne({username});
+
+        //check if the user exist and then validate the user password
+        if(user && await user.validatePassword(password)){
+            return user.username;
+        }else{
+            return null;
+        }
+    }
+
+
+    // hashing password and salt using bcrypt
+    private async hashPassword(password: string, salt: string): Promise<string>{
+        return bcrypt.hash(password, salt);
     }
 }
