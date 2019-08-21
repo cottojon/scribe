@@ -33,7 +33,7 @@ export class Clip extends BaseEntity{
 
 
     @ManyToOne(type => Channel, channel => channel.clip,  {  
-        cascade: true,  
+        eager: true,  //every time we load a clip entity the channel will come with it no need to join tables (only works with find)
         onUpdate: "CASCADE" //update if channel id get updated
     }) //our relation to channel table
     channel: Channel;

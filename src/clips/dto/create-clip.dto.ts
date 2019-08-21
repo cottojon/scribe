@@ -1,10 +1,10 @@
 import { IsString, IsNotEmpty, IsOptional, IsInt } from "class-validator";
 
-export class createClipDto{
+export class CreateClipDto{
    
-    @IsInt()
-    @IsNotEmpty()
-    channel_id: number;
+    //@IsInt()
+   // @IsNotEmpty()
+    //channel_id: number;
 
     @IsString()
     @IsNotEmpty()
@@ -13,4 +13,9 @@ export class createClipDto{
     @IsString()
     @IsNotEmpty()
     path_to_file: string;
+
+
+    @IsString()
+    @IsNotEmpty()
+    speaker: string;
 }

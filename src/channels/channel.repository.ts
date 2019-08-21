@@ -46,7 +46,7 @@ export class ChannelRepository extends Repository<Channel>{
         }
 
         //execute the actual query
-        //the query will either just be the SELECT and FROM, or SELECT,FROM,WHERE
+        //the query will either just be the SELECT and FROM, or SELECT,FROM, and WHERE
         const channels = query.getMany();
 
         return channels;

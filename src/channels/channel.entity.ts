@@ -21,4 +21,7 @@ export class Channel extends BaseEntity{
 
     @OneToMany(type => Clip, clip => clip.channel) // our relation to clips
     clip: Clip[];
+
+    //@Column()
+    //clipId: number;
 }
