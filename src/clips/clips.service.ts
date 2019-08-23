@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ClipRepository } from './clip.repository';
 import { Clip } from './clip.entity';
@@ -11,5 +11,19 @@ export class ClipsService {
 
     async createClip(createClipDto: CreateClipDto, channel_id: number): Promise<Clip>{
         return await this.clipRepository.createClip(createClipDto, channel_id);
+    }
+
+
+    async getClipById(id: number): Promise<Clip>{
+        //get clip from database
+        const clip = await this.clipRepository.findOne({id});
+
+        //throw exception if no clip was found
+        if(!clip){
+            throw new NotFoundException(`Clip with ID ${id} not found`);
+        }
+
+
+        return clip;
     }
 }
