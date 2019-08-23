@@ -9,7 +9,7 @@ export class Clip extends BaseEntity{
     @Column({type:"text"}) //want a text datatype rather than varchar
     text: string;
 
-    @Column({type:"text"})
+    @Column({type:"text", nullable: true}) // allow the column to be null until clip gets revised
     revised_text: string;
 
     @Column()
@@ -37,6 +37,12 @@ export class Clip extends BaseEntity{
         onUpdate: "CASCADE" //update if channel id get updated
     }) //our relation to channel table
     channel: Channel;
+
+
+    @Column() // this is the column where we store our relationship ids, 
+    // typeorm creates this automatically from the relationship above, 
+    // but if we want to have access in repository to it we must define it here
+    channelId: number;
 
 
 
