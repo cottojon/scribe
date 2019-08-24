@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ClipRepository } from './clip.repository';
 import { Clip } from './clip.entity';
+import { GetClipFilterDto } from './dto/get-clip-filter.dto';
 
 @Injectable()
 export class ClipsService {
@@ -25,5 +26,11 @@ export class ClipsService {
 
 
         return clip;
+    }
+
+
+
+    async getClips(getClipFilterDto: GetClipFilterDto): Promise<Clip[]>{ //return an array of task
+        return await this.clipRepository.getClips(getClipFilterDto);
     }
 }
