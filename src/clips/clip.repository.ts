@@ -98,17 +98,4 @@ export class ClipRepository extends Repository<Clip>{
     }
 
 
-
-
-    /*
-
-
-    */
-   async updateClip()
-
-
-
-
-
-
 }

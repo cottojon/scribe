@@ -3,6 +3,7 @@ import { CreateClipDto } from './dto/create-clip.dto';
 import { ClipRepository } from './clip.repository';
 import { Clip } from './clip.entity';
 import { GetClipFilterDto } from './dto/get-clip-filter.dto';
+import { UpdateClipDto } from './dto/update-clip.dto';
 
 @Injectable()
 export class ClipsService {
@@ -32,5 +33,25 @@ export class ClipsService {
 
     async getClips(getClipFilterDto: GetClipFilterDto): Promise<Clip[]>{ //return an array of task
         return await this.clipRepository.getClips(getClipFilterDto);
+    }
+
+
+    async updateClipText(id: number, updateClipDto: UpdateClipDto): Promise<Clip>{
+        //destruct dto
+        const {revised_text} = updateClipDto;
+        
+        //retrieve clip
+        const clip = await this.getClipById(id);
+
+        //update columns
+        clip.revised = true;
+        clip.revised_text = revised_text;
+
+
+        //save the clip back into the database
+        await clip.save();
+
+
+        return clip;
     }
 }

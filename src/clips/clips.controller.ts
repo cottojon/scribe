@@ -39,15 +39,16 @@ export class ClipsController {
         return this.clipService.getClips(getClipFilterDto);
     }
 
+
+
     /*
     This handler will update a clip text transciption (revised_text column)
     We send teh clip id in the url as a parameter, but the revised_text in http body
     as a key-value pair
 
     */
-
-    @Patch(':id/revise_text')
+    @Patch(':id/revised_text')
     updateClipText(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) updateClipDto: UpdateClipDto): Promise<Clip>{
-        return this.clipService()
+        return this.clipService.updateClipText(id, updateClipDto);
     }
 }
