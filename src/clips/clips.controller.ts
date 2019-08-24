@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, ParseIntPipe, Get, Param, Query, Patch } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, ParseIntPipe, Get, Param, Query, Patch, Delete } from '@nestjs/common';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ClipsService } from './clips.service';
 import { Clip } from './clip.entity';
@@ -9,18 +9,18 @@ import { UpdateClipDto } from './dto/update-clip.dto';
 export class ClipsController {
 
     //depenency inject service
-    constructor(private clipService: ClipsService){}
+    constructor(private clipService: ClipsService) { }
 
-    
+
     @Post()
-    createClip(@Body('channel_id', ParseIntPipe) channel_id: number, @Body(ValidationPipe) createClipDto: CreateClipDto, ): Promise<Clip>{
+    createClip(@Body('channel_id', ParseIntPipe) channel_id: number, @Body(ValidationPipe) createClipDto: CreateClipDto, ): Promise<Clip> {
         return this.clipService.createClip(createClipDto, channel_id);
     }
 
 
 
     @Get(':id')
-    getClipById(@Param('id', ParseIntPipe) id: number): Promise<Clip>{
+    getClipById(@Param('id', ParseIntPipe) id: number): Promise<Clip> {
         return this.clipService.getClipById(id);
     }
 
@@ -35,7 +35,7 @@ export class ClipsController {
     */
 
     @Get()
-    getAllClips(@Query(ValidationPipe) getClipFilterDto: GetClipFilterDto): Promise<Clip[]>{
+    getAllClips(@Query(ValidationPipe) getClipFilterDto: GetClipFilterDto): Promise<Clip[]> {
         return this.clipService.getClips(getClipFilterDto);
     }
 
@@ -45,10 +45,24 @@ export class ClipsController {
     This handler will update a clip text transciption (revised_text column)
     We send teh clip id in the url as a parameter, but the revised_text in http body
     as a key-value pair
-
     */
     @Patch(':id/revised_text')
-    updateClipText(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) updateClipDto: UpdateClipDto): Promise<Clip>{
+    updateClipText(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) updateClipDto: UpdateClipDto): Promise<Clip> {
         return this.clipService.updateClipText(id, updateClipDto);
     }
+
+
+
+    /*
+    This handler will delete a clip by id
+    The clip id will be in the url as a paramater
+
+    */
+    @Delete('/:id')
+    deleteTaskById(@Param('id', ParseIntPipe) id: number): Promise<void> {
+       return this.clipService.deleteTaskById(id);
+    }
+
+
+
 }
