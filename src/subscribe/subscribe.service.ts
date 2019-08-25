@@ -15,4 +15,13 @@ export class SubscribeService {
     async subscribeUserToChannel(channel_id: number, user: User): Promise<Subscribe> {
         return this.subscribeRepository.subscribeUserToChannel(channel_id, user);
     }
+
+
+    async getUserSubscribedChannels(user: User): Promise<Subscribe[]> {
+        //find all the channels by userId
+        const channels = await this.subscribeRepository.find({userId: user.id});
+
+        return channels;
+    }
+    
 }

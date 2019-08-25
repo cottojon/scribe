@@ -24,8 +24,8 @@ export class SubscribeController {
 
 
     @Get()
-    getUserSubscribedChannels(@GetUser() user: User){
-        console.log(user);
+    getUserSubscribedChannels(@GetUser() user: User): Promise<Subscribe[]>{
+        return this.subscribeService.getUserSubscribedChannels(user);
     }
 
 
