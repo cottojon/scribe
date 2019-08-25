@@ -57,12 +57,12 @@ export class ClipsService {
 
 
 
-    async deleteTaskById(id: number): Promise<void>{
+    async deleteClipById(id: number): Promise<void>{
         //delete the task using the repository
         const result = await this.clipRepository.delete(id);
         // if we did not delete anything throw exception
         if(result.affected === 0){ // affected == the amount of rows deleted
-            throw new NotFoundException(`Task with ID ${id} not found`);
+            throw new NotFoundException(`Clip with ID ${id} not found`);
         }
     }
 }
