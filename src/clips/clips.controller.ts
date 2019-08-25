@@ -52,17 +52,15 @@ export class ClipsController {
     }
 
 
-
     /*
     This handler will delete a clip by id
     The clip id will be in the url as a paramater
-
     */
     @Delete('/:id')
     deleteTaskById(@Param('id', ParseIntPipe) id: number): Promise<void> {
        return this.clipService.deleteTaskById(id);
     }
 
-
+ 
 
 }
