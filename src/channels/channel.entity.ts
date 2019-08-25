@@ -1,5 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Clip } from "src/clips/clip.entity";
+import { Subscribe } from "src/subscribe/subscribe.entity";
 
 @Entity()
 export class Channel extends BaseEntity{
@@ -22,6 +23,10 @@ export class Channel extends BaseEntity{
     @OneToMany(type => Clip, clip => clip.channel) // our relation to clips
     clip: Clip[];
 
-    //@Column()
-    //clipId: number;
+
+    
+    //this is for our many to many relationship with channels to define our subscribes join table
+    @OneToMany(type => Subscribe, subscribe => subscribe.channel)
+    subscribes: Subscribe[];
+  
 }

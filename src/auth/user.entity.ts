@@ -1,5 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Subscribe } from 'src/subscribe/subscribe.entity';
 
 @Entity()
 @Unique(['username']) // expects an array of column names
@@ -28,4 +29,12 @@ export class User extends BaseEntity{
         // true if client side password was correct
         return (hash === this.password);
     }
+
+
+
+    //this is for our many to many relationship with channels to define our subscribes join table
+    @OneToMany(type => Subscribe, subscribe => subscribe.user)
+    subscribes: Subscribe[];
+
+
 }
