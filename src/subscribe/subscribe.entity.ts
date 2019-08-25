@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, PrimaryColumn } from 'typeorm';
 import { User } from 'src/auth/user.entity';
 import { Channel } from 'src/channels/channel.entity';
 
@@ -12,13 +12,12 @@ import { Channel } from 'src/channels/channel.entity';
 
 @Entity()
 export class Subscribe extends BaseEntity{
-    @PrimaryGeneratedColumn() // p key and auto generated, this should be userId and channelId combined as a superkey
-    id: number;
-
-    @Column()
+   
+    // userId and channelId combined as a superkey/composite key
+    @PrimaryColumn()
     userId: number;
 
-    @Column()
+    @PrimaryColumn()
     channelId: number;
 
     // this is how we relate the two entities for many-to-many
