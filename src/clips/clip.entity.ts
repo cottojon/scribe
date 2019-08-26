@@ -1,5 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from "typeorm";
 import { Channel } from "src/channels/channel.entity";
+import { Like } from '../likes/like.entity';
 
 @Entity()
 export class Clip extends BaseEntity{
@@ -43,6 +44,12 @@ export class Clip extends BaseEntity{
     // typeorm creates this automatically from the relationship above, 
     // but if we want to have access in repository to it we must define it here
     channelId: number;
+
+
+
+    //this is for our many to many relationship with channels to define our like join table
+    @OneToMany(type => Like, like => like.user)
+    likes: Like[];
 
 
 
