@@ -25,7 +25,10 @@ export class Subscribe extends BaseEntity{
     user: User;
 
 
-    @ManyToOne(type => Channel, channel => channel.subscribes)
+    @ManyToOne(type => Channel, channel => channel.subscribes, {  
+        eager: true,  //every time we load a subscribe entity the channel will come with it no need to join tables (only works with find)
+        onUpdate: "CASCADE" //update if channel id get updated
+    })
     channel: Channel;
 }
 
