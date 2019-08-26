@@ -1,22 +1,18 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "501674cd-6570-40e0-b555-225bbaa0cef3",
 		"name": "Scribe",
-		"_postman_id": "561aa576-597e-dfd6-adfc-936b5f5f6822",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "createChannel()",
 			"request": {
-				"url": "http://localhost:3000/channels",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -25,38 +21,27 @@
 						{
 							"key": "name",
 							"value": "fsdfd",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "subsystem",
 							"value": "fdsfdsfdsfds",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "location",
 							"value": "vcxvcxvc",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "program",
 							"value": "tyruytyutut",
-							"description": "",
 							"type": "text"
 						}
 					]
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "getAllChannels()",
-			"request": {
 				"url": {
-					"raw": "http://localhost:3000/channels?name=jona",
+					"raw": "http://localhost:3000/channels",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -64,34 +49,38 @@
 					"port": "3000",
 					"path": [
 						"channels"
-					],
-					"query": [
-						{
-							"key": "name",
-							"value": "jona",
-							"equals": true,
-							"description": ""
-						}
-					],
-					"variable": []
-				},
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllChannels()",
+			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/channels",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"channels"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "createClip()",
 			"request": {
-				"url": "http://localhost:3000/clips",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -99,50 +88,28 @@
 					"urlencoded": [
 						{
 							"key": "channel_id",
-							"value": "3",
-							"type": "text",
-							"description": ""
+							"value": "2",
+							"type": "text"
 						},
 						{
 							"key": "text",
 							"value": "hello ",
-							"type": "text",
-							"description": ""
+							"type": "text"
 						},
 						{
 							"key": "path_to_file",
 							"value": "dfdsfdsfds",
-							"type": "text",
-							"description": ""
+							"type": "text"
 						},
 						{
 							"key": "speaker",
 							"value": "jonathan",
-							"type": "text",
-							"description": ""
+							"type": "text"
 						}
 					]
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "getClipById()",
-			"request": {
-				"url": "http://localhost:3000/clips/3",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "getClipsFilterQuery()",
-			"request": {
 				"url": {
-					"raw": "http://localhost:3000/clips?channel_name=",
+					"raw": "http://localhost:3000/clips",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -150,34 +117,58 @@
 					"port": "3000",
 					"path": [
 						"clips"
-					],
-					"query": [
-						{
-							"key": "channel_name",
-							"value": "",
-							"equals": true,
-							"description": ""
-						}
-					],
-					"variable": []
-				},
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getClipById()",
+			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/clips/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"clips",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getClipsFilterQuery()",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/clips",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"clips"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "updateClipText()",
 			"request": {
-				"url": "http://localhost:3000/clips/5/revised_text",
 				"method": "PATCH",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -186,53 +177,91 @@
 						{
 							"key": "revised_text",
 							"value": "updating the text",
-							"description": "",
 							"type": "text"
 						}
 					]
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/clips/5/revised_text",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"clips",
+						"5",
+						"revised_text"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "deleteClipById()",
 			"request": {
-				"url": "http://localhost:3000/clips/3",
 				"method": "DELETE",
 				"header": [],
-				"body": {},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/clips/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"clips",
+						"3"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "subscribeUserToChannel()",
 			"request": {
-				"url": "http://localhost:3000/subscribe/2",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken_user1}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
 						"key": "Authorization",
 						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8iLCJpYXQiOjE1NjY3NTI5ODUsImV4cCI6MTU2Njc1NjU4NX0.1RPPiyn1B0vzv8y0nMbKPNCtux36mHhmW2lyt_bgHc0",
-						"description": ""
+						"disabled": true
 					}
 				],
-				"body": {},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/subscribe/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscribe",
+						"2"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "signup()",
 			"request": {
-				"url": "http://localhost:3000/auth/signup",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -240,32 +269,39 @@
 					"urlencoded": [
 						{
 							"key": "username",
-							"value": "Jonathancotto1",
-							"description": "",
+							"value": "Jonathancotto2",
 							"type": "text"
 						},
 						{
 							"key": "password",
 							"value": "Jonathancotto23",
-							"description": "",
 							"type": "text"
 						}
 					]
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "signin()",
 			"request": {
-				"url": "http://localhost:3000/auth/signin",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -273,53 +309,186 @@
 					"urlencoded": [
 						{
 							"key": "username",
-							"value": "Jonathancotto1",
-							"description": "",
+							"value": "Jonathancotto2",
 							"type": "text"
 						},
 						{
 							"key": "password",
 							"value": "Jonathancotto23",
-							"description": "",
 							"type": "text"
 						}
 					]
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "getUserSubscribedChannels()",
 			"request": {
-				"url": "http://localhost:3000/subscribe",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken_user1}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas",
-						"description": ""
+						"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas"
 					}
 				],
-				"body": {},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/subscribe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscribe"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "unsubscribeUserFromChannel()",
 			"request": {
-				"url": "http://localhost:3000/subscribe/5",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken_user1}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas",
-						"description": ""
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas"
 					}
 				],
-				"body": {},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:3000/subscribe/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscribe",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserLikeClips()",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken_user1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/likes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"likes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userLikesClip()",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken_user1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/likes/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"likes",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userUnlikesClip()",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken_user2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/likes/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"likes",
+						"9"
+					]
+				}
 			},
 			"response": []
 		}
