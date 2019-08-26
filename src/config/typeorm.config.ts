@@ -5,7 +5,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: 'postgres',
+    password: 'Motorcycle3232!',
     database: 'scribe',
     entities: [__dirname + '/../**/*.entity.{js,ts}'] ,// our tables represented as files
     // config folder than src folder, than any folder and any file with a entity.js or entity.ts extension
