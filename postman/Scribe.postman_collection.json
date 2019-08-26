@@ -1,0 +1,327 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Scribe",
+		"_postman_id": "561aa576-597e-dfd6-adfc-936b5f5f6822",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createChannel()",
+			"request": {
+				"url": "http://localhost:3000/channels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "fsdfd",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "subsystem",
+							"value": "fdsfdsfdsfds",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "vcxvcxvc",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "program",
+							"value": "tyruytyutut",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getAllChannels()",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/channels?name=jona",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"channels"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "jona",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "createClip()",
+			"request": {
+				"url": "http://localhost:3000/clips",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "channel_id",
+							"value": "3",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "text",
+							"value": "hello ",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "path_to_file",
+							"value": "dfdsfdsfds",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "speaker",
+							"value": "jonathan",
+							"type": "text",
+							"description": ""
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getClipById()",
+			"request": {
+				"url": "http://localhost:3000/clips/3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getClipsFilterQuery()",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/clips?channel_name=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"clips"
+					],
+					"query": [
+						{
+							"key": "channel_name",
+							"value": "",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "updateClipText()",
+			"request": {
+				"url": "http://localhost:3000/clips/5/revised_text",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "revised_text",
+							"value": "updating the text",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "deleteClipById()",
+			"request": {
+				"url": "http://localhost:3000/clips/3",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "subscribeUserToChannel()",
+			"request": {
+				"url": "http://localhost:3000/subscribe/2",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8iLCJpYXQiOjE1NjY3NTI5ODUsImV4cCI6MTU2Njc1NjU4NX0.1RPPiyn1B0vzv8y0nMbKPNCtux36mHhmW2lyt_bgHc0",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "signup()",
+			"request": {
+				"url": "http://localhost:3000/auth/signup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "Jonathancotto1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Jonathancotto23",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "signin()",
+			"request": {
+				"url": "http://localhost:3000/auth/signin",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "Jonathancotto1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Jonathancotto23",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getUserSubscribedChannels()",
+			"request": {
+				"url": "http://localhost:3000/subscribe",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "unsubscribeUserFromChannel()",
+			"request": {
+				"url": "http://localhost:3000/subscribe/5",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
