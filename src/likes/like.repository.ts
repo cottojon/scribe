@@ -27,7 +27,7 @@ export class LikeRepository extends Repository<Like>{
 
             //clip_id does not exist
             if (error.code === '23503') {
-                throw new NotFoundException(`Channel ${clip_id} does not exist`);
+                throw new NotFoundException(`Clip ${clip_id} does not exist`);
             }
         }
 
