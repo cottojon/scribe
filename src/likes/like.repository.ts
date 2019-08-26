@@ -6,7 +6,7 @@ import { Like } from './like.entity';
 
 
 @EntityRepository(Like)
-export class SubscribeRepository extends Repository<Like{
+export class LikeRepository extends Repository<Like>{
 
 
 
