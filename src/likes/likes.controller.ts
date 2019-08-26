@@ -29,9 +29,8 @@ export class LikesController {
     */
     @Get() //custom decorator @GetUser() grabs our user from the httprequest placed by jwt.strategy.ts
     getUserLikedClips(@GetUser() user: User): Promise<Like[]> {
-        //return this.subscribeService.getUserSubscribedChannels(user);
-        console.log(user);
-        return;
+        return this.likesService.getUserLikesByUserId(user);
+        
     }
 
     /*
@@ -39,10 +38,8 @@ export class LikesController {
    */
 
     @Delete('/:clip_id')//custom decorator @GetUser() grabs our user from the httprequest placed by jwt.strategy.ts
-    unsubscribeUserFromChannel(@Param('clip_id', ParseIntPipe) clip_id: number, @GetUser() user: User): Promise<void> {
-        // return this.subscribeService.unsubscribeUserToChannel(channel_id, user);
-        console.log(clip_id);
-        console.log(user);
-        return;
+    userUnlikesClip(@Param('clip_id', ParseIntPipe) clip_id: number, @GetUser() user: User): Promise<void> {
+        return this.likesService.userUnlikesClip(clip_id, user);
+        
     }
 }
