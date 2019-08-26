@@ -14,7 +14,7 @@ export class SubscribeService {
 
 
     async subscribeUserToChannel(channel_id: number, user: User): Promise<Subscribe> {
-        return this.subscribeRepository.subscribeUserToChannel(channel_id, user);
+        return  this.subscribeRepository.subscribeUserToChannel(channel_id, user);
     }
 
 
