@@ -1,6 +1,6 @@
 import { Repository, EntityRepository } from "typeorm";
 import { User } from "src/auth/user.entity";
-import { NotFoundException } from "@nestjs/common";
+import { NotFoundException, InternalServerErrorException } from "@nestjs/common";
 import { Like } from './like.entity';
 
 
@@ -28,6 +28,8 @@ export class LikeRepository extends Repository<Like>{
             //clip_id does not exist
             if (error.code === '23503') {
                 throw new NotFoundException(`Clip ${clip_id} does not exist`);
+            }else{
+                throw new InternalServerErrorException('Database Error');
             }
         }
 

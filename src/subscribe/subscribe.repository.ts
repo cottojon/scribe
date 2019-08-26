@@ -1,7 +1,7 @@
 import { Repository, EntityRepository } from "typeorm";
 import { Subscribe } from "./subscribe.entity";
 import { User } from "src/auth/user.entity";
-import { NotFoundException } from "@nestjs/common";
+import { NotFoundException, InternalServerErrorException } from "@nestjs/common";
 
 
 
@@ -28,6 +28,9 @@ export class SubscribeRepository extends Repository<Subscribe>{
             //channel_id does not exist
             if (error.code === '23503') {
                 throw new NotFoundException(`Channel ${channel_id} does not exist`);
+            }else{
+                throw new InternalServerErrorException('Database Error');
+
             }
         }
 
