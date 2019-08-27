@@ -2,6 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, OneToMany }
 import * as bcrypt from 'bcrypt';
 import { Subscribe } from 'src/subscribe/subscribe.entity';
 import { Like } from '../likes/like.entity';
+import { Comment } from '../comments/comment.entity';
 
 @Entity()
 @Unique(['username']) // expects an array of column names
@@ -41,5 +42,11 @@ export class User extends BaseEntity {
     //this is for our many to many relationship with channels to define our like join table
     @OneToMany(type => Like, like => like.user)
     likes: Like[];
+
+
+    //this is for our many to many to many relationship with users, and comments to define our comment join table
+    @OneToMany(type => Comment, comment => comment.user)
+    comments: Comment[];
+
 
 }

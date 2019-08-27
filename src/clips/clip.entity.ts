@@ -1,6 +1,7 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from "typeorm";
 import { Channel } from "src/channels/channel.entity";
 import { Like } from '../likes/like.entity';
+import { Comment } from '../comments/comment.entity';
 
 @Entity()
 export class Clip extends BaseEntity{
@@ -48,8 +49,14 @@ export class Clip extends BaseEntity{
 
 
     //this is for our many to many relationship with channels to define our like join table
-    @OneToMany(type => Like, like => like.user)
+    @OneToMany(type => Like, like => like.clip)
     likes: Like[];
+
+
+
+     //this is for our many to many to many relationship with users, and comments to define our comment join table
+     @OneToMany(type => Comment, comment => comment.clip)
+     comments: Comment[];
 
 
 
