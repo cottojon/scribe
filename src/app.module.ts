@@ -6,10 +6,11 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { TypeOrmModule} from '@nestjs/typeorm';
 import { SubscribeModule } from './subscribe/subscribe.module';
 import { LikesModule } from './likes/likes.module';
+import { CommentsModule } from './comments/comments.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), ChannelsModule, ClipsModule, AuthModule, SubscribeModule, LikesModule],
+  imports: [TypeOrmModule.forRoot(typeOrmConfig), ChannelsModule, ClipsModule, AuthModule, SubscribeModule, LikesModule, CommentsModule],
   controllers: [],
   providers: [],
 })
