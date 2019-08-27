@@ -26,9 +26,7 @@ export class LikesService {
 
 
     async userUnlikesClip(clip_id: number, user: User): Promise<void>{
-        
-        
-        
+
         //delete the task using the repository
         const result = await this.likeRepository.delete({ clipId: clip_id, userId: user.id });
         // if we did not delete anything throw exception
