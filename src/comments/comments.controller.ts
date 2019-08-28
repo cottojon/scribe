@@ -18,7 +18,7 @@ export class CommentsController {
    A user leaves a comment on clip_id passed in the body
   */
     @Post() //custom decorator @GetUser() grabs our user from the httprequest placed by jwt.strategy.ts
-    userLikesClip(@Body(ValidationPipe) insertCommentDto: InsertCommentDto, @GetUser() user: User): Promise<Comment> {
+    insertComentForClipByUserId(@Body(ValidationPipe) insertCommentDto: InsertCommentDto, @GetUser() user: User): Promise<Comment> {
         return this.commentsService.insertCommentForClipByUserId(insertCommentDto, user);
 
     }
@@ -38,7 +38,7 @@ export class CommentsController {
     */
 
     @Delete()//custom decorator @GetUser() grabs our user from the httprequest placed by jwt.strategy.ts
-    userUnlikesClip(@Body(ValidationPipe) deleteCommentDto: DeleteCommentDto, @GetUser() user: User): Promise<void> {
+    removeCommentForClipByUserId(@Body(ValidationPipe) deleteCommentDto: DeleteCommentDto, @GetUser() user: User): Promise<void> {
         return this.commentsService.removeCommentForClipByUserId(deleteCommentDto, user);
 
     }
