@@ -27,7 +27,7 @@ export class CommentsController {
     /*
     Grab all comments a clip_id has
     */
-    @Get('/clip_id') //custom decorator @GetUser() grabs our user from the httprequest placed by jwt.strategy.ts
+    @Get('/:clip_id') //custom decorator @GetUser() grabs our user from the httprequest placed by jwt.strategy.ts
     getCommentForClipId(@Param('clip_id', ParseIntPipe) clip_id: number): Promise<Comment[]> {
         return this.commentsService.getCommentForClipId(clip_id);
 

@@ -34,10 +34,10 @@ export class CommentsService {
     */
     async removeCommentForClipByUserId(deleteCommentDto: DeleteCommentDto, user: User): Promise<void> {
         //destruct dto
-        const { comment_id, clip_id } = deleteCommentDto;
+        const { comment_id } = deleteCommentDto;
 
         //delete the task using the repository
-        const result = await this.commentRepository.delete({ id: comment_id, userId: user.id, clipId: clip_id });
+        const result = await this.commentRepository.delete({ id: comment_id, userId: user.id});
         // if we did not delete anything throw exception
         if (result.affected === 0) { // affected == the amount of rows deleted
             throw new UnauthorizedException(`User can not delete Comment ${comment_id}.`);
