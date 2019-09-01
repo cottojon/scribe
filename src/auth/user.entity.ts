@@ -1,5 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, OneToMany } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { Subscribe } from 'src/subscribe/subscribe.entity';
 import { Like } from '../likes/like.entity';
 import { Comment } from '../comments/comment.entity';
