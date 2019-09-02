@@ -1,9 +1,8 @@
 import { Repository, EntityRepository } from "typeorm";
 import { Comment } from './comment.entity';
-import { InjectRepository } from "@nestjs/typeorm";
 import { InsertCommentDto } from './dto/insert-comment.dto';
-import { User } from "src/auth/user.entity";
 import { NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { User } from "../auth/user.entity";
 
 
 @EntityRepository(Comment)

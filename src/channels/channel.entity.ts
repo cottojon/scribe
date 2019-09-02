@@ -1,6 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Clip } from "src/clips/clip.entity";
-import { Subscribe } from "src/subscribe/subscribe.entity";
+import { Clip } from "../clips/clip.entity";
+import { Subscribe } from "../subscribe/subscribe.entity";
 
 @Entity()
 export class Channel extends BaseEntity{

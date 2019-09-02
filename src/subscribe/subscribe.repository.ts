@@ -1,7 +1,7 @@
 import { Repository, EntityRepository } from "typeorm";
 import { Subscribe } from "./subscribe.entity";
-import { User } from "src/auth/user.entity";
 import { NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { User } from "../auth/user.entity";
 
 
 

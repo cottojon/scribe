@@ -31,7 +31,7 @@ export class ClipsController {
     or
     
     We get clips based on the search criteria (see get-clip-filter.dto) as a query for example
-    /clips?channel_id=3&text=failure
+    /clips?text=failure
     */
 
     @Get()
@@ -43,7 +43,7 @@ export class ClipsController {
 
     /*
     This handler will update a clip text transciption (revised_text column)
-    We send teh clip id in the url as a parameter, but the revised_text in http body
+    We send the clip id in the url as a parameter, but the revised_text in http body
     as a key-value pair
     */
     @Patch(':id/revised_text')

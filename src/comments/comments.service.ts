@@ -2,9 +2,9 @@ import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/co
 import { CommentRepository } from './comment.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InsertCommentDto } from './dto/insert-comment.dto';
-import { User } from 'src/auth/user.entity';
 import { Comment } from './comment.entity';
 import { DeleteCommentDto } from './dto/delete-comment.dto';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class CommentsService {

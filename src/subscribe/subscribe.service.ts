@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubscribeRepository } from './subscribe.repository';
-import { User } from 'src/auth/user.entity';
 import { Subscribe } from './subscribe.entity';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class SubscribeService {
@@ -14,7 +14,7 @@ export class SubscribeService {
 
 
     async subscribeUserToChannel(channel_id: number, user: User): Promise<Subscribe> {
-        return  this.subscribeRepository.subscribeUserToChannel(channel_id, user);
+        return this.subscribeRepository.subscribeUserToChannel(channel_id, user);
     }
 
 

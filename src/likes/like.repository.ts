@@ -1,7 +1,7 @@
 import { Repository, EntityRepository } from "typeorm";
-import { User } from "src/auth/user.entity";
 import { NotFoundException, InternalServerErrorException } from "@nestjs/common";
 import { Like } from './like.entity';
+import { User } from "../auth/user.entity";
 
 
 

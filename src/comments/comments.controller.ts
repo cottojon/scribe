@@ -2,10 +2,10 @@ import { Controller, UseGuards, Post, ValidationPipe, Body, Get, Param, ParseInt
 import { AuthGuard } from '@nestjs/passport';
 import { CommentsService } from './comments.service';
 import { InsertCommentDto } from './dto/insert-comment.dto';
-import { GetUser } from 'src/auth/get-user.decorator';
 import { Comment } from './comment.entity';
-import { User } from 'src/auth/user.entity';
 import { DeleteCommentDto } from './dto/delete-comment.dto';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 
 @Controller('comments')
 @UseGuards(AuthGuard()) // guard this whole controller using jwt/passport.js

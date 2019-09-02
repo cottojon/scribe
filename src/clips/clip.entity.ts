@@ -1,17 +1,17 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from "typeorm";
-import { Channel } from "src/channels/channel.entity";
 import { Like } from '../likes/like.entity';
 import { Comment } from '../comments/comment.entity';
+import { Channel } from "../channels/channel.entity";
 
 @Entity()
-export class Clip extends BaseEntity{
+export class Clip extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type:"text"}) //want a text datatype rather than varchar
+    @Column({ type: "text" }) //want a text datatype rather than varchar
     text: string;
 
-    @Column({type:"text", nullable: true}) // allow the column to be null until clip gets revised
+    @Column({ type: "text", nullable: true }) // allow the column to be null until clip gets revised
     revised_text: string;
 
     @Column()
@@ -34,7 +34,7 @@ export class Clip extends BaseEntity{
     path_to_file: string;
 
 
-    @ManyToOne(type => Channel, channel => channel.clip,  {  
+    @ManyToOne(type => Channel, channel => channel.clip, {
         eager: true,  //every time we load a clip entity the channel will come with it no need to join tables (only works with find)
         onUpdate: "CASCADE" //update if channel id get updated
     }) //our relation to channel table
@@ -54,9 +54,9 @@ export class Clip extends BaseEntity{
 
 
 
-     //this is for our many to many to many relationship with users, and comments to define our comment join table
-     @OneToMany(type => Comment, comment => comment.clip)
-     comments: Comment[];
+    //this is for our many to many to many relationship with users, and comments to define our comment join table
+    @OneToMany(type => Comment, comment => comment.clip)
+    comments: Comment[];
 
 
 

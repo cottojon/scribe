@@ -1,9 +1,10 @@
 import { Controller, UseGuards, Post, Param, ParseIntPipe, Get, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { SubscribeService } from './subscribe.service';
-import { GetUser } from 'src/auth/get-user.decorator';
-import { User } from 'src/auth/user.entity';
+
 import { Subscribe } from './subscribe.entity';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 
 @Controller('subscribe')
 @UseGuards(AuthGuard()) // guard this whole controller using jwt/passport.js

@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, PrimaryColumn } from 'typeorm';
-import { User } from 'src/auth/user.entity';
 import { Clip } from '../clips/clip.entity';
+import { User } from '../auth/user.entity';
 
  /*this is our relationship table that we have created to relate users and clips
  In TypeORM, we can either let typeorm make this table using @JoinTable() or

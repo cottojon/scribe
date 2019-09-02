@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LikeRepository } from './like.repository';
 import { Like } from './like.entity';
 import { User } from '../auth/user.entity';
-import { Clip } from 'src/clips/clip.entity';
 
 @Injectable()
 export class LikesService {
