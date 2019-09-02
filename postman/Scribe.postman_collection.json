@@ -1,18 +1,22 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "501674cd-6570-40e0-b555-225bbaa0cef3",
 		"name": "Scribe",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "b2e9f5f8-9612-1afc-b9be-a6735fdf540c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "createChannel()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/channels",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
 					}
 				],
 				"body": {
@@ -20,67 +24,51 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "fsdfd",
+							"value": "name",
 							"type": "text"
 						},
 						{
 							"key": "subsystem",
-							"value": "fdsfdsfdsfds",
+							"value": "subsystem",
 							"type": "text"
 						},
 						{
 							"key": "location",
-							"value": "vcxvcxvc",
+							"value": "location",
 							"type": "text"
 						},
 						{
 							"key": "program",
-							"value": "tyruytyutut",
+							"value": "program",
 							"type": "text"
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/channels",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"channels"
-					]
-				}
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "getAllChannels()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/channels",
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/channels",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"channels"
-					]
-				}
+				"body": {},
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "createClip()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/clips",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
 					}
 				],
 				"body": {
@@ -88,87 +76,84 @@
 					"urlencoded": [
 						{
 							"key": "channel_id",
-							"value": "2",
-							"type": "text"
-						},
-						{
-							"key": "text",
-							"value": "hello ",
+							"value": "1",
 							"type": "text"
 						},
 						{
 							"key": "path_to_file",
-							"value": "dfdsfdsfds",
+							"value": "path to the audio fil",
 							"type": "text"
 						},
 						{
 							"key": "speaker",
-							"value": "jonathan",
+							"value": "name of the human ",
+							"type": "text"
+						},
+						{
+							"key": "text",
+							"value": "transcribed text here",
+							"description": "",
 							"type": "text"
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/clips",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"clips"
-					]
-				}
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "getClipById()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/clips/2",
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/clips/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"clips",
-						"3"
-					]
-				}
+				"body": {},
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "getClipsFilterQuery()",
 			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/clips",
+					"raw": "http://scribe.us-east-2.elasticbeanstalk.com/clips?channel_name=name",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"scribe",
+						"us-east-2",
+						"elasticbeanstalk",
+						"com"
 					],
-					"port": "3000",
 					"path": [
 						"clips"
-					]
-				}
+					],
+					"query": [
+						{
+							"key": "channel_name",
+							"value": "name",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "For this hanlder we can either get all clips in the database with the route\r\n/clips\r\n\r\n    or\r\n    \r\nWe get clips based on the search criteria (see get-clip-filter.dto) as a query for example\r\n/clips?text=failure&channel_name=Launch\r\n    \r\n    \r\nThe possible criteria\r\n\r\n    channel_id: string;\r\n\r\n    channel_name: string;\r\n\r\n    text: string;\r\n\r\n    speaker: string;\r\n\r\n    start_date: Date; // haven't not finished working on properly dealing with time zones yet\r\n\r\n    end_date: Date;\r\n    \r\n    \r\n  \r\nGood Response: 200 with an array of clips matching search criteria\r\n\r\n\r\n [\r\n    {\r\n        \"id\": 1,\r\n        \"text\": \"hello world\",\r\n        \"revised_text\": null,\r\n        \"speaker\": \"name of the human \",\r\n        \"created_at\": \"2019-09-02T03:49:13.936Z\",\r\n        \"revised_at\": \"2019-09-02T03:49:13.936Z\",\r\n        \"revised\": false,\r\n        \"path_to_file\": \"path to the audio file\",\r\n        \"channelId\": 2,\r\n        \"channel\": {\r\n            \"id\": 2,\r\n            \"name\": \"name\",\r\n            \"subsystem\": \"subsystem\",\r\n            \"location\": \"location\",\r\n            \"program\": \"program\"\r\n        }\r\n    },\r\n    {\r\n        \"id\": 2,\r\n        \"text\": \"hello world\",\r\n        \"revised_text\": null,\r\n        \"speaker\": \"name of the human \",\r\n        \"created_at\": \"2019-09-02T03:49:23.803Z\",\r\n        \"revised_at\": \"2019-09-02T03:49:23.803Z\",\r\n        \"revised\": false,\r\n        \"path_to_file\": \"path to the audio file\",\r\n        \"channelId\": 3,\r\n        \"channel\": {\r\n            \"id\": 3,\r\n            \"name\": \"name\",\r\n            \"subsystem\": \"subsystem\",\r\n            \"location\": \"location\",\r\n            \"program\": \"program\"\r\n        }\r\n    },\r\n  \r\n]  \r\n    \r\nBad Response: 400 Bad Request channel_id was not a number\r\n\r\n{\r\n    \"statusCode\": 400,\r\n    \"error\": \"Bad Request\",\r\n    \"message\": [\r\n        {\r\n            \"target\": {\r\n                \"channel_id\": \"tim\"\r\n            },\r\n            \"value\": \"tim\",\r\n            \"property\": \"channel_id\",\r\n            \"children\": [],\r\n            \"constraints\": {\r\n                \"isNumberString\": \"channel_id must be a number string\"\r\n            }\r\n        }\r\n    ]\r\n}\r\n"
 			},
 			"response": []
 		},
 		{
 			"name": "updateClipText()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/clips/3/revised_text",
 				"method": "PATCH",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
 					}
 				],
 				"body": {
@@ -181,87 +166,48 @@
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/clips/5/revised_text",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"clips",
-						"5",
-						"revised_text"
-					]
-				}
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "deleteClipById()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/clips/23",
 				"method": "DELETE",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/clips/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"clips",
-						"3"
-					]
-				}
+				"body": {},
+				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "subscribeUserToChannel()",
+			"name": "subscribeUserToChannelById()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user1}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/subscribe/1",
 				"method": "POST",
 				"header": [
 					{
-						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8iLCJpYXQiOjE1NjY3NTI5ODUsImV4cCI6MTU2Njc1NjU4NX0.1RPPiyn1B0vzv8y0nMbKPNCtux36mHhmW2lyt_bgHc0",
-						"disabled": true
+						"value": "Bearer {{Jonathan2AccessToken}}",
+						"description": ""
 					}
 				],
-				"url": {
-					"raw": "http://localhost:3000/subscribe/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"subscribe",
-						"2"
-					]
-				}
+				"body": {},
+				"description": "Subscribe a user to a channel by channel_id. Pass in the channel_id in the url. The user will be given a accessToken upon logging in. The access token should be placed after Bearer in the header (see header).\n\n\nGood Response: 201 created \n\n{\n    \"channelId\": 2,\n    \"userId\": 1\n}\n\n\n\nBad Response: 400 bad request because channel_id does not exist\n{\n    \"statusCode\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Channel 23 does not exist\"\n}\n\n\nBad Request: 401 unauthorized because of bad/expired jwt token\n\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		},
 		{
 			"name": "signup()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/auth/signup",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
 					}
 				],
 				"body": {
@@ -269,39 +215,30 @@
 					"urlencoded": [
 						{
 							"key": "username",
-							"value": "Jonathancotto2",
+							"value": "Jonathan2",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "Jonathancotto23",
+							"value": "Jonathancotto1",
 							"type": "text"
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/auth/signup",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"auth",
-						"signup"
-					]
-				}
+				"description": "Username is between 4-20 characters\r\nNo duplicate usernames \r\nPassword is between 8 and 20 characters\r\nPasswords will contain at least 1 upper case letter\r\nPasswords will contain at least 1 lower case letter\r\nPasswords will contain at least 1 number or special character\r\n\r\n\r\n\r\nGood Response: 201 created user\r\n\r\n\r\n\r\n\r\nBad Response: 400 for violating the rules above\r\nFor example: \r\n{\r\n    \"statusCode\": 400,\r\n    \"error\": \"Bad Request\",\r\n    \"message\": [\r\n        {\r\n            \"target\": {\r\n                \"username\": \"Jon\",\r\n                \"password\": \"Jonathancotto23\"\r\n            },\r\n            \"value\": \"Jon\",\r\n            \"property\": \"username\",\r\n            \"children\": [],\r\n            \"constraints\": {\r\n                \"minLength\": \"username must be longer than or equal to 4 characters\"\r\n            }\r\n        }\r\n    ]\r\n}\r\n\r\n\r\n\r\nBad Response: 409 Conflict with duplicate usernames\r\n\r\n{\r\n    \"statusCode\": 409,\r\n    \"error\": \"Conflict\",\r\n    \"message\": \"Username already exists\"\r\n}"
 			},
 			"response": []
 		},
 		{
 			"name": "signin()",
 			"request": {
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/auth/signin",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
 					}
 				],
 				"body": {
@@ -309,209 +246,120 @@
 					"urlencoded": [
 						{
 							"key": "username",
-							"value": "Jonathancotto2",
+							"value": "Jonathan2",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "Jonathancotto23",
+							"value": "Jonathancotto1",
 							"type": "text"
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/auth/signin",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"auth",
-						"signin"
-					]
-				}
+				"description": "User signs and and is passed a jwt token. This token lasts for 60 minutes upon signing in. This token needs to be passed in the header as a Bearer. The routes that are guarded are likes, subscribes, comments.\n\n\n\nGood Response: 201 \n{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuMSIsImlhdCI6MTU2NzQzNjU2MiwiZXhwIjoxNTY3NDQwMTYyfQ.Ha8peWqy1bqUWydyNwD--AI5A54gcWw1daBk5OEso6E\"\n}\n\n\n\nBad Response: 401 unauthorized invalid login\n\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\",\n    \"message\": \"Invalid Credentials\"\n}"
 			},
 			"response": []
 		},
 		{
 			"name": "getUserSubscribedChannels()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user1}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/subscribe",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas"
+						"value": "Bearer  {{Jonathan2AccessToken}}",
+						"description": ""
 					}
 				],
-				"url": {
-					"raw": "http://localhost:3000/subscribe",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"subscribe"
-					]
-				}
+				"body": {},
+				"description": "Just pass in user jwt accessToken as bearer in header (see header)\n\n\nGood Response: 200, an array of subscribed user channels\n[\n    {\n        \"userId\": 1,\n        \"channelId\": 2,\n        \"channel\": {\n            \"id\": 2,\n            \"name\": \"name\",\n            \"subsystem\": \"subsystem\",\n            \"location\": \"location\",\n            \"program\": \"program\"\n        }\n    },\n    {\n        \"userId\": 1,\n        \"channelId\": 3,\n        \"channel\": {\n            \"id\": 3,\n            \"name\": \"name\",\n            \"subsystem\": \"subsystem\",\n            \"location\": \"location\",\n            \"program\": \"program\"\n        }\n    }\n]\n\n\n\nBad Response: 401 jwt token bad/expired\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		},
 		{
-			"name": "unsubscribeUserFromChannel()",
+			"name": "unsubscribeUserFromChannelById()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user1}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/subscribe/4",
 				"method": "DELETE",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuY290dG8xIiwiaWF0IjoxNTY2NzU1MzA3LCJleHAiOjE1NjY3NTg5MDd9.xH-3uY5STN8XWQa18S6NqtCeg0yS-c-a7FZ_B6A6Tas"
+						"value": "Bearer {{Jonathan2AccessToke}}",
+						"description": ""
 					}
 				],
-				"url": {
-					"raw": "http://localhost:3000/subscribe/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"subscribe",
-						"2"
-					]
-				}
+				"body": {},
+				"description": "Unsubscribe a user to a channel by channel_id. Pass in the channel_id in the url. The user will be given a accessToken upon logging in. The access token should be placed after Bearer in the header (see header).\n\n\nGood Response: 200 Ok\n\n\nBad Response: 404 channel_id not found / user was never subscirbed to that channel\n{\n    \"statusCode\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Channel with ID 32 not found\"\n}\n\n\nBad Response: 401 unauthorized bad/expired jwt token\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		},
 		{
 			"name": "getUserLikeClips()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user1}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/likes",
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/likes",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"likes"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Jonathan1AccessToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Just pass in user jwt accessToken as bearer in header (see header)\n\n\nGood Response: 200, an array of liked clips by the user\n[\n    {\n        \"userId\": 1,\n        \"clipId\": 1,\n        \"clip\": {\n            \"id\": 1,\n            \"text\": \"hello world\",\n            \"revised_text\": null,\n            \"speaker\": \"name of the human \",\n            \"created_at\": \"2019-09-02T03:49:13.936Z\",\n            \"revised_at\": \"2019-09-02T03:49:13.936Z\",\n            \"revised\": false,\n            \"path_to_file\": \"path to the audio file\",\n            \"channelId\": 2,\n            \"channel\": {\n                \"id\": 2,\n                \"name\": \"name\",\n                \"subsystem\": \"subsystem\",\n                \"location\": \"location\",\n                \"program\": \"program\"\n            }\n        }\n    },\n    {\n        \"userId\": 1,\n        \"clipId\": 3,\n        \"clip\": {\n            \"id\": 3,\n            \"text\": \"hello world\",\n            \"revised_text\": \"updating the text\",\n            \"speaker\": \"name of the human \",\n            \"created_at\": \"2019-09-02T03:49:26.751Z\",\n            \"revised_at\": \"2019-09-02T03:50:23.481Z\",\n            \"revised\": true,\n            \"path_to_file\": \"path to the audio file\",\n            \"channelId\": 1,\n            \"channel\": {\n                \"id\": 1,\n                \"name\": \"name\",\n                \"subsystem\": \"subsystem\",\n                \"location\": \"location\",\n                \"program\": \"program\"\n            }\n        }\n    }\n]]\n\n\n\nBad Response: 401 jwt token bad/expired\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		},
 		{
-			"name": "userLikesClip()",
+			"name": "userLikesClipById()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user1}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/likes/3",
 				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/likes/9",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"likes",
-						"9"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Jonathan2AccessToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "User likes a clip by clip_id. Pass in the clip_id in the url. The user will be given a accessToken upon logging in. The access token should be placed after Bearer in the header (see header).\n\n\nGood Response: 201 created \n\n{\n    \"clipId\": 1,\n    \"userId\": 1\n}\n\n\nBad Response: 404 Not found because clip_id does not exist\n{\n    \"statusCode\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Clip 9 does not exist\"\n}\n\n\nBad Response: 401 unauthorized because of bad/expired jwt token\n\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		},
 		{
-			"name": "userUnlikesClip()",
+			"name": "userUnlikesClipById()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user2}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/likes/3",
 				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/likes/9",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"likes",
-						"9"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Jonathan1AccessToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "User unlikes a clip by clip_id. Pass in the clip_id in the url. The user will be given a accessToken upon logging in. The access token should be placed after Bearer in the header (see header).\n\n\nGood Response: 200 Ok\n\n\n\nBad Response: 404 Not found because clip_id does not exist/ user never liked it\n{\n    \"statusCode\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Clip 9 does not exist\"\n}\n\n\nBad Response: 401 unauthorized because of bad/expired jwt token\n\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		},
 		{
 			"name": "userInsertCommentForClip()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user1}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/comments",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"name": "Content-Type",
 						"value": "application/x-www-form-urlencoded",
-						"type": "text"
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Jonathan2AccessToken}}",
+						"description": ""
 					}
 				],
 				"body": {
@@ -519,7 +367,7 @@
 					"urlencoded": [
 						{
 							"key": "text",
-							"value": "my first posted comment for updated clip",
+							"value": "hello world",
 							"type": "text"
 						},
 						{
@@ -529,70 +377,42 @@
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/comments",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments"
-					]
-				}
+				"description": "User leaves a comment on a clip by clip_id. Clip_id and text/comment gets passed in the body. Text can't be empty and clip_id must exist.\nThe user will be given a accessToken upon logging in. The access token should be placed after Bearer in the header (see header).\n\n\nGood Response: 201 created \n{\n    \"clipId\": \"5\",\n    \"userId\": 1,\n    \"comment\": \"my first posted comment for updated clip\",\n    \"id\": 1,\n    \"created_at\": \"2019-09-02T15:28:41.465Z\"\n}\n\n\nBad Response: 404 not found because clip_id does not exist\n{\n    \"statusCode\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Clip 25 does not exist and/or User does not exist\"\n}\n\nBad Response: 400 Bad Request because text/comment was empty\n{\n    \"statusCode\": 400,\n    \"error\": \"Bad Request\",\n    \"message\": [\n        {\n            \"target\": {\n                \"text\": \"\",\n                \"clip_id\": \"5\"\n            },\n            \"value\": \"\",\n            \"property\": \"text\",\n            \"children\": [],\n            \"constraints\": {\n                \"isNotEmpty\": \"text should not be empty\"\n            }\n        }\n    ]\n}\n\nBad Request: 401 unauthorized because of bad/expired jwt token\n\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		},
 		{
 			"name": "getCommentsByClipId()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user1}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/comments/5",
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/comments/5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"5"
-					]
-				}
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Jonathan1AccessToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Pass in the clip_id in the body.\n\nJust pass in user jwt accessToken as bearer in header (see header)\n\n\nGood Response: 200, an array of all comments left in the clip_id \n[\n    {\n        \"id\": 4,\n        \"userId\": 1,\n        \"clipId\": 5,\n        \"created_at\": \"2019-09-02T15:30:02.905Z\",\n        \"comment\": \"my first posted comment for updated clip\",\n        \"clip\": {\n            \"id\": 5,\n            \"text\": \"transcribed text here\",\n            \"revised_text\": null,\n            \"speaker\": \"name of the human \",\n            \"created_at\": \"2019-09-02T03:52:18.456Z\",\n            \"revised_at\": \"2019-09-02T03:52:18.456Z\",\n            \"revised\": false,\n            \"path_to_file\": \"path to the audio fil\",\n            \"channelId\": 1,\n            \"channel\": {\n                \"id\": 1,\n                \"name\": \"name\",\n                \"subsystem\": \"subsystem\",\n                \"location\": \"location\",\n                \"program\": \"program\"\n            }\n        }\n    },\n    {\n        \"id\": 5,\n        \"userId\": 3,\n        \"clipId\": 5,\n        \"created_at\": \"2019-09-02T15:30:51.162Z\",\n        \"comment\": \"hello world\",\n        \"clip\": {\n            \"id\": 5,\n            \"text\": \"transcribed text here\",\n            \"revised_text\": null,\n            \"speaker\": \"name of the human \",\n            \"created_at\": \"2019-09-02T03:52:18.456Z\",\n            \"revised_at\": \"2019-09-02T03:52:18.456Z\",\n            \"revised\": false,\n            \"path_to_file\": \"path to the audio fil\",\n            \"channelId\": 1,\n            \"channel\": {\n                \"id\": 1,\n                \"name\": \"name\",\n                \"subsystem\": \"subsystem\",\n                \"location\": \"location\",\n                \"program\": \"program\"\n            }\n        }\n    }\n]\n\n\n\nBad Response: 401 jwt token bad/expired\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}\n\n\n\n\n\n\n\n\n"
 			},
 			"response": []
 		},
 		{
 			"name": "deleteCommentByCommentId()",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken_user2}}",
-							"type": "string"
-						}
-					]
-				},
+				"url": "http://scribe.us-east-2.elasticbeanstalk.com/comments",
 				"method": "DELETE",
 				"header": [
 					{
 						"key": "Content-Type",
-						"name": "Content-Type",
 						"value": "application/x-www-form-urlencoded",
-						"type": "text"
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Jonathan1AccessToken}}",
+						"description": ""
 					}
 				],
 				"body": {
@@ -600,7 +420,7 @@
 					"urlencoded": [
 						{
 							"key": "comment_id",
-							"value": "5",
+							"value": "",
 							"type": "text"
 						},
 						{
@@ -611,17 +431,7 @@
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/comments",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments"
-					]
-				}
+				"description": "User deletes a comment on a clip by comment_id. User can only deleted comments that they left. Comment_id gets passed in the body. \nThe user will be given a accessToken upon logging in. The access token should be placed after Bearer in the header (see header).\n\n\nGood Response: 200 Ok \n{\n    \"clipId\": \"5\",\n    \"userId\": 1,\n    \"comment\": \"my first posted comment for updated clip\",\n    \"id\": 1,\n    \"created_at\": \"2019-09-02T15:28:41.465Z\"\n}\n\n\nBad Response: 401 unauthorized because user can't delete a comment they did not leave\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\",\n    \"message\": \"User can not delete Comment 27.\"\n}\n\nBad Response: 400 Bad Request comment_id was empty or not a number\n{\n    \"statusCode\": 400,\n    \"error\": \"Bad Request\",\n    \"message\": [\n        {\n            \"target\": {\n                \"comment_id\": \"\"\n            },\n            \"value\": \"\",\n            \"property\": \"comment_id\",\n            \"children\": [],\n            \"constraints\": {\n                \"isNumberString\": \"comment_id must be a number string\",\n                \"isNotEmpty\": \"comment_id should not be empty\"\n            }\n        }\n    ]\n}\n\nBad Request: 401 unauthorized because of bad/expired jwt token\n\n{\n    \"statusCode\": 401,\n    \"error\": \"Unauthorized\"\n}"
 			},
 			"response": []
 		}
