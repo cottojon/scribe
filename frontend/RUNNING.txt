@@ -1,0 +1,7 @@
+To build the docker image (when you make changes):
+
+docker build -t kepter/scribe
+docker push kepter/scribe
+
+To run docker image:
+docker run -p 80:80 kepter/scribe
