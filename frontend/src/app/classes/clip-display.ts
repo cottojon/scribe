@@ -3,13 +3,13 @@ import { Clip } from './clip';
 export class ClipDisplay {
   clip: Clip;
   editing: boolean;
-  channel_name: string;
+  channel_id: number;
   created_at: Date;
 
-  constructor(newClip: Clip, ChannelName: string) {
+  constructor(newClip: Clip, channelId: number) {
     this.clip = newClip;
     this.editing = false;
-    this.channel_name = ChannelName;
+    this.channel_id = channelId;
     this.created_at = new Date(newClip.created_at);
   }
 }

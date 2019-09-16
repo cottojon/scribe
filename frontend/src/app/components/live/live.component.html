@@ -1,58 +1,59 @@
 <div class="row">
-  <div class="offset-md-1 col-md-10">
-    <div class="card">
-      <div class="card-header"> Live Stream <button (click)="getClips()" class="pull-right btn btn-primary"><span class="fa fa-refresh"></span></button></div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-2">
-            <button class="channel-button btn btn-primary text-center" (click)="open(addChannelModal)">
-              <span class="fa fa-plus"></span>
-            </button>
-            <div *ngFor="let channel of activeChannels">
-                <button class="channel-button btn text-center" [ngClass]="getColor(channel.id)" (click)="toggleChannel(channel)">{{channel.name}}</button>
-            </div>
-          </div>
-          <div class="col-10" style="max-height:70vh; overflow-y: scroll;">
+  <div class="col-12">
+    <div class="row" style="padding-bottom:10px; padding-top: -10px;">
+      <div class="col-12">
+        <button *ngFor="let channel of addedChannels" class="channel-button btn text-center"
+          [ngClass]="getColor(channel.id)" (click)="setActiveChannelById(channel.id)">
+          {{channel.name}}
+        </button>
 
-            <!-- Display details for each clip -->
+        <button class="add-channel-button btn btn-primary text-center" (click)="open(addChannelModal)">
+          <span class="fa fa-plus"></span>
+        </button>
+      </div>
+    </div>
+    <div class="row" style="overflow-x: hidden; white-space: nowrap;">
+      <div class="col-12" style="height: calc(100vh - 185px); overflow-x: hidden; overflow-y: hidden; margin-left: 5px;">
 
-            <div *ngFor="let clipDisplay of clipDisplays">
-
-              <div *ngIf="shouldDisplayClip(clipDisplay)" class="card" [ngClass]="getColor(clipDisplay.clip.channel_id)" style="margin-bottom:10px">
+        <div *ngFor="let channel of activeChannels" class="channel-container center-block" [style.width.px]="getMaximumChannelWidth()">
+          <div class="card bg-light mb-3" style="height: 100%">
+            <div class="card-header channel-header" [ngClass]="getColor(channel.id)">{{channel.name}}</div>
+            <div class="card-body bg-light" style="overflow-y: auto;">
+              <div *ngFor="let clipDisplay of getCurrentClipsForChannel(channel.id)" class="card bg-light" style="margin-bottom: 5px;">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-lg-1 d-none d-lg-block">
-                      <img class="img" style="width:100%" src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
+                    <div class="col-1 d-none d-lg-block">
+                      <img class="img" style="width:50px"
+                        src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
                     </div>
-                    <div class="col-12 col-lg-11">
-                      <textarea *ngIf="clipDisplay.editing" class="form-control" [(ngModel)]="clipDisplay.clip.text"></textarea>
-                      <div *ngIf="!clipDisplay.editing">{{clipDisplay.clip.text}}</div>
+                    <div class="col-11">
+                      {{clipDisplay.clip.text}}
                     </div>
                   </div>
                 </div>
                 <div class="card-footer">
-                  <span class="fa fa-user"></span>&nbsp;Speaker: {{clipDisplay.clip.speaker}}&nbsp;&nbsp;&nbsp;
-                  <span class="fa fa-volume-up"></span>&nbsp;Channel: {{clipDisplay.channel_name}}&nbsp;&nbsp;&nbsp;
-                  <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}
+                  <span class="fa fa-user"></span>&nbsp;{{clipDisplay.clip.speaker}}&nbsp;
+                  <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}&nbsp;
                   <div class="pull-right">
 
-                    <!-- Make/Save Correction Buttons -->
-                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary" (click)="makeCorrection(clipDisplay)"> Make Correction&nbsp;
+                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary">
                       <span class="fa fa-edit"></span>
                     </button>
-                    <button *ngIf="clipDisplay.editing" class="btn btn-success" (click)="saveCorrection(clipDisplay)"> Save Correction&nbsp;
+                    <button *ngIf="clipDisplay.editing" class="btn btn-success">
                       <span class="fa fa-edit"></span>
                     </button>
 
-                    <!-- Play Clip Button -->
-                    <button class="btn btn-primary" (click)="playClip(clipDisplay)" style="margin-left:5px">Play &nbsp;
+                    <button class="btn btn-primary" style="margin-left:5px">
                       <span class="fa fa-play"></span>
                     </button>
-
                   </div>
                 </div>
               </div>
-
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" (click)="removeChannel(channel)">
+                <span class="fa fa-trash-o"></span>
+              </button>
             </div>
           </div>
         </div>
@@ -70,46 +71,47 @@
 
 
 <ng-template #addChannelModal let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Add Channel</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form class="form-inline">
-            <div class="col" style="padding:0px">
-              <div class="input-group">
-                <input [(ngModel)]="channelSearchInput" (keyup.enter)="searchForChannel()" name="channelSearchInput" type="text" class="form-control" placeholder="Search Terms">
-                <div class="input-group-append">
-                  <button class="btn btn-primary" type="button" (click)="searchForChannel()">
-                    <span class="fa fa-search"></span>&nbsp;Search </button>
-                </div>
-              </div>
-            </div>
-          </form>
-          <br>
-          <div class="card">
-            <table class="table" style="margin-bottom:0px">
-              <thead>
-                <tr>
-                  <th style="width:90%">Channel Name</th>
-                  <th style="width:10%"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let channel of channelSearchResults">
-                  <td>{{channel.name}}</td>
-                  <td>
-                    <button class="btn btn-primary" (click)="addActiveChannel(channel)">
-                      <span class="fa fa-plus"></span>&nbsp;Add </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+  <div class="modal-header">
+    <h4 class="modal-title">Add Channel</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-inline">
+      <div class="col" style="padding:0px">
+        <div class="input-group">
+          <input [(ngModel)]="channelSearchInput" (keyup.enter)="searchForChannel()" name="channelSearchInput"
+            type="text" class="form-control" placeholder="Search Terms">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" (click)="searchForChannel()">
+              <span class="fa fa-search"></span>&nbsp;Search </button>
           </div>
+        </div>
+      </div>
+    </form>
+    <br>
+    <div class="card">
+      <table class="table" style="margin-bottom:0px">
+        <thead>
+          <tr>
+            <th style="width:90%">Channel Name</th>
+            <th style="width:10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let channel of channelSearchResults">
+            <td>{{channel.name}}</td>
+            <td>
+              <button class="btn btn-primary" (click)="addChannel(channel)">
+                <span class="fa fa-plus"></span>&nbsp;Add </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-primary" (click)="c('Save click')">Close</button>
-    </div>
-  </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="c('Save click')">Close</button>
+  </div>
+</ng-template>

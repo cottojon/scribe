@@ -17,10 +17,15 @@ export class LiveComponent implements OnInit {
   channelSearchInput: string;
   closeResult: string;
   activeChannels: Channel[];
+  lastActiveIdx: number;
+  addedChannels: Channel[];
   channelSearchResults: Channel[];
   clipDisplays: ClipDisplay[];
   showNotification = false;
   sub: Subscription;
+  
+  private minimumChannelWidth = 600;
+  private channelMargin = 5;
 
   constructor(
     private channelService: ChannelService,
@@ -30,7 +35,9 @@ export class LiveComponent implements OnInit {
 
   ngOnInit() {
     this.activeChannels = [];
+    this.addedChannels = [];
     this.clipDisplays = [];
+    this.lastActiveIdx = 0;
 
     this.sub = interval(2000)
       .subscribe((val) => {
@@ -49,12 +56,54 @@ export class LiveComponent implements OnInit {
     );
   }
 
-  addActiveChannel(channel: Channel): void {
-    if (this.activeChannels.filter(x => x.id === channel.id).length === 0) {
-      this.activeChannels.push(channel);
+  addChannel(channel: Channel): void {
+    if (!this.addedChannels.some(x => x.id === channel.id)) {
+      this.addedChannels.push(channel);
       this.getClips();
+
+      if (this.addedChannels.length <= this.getMaximumDisplayedChannels()){
+        this.setActiveChannelByIdx(0);
+      }
     }
   }
+
+  removeChannel(channel: Channel): void{
+    this.addedChannels = this.addedChannels.filter(x => x.id != channel.id);
+    this.setActiveChannelByIdx(this.lastActiveIdx);
+  }
+
+  getMaximumDisplayedChannels(): number {
+    return Math.floor(window.innerWidth/(this.minimumChannelWidth + this.channelMargin * 2));
+  }
+
+  getMaximumChannelWidth(): number {
+    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1))) - (this.channelMargin * 2);
+  }
+
+  setActiveChannelById(channelId: number): void {
+    let idx = this.addedChannels.findIndex(x => x.id === channelId);
+
+    if (idx === -1)
+    {
+      console.log("ERROR: Tried to set active channel to " + channelId + " but no added channel has this id");
+      return;
+    }
+
+    this.setActiveChannelByIdx(idx);
+  }
+
+  setActiveChannelByIdx(idx: number): void {
+    let maxChannels = this.getMaximumDisplayedChannels();
+
+    if (idx > this.addedChannels.length - maxChannels)
+    {
+      idx = Math.max(0, this.addedChannels.length - maxChannels);
+    }
+
+    this.lastActiveIdx = idx;
+    this.activeChannels = this.addedChannels.filter((_, i) => i >= idx && i < idx + maxChannels);
+  }
+
   searchForChannel(): void {
     this.channelService.getChannels(this.channelSearchInput)
       .subscribe(
@@ -82,7 +131,7 @@ export class LiveComponent implements OnInit {
 
         this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
           newClipDisplays = newClipDisplays.concat(
-            new ClipDisplay(clip, channel.name)
+            new ClipDisplay(clip, channel.id)
           );
         }),
           error => console.log('Error: ', error),
@@ -108,7 +157,7 @@ export class LiveComponent implements OnInit {
 
         this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
           newClipDisplays = newClipDisplays.concat(
-            new ClipDisplay(clip, channel.name)
+            new ClipDisplay(clip, channel.id)
           );
         }),
           error => console.log('Error: ', error),
@@ -131,48 +180,30 @@ export class LiveComponent implements OnInit {
     });
   }
 
-  getColor(channel: number): string {
-    switch (channel) {
-      case 1: {
+  getCurrentClipsForChannel(channelId: number): ClipDisplay[]
+  {
+    return this.clipDisplays.filter(x => x.channel_id === channelId);
+  }
+
+  getColor(idx: number): string {
+    switch (idx%4) {
+      case 0: {
         return 'bg-secondary';
       }
-      case 2: {
+      case 1: {
         return 'bg-primary';
       }
-      case 3: {
+      case 2: {
         return 'bg-light';
       }
-      case 4: {
+      case 3: {
         return 'bg-dark';
       }
     }
   }
 
-  toggleChannel(channel: Channel): void {
-    const c = this.findChannelFromId(channel.id);
-    c.displayed = !c.displayed;
-  }
-
   findChannelFromId(channel_id: number): Channel {
     return this.activeChannels.filter(x => x.id === channel_id)[0];
-  }
-
-  shouldDisplayClip(clipDisplay: ClipDisplay): boolean {
-    let channel = this.findChannelFromId(clipDisplay.clip.channel.id);
-    if (channel !== undefined && channel !== null) {
-      return channel.displayed;
-    }
-    return false;
-  }
-
-  makeCorrection(clipDisplay: ClipDisplay): void {
-    clipDisplay.editing = true;
-  }
-
-  saveCorrection(clipDisplay: ClipDisplay): void {
-    clipDisplay.editing = false;
-    // this.showNotification = true;
-    this.clipService.saveClip(clipDisplay.clip);
   }
 
   private getDismissReason(reason: any): string {

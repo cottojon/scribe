@@ -50,7 +50,7 @@ export class ArchiveComponent implements OnInit {
         (response: Array<Clip>) =>
           response.forEach(clip => {
             newClipDisplays = newClipDisplays.concat(
-              new ClipDisplay(clip, channel.name)
+              new ClipDisplay(clip, channel.id)
             );
           }),
         error => console.log('Error: ', error),
