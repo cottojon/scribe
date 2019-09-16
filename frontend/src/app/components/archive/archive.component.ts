@@ -47,8 +47,8 @@ export class ArchiveComponent implements OnInit {
       searchParams.end_date = new Date(this.end_date);
 
       this.clipService.getClips(channel, searchParams).subscribe(
-        response =>
-          response.data.forEach(clip => {
+        (response: Array<Clip>) =>
+          response.forEach(clip => {
             newClipDisplays = newClipDisplays.concat(
               new ClipDisplay(clip, channel.name)
             );

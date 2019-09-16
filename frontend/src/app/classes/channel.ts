@@ -4,7 +4,7 @@ export class Channel {
   id: number;
   name: string;
   displayed: boolean;
-  subSystem: string;
+  subsystem: string;
   location: string;
   program: string;
 }
