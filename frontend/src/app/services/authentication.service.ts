@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { SigninResponse } from '../classes/signin-response';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthenticationService {
   private token = "";
   private url = environment.api_endpoint+'/auth';
 
-  signin(username: string, password: string): Observable<any> {
+  signin(username: string, password: string): Observable<SigninResponse> {
     let body = new HttpParams()
       .set('username', username)
       .set('password', password);
@@ -22,6 +23,13 @@ export class AuthenticationService {
     let header = new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded');
 
-    return this.client.post(this.url+"/signin", body.toString(), {headers: header});
+    console.log("Body: "+body.toString());
+
+    let observable = this.client.post<SigninResponse>(this.url+"/signin", body.toString(), {headers: header});
+    observable.subscribe(x => {
+      this.token = x.accessToken;
+    });
+
+    return observable;
   }
 }

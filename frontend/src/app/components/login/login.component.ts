@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppComponent } from '../../app.component';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -8,9 +9,18 @@ import { AppComponent } from '../../app.component';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  usernameInput: string;
+  passwordInput: string;
+
+  constructor(
+    private authService: AuthenticationService
+  ) { }
 
   ngOnInit() {
+  }
+
+  login() {
+    this.authService.signin(this.usernameInput, this.passwordInput).subscribe(x => console.log("Recieved: " +x +" token: "+x.accessToken));
   }
 
 }
