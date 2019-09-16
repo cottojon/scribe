@@ -82,7 +82,7 @@ export class LiveComponent implements OnInit {
 
         this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
           newClipDisplays = newClipDisplays.concat(
-            new ClipDisplay(clip, channel.name)
+            new ClipDisplay(clip, channel.id)
           );
         }),
           error => console.log('Error: ', error),
@@ -108,7 +108,7 @@ export class LiveComponent implements OnInit {
 
         this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
           newClipDisplays = newClipDisplays.concat(
-            new ClipDisplay(clip, channel.name)
+            new ClipDisplay(clip, channel.id)
           );
         }),
           error => console.log('Error: ', error),
@@ -131,38 +131,30 @@ export class LiveComponent implements OnInit {
     });
   }
 
-  getColor(channel: number): string {
-    switch (channel) {
-      case 1: {
+  getCurrentClipsForChannel(channelId: number): ClipDisplay[]
+  {
+    return this.clipDisplays.filter(x => x.channel_id === channelId);
+  }
+
+  getColor(idx: number): string {
+    switch (idx%4) {
+      case 0: {
         return 'bg-secondary';
       }
-      case 2: {
+      case 1: {
         return 'bg-primary';
       }
-      case 3: {
+      case 2: {
         return 'bg-light';
       }
-      case 4: {
+      case 3: {
         return 'bg-dark';
       }
     }
   }
 
-  toggleChannel(channel: Channel): void {
-    const c = this.findChannelFromId(channel.id);
-    c.displayed = !c.displayed;
-  }
-
   findChannelFromId(channel_id: number): Channel {
     return this.activeChannels.filter(x => x.id === channel_id)[0];
-  }
-
-  shouldDisplayClip(clipDisplay: ClipDisplay): boolean {
-    let channel = this.findChannelFromId(clipDisplay.clip.channel.id);
-    if (channel !== undefined && channel !== null) {
-      return channel.displayed;
-    }
-    return false;
   }
 
   makeCorrection(clipDisplay: ClipDisplay): void {

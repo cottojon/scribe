@@ -1,5 +1,22 @@
 .channel-button{
-    width:100%; 
-    font-size:30px; 
-    margin-bottom:10px;
+    width: 140px; 
+    font-size:30px;
+    margin-left: 10px;
+}
+
+.add-channel-button{
+    width: 60px; 
+    font-size:30px;
+    margin-left: 10px;
+}
+
+.channel-header{
+    font-size:22px;
+}
+
+.channel-container{
+    display: inline-block; 
+    height: 100%;
+    margin: auto;
+    float: none;
 }
