@@ -16,6 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
+import { LoginComponent } from './components/login/login.component';
+import { MainViewComponent } from './views/main-view/main-view.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { InMemoryDataService } from './services/in-memory-data.service';
     ArchiveComponent,
     AboutComponent,
     HomeComponent,
-    TrainingComponent
+    TrainingComponent,
+    LoginComponent,
+    MainViewComponent
   ],
   imports: [
     NgbModule.forRoot(),
