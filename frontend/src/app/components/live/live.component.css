@@ -17,6 +17,6 @@
 .channel-container{
     display: inline-block; 
     height: 100%;
-    margin: auto;
+    margin-left: 5px;
     float: none;
 }

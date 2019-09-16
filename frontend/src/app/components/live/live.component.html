@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-12">
-    <div class="row" style="padding-bottom:10px">
+    <div class="row" style="padding-bottom:10px; padding-top: -10px;">
       <div class="col-12">
-        <button *ngFor="let channel of activeChannels" class="channel-button btn text-center"
-          [ngClass]="getColor(channel.id)">
+        <button *ngFor="let channel of addedChannels" class="channel-button btn text-center"
+          [ngClass]="getColor(channel.id)" (click)="setActiveChannelById(channel.id)">
           {{channel.name}}
         </button>
 
@@ -12,18 +12,18 @@
         </button>
       </div>
     </div>
-    <div class="row" style="overflow-x: auto; white-space: nowrap;">
-      <div class="col-12" style="height: calc(100vh - 185px); overflow-x: auto; overflow-y: hidden; margin-left: -5px;">
+    <div class="row" style="overflow-x: hidden; white-space: nowrap;">
+      <div class="col-12" style="height: calc(100vh - 185px); overflow-x: hidden; overflow-y: hidden; margin-left: 5px;">
 
-        <div *ngFor="let channel of activeChannels" class="col-xs-12 col-xl-6 channel-container center-block">
-          <div class="card bg-light mb-3" style="height: 100vh">
+        <div *ngFor="let channel of activeChannels" class="channel-container center-block" [style.width.px]="getMaximumChannelWidth()">
+          <div class="card bg-light mb-3" style="height: 100%">
             <div class="card-header channel-header" [ngClass]="getColor(channel.id)">{{channel.name}}</div>
-            <div class="card-body bg-light">
-              <div *ngFor="let clipDisplay of getCurrentClipsForChannel(channel.id)" class="card bg-light">
+            <div class="card-body bg-light" style="overflow-y: auto;">
+              <div *ngFor="let clipDisplay of getCurrentClipsForChannel(channel.id)" class="card bg-light" style="margin-bottom: 5px;">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-1 d-none d-lg-block">
-                      <img class="img" style="width:100%"
+                      <img class="img" style="width:50px"
                         src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
                     </div>
                     <div class="col-11">
@@ -32,28 +32,28 @@
                   </div>
                 </div>
                 <div class="card-footer">
-                  <span class="fa fa-user"></span> Speaker: {{clipDisplay.clip.speaker}}
-                  <span class="fa fa-volume-up"></span> Channel: {{clipDisplay.channel_name}}
-                  <span class="fa fa-clock-o"></span> {{clipDisplay.created_at.toLocaleString()}}
+                  <span class="fa fa-user"></span>&nbsp;{{clipDisplay.clip.speaker}}&nbsp;
+                  <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}&nbsp;
                   <div class="pull-right">
 
-                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary" (click)="makeCorrection(clipDisplay)">
-                      Make
-                      Correction&nbsp;
+                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary">
                       <span class="fa fa-edit"></span>
                     </button>
-                    <button *ngIf="clipDisplay.editing" class="btn btn-success" (click)="saveCorrection(clipDisplay)">
-                      Save
-                      Correction&nbsp;
+                    <button *ngIf="clipDisplay.editing" class="btn btn-success">
                       <span class="fa fa-edit"></span>
                     </button>
 
-                    <button class="btn btn-primary" (click)="playClip(clipDisplay)" style="margin-left:5px">Play &nbsp;
+                    <button class="btn btn-primary" style="margin-left:5px">
                       <span class="fa fa-play"></span>
                     </button>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" (click)="removeChannel(channel)">
+                <span class="fa fa-trash-o"></span>
+              </button>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
           <tr *ngFor="let channel of channelSearchResults">
             <td>{{channel.name}}</td>
             <td>
-              <button class="btn btn-primary" (click)="addActiveChannel(channel)">
+              <button class="btn btn-primary" (click)="addChannel(channel)">
                 <span class="fa fa-plus"></span>&nbsp;Add </button>
             </td>
           </tr>
