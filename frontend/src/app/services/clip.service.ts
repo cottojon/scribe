@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Channel } from '../classes/channel';
 import { Clip } from '../classes/clip';
 import { SearchParams } from '../classes/search-params';
-import { ClipResponse } from '../classes/clip-response';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -16,9 +16,9 @@ export class ClipService {
   constructor(private http: HttpClient) { }
 
   // private clipsUrl = 'http://ec2-52-14-40-111.us-east-2.compute.amazonaws.com:3000/api/clips';
-  private clipsUrl = '/api/clips';
+  private clipsUrl = environment.api_endpoint+'/clips';
 
-  getClips(channel: Channel, parameters: SearchParams): Observable<ClipResponse> {
+  getClips(channel: Channel, parameters: SearchParams): Observable<Array<Clip>> {
     const minDate = (new Date('1/1/0001'));
     const maxDate = (new Date('12/30/9999'));
 
@@ -37,7 +37,7 @@ export class ClipService {
         parameters.end_date = maxDate;
       }
     }
-    return this.http.get<ClipResponse>(this.clipsUrl, {
+    return this.http.get<Array<Clip>>(this.clipsUrl, {
       params: {
         text: (parameters.text === undefined ? '' : parameters.text),
         speaker: (parameters.speaker === undefined ? '' : parameters.speaker),

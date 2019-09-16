@@ -26,7 +26,7 @@ export class LiveComponent implements OnInit {
     private channelService: ChannelService,
     private clipService: ClipService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.activeChannels = [];
@@ -35,7 +35,7 @@ export class LiveComponent implements OnInit {
     this.sub = interval(2000)
       .subscribe((val) => {
         this.getNewClips();
-    });
+      });
   }
 
   open(content) {
@@ -57,16 +57,17 @@ export class LiveComponent implements OnInit {
   }
   searchForChannel(): void {
     this.channelService.getChannels(this.channelSearchInput)
-      .subscribe(response => {
-        let channels = [];
-
-        response.data.forEach(channel => {
-          channel.displayed = true;
-          channels = channels.concat(channel as Channel);
+      .subscribe(
+        (response: Array<Channel>) => {
+          this.channelSearchResults = [];
+          console.log("Recieved channels: ", response)
+          response.forEach(item => {
+            this.channelSearchResults = this.channelSearchResults.concat(item)
+          });
+        },
+        (error: any) => {
+          console.log("searchForChannel Error: ", error);
         });
-
-        this.channelSearchResults = channels;
-      });
   }
 
   getClips(): void {
@@ -79,18 +80,18 @@ export class LiveComponent implements OnInit {
         searchParams.start_date = new Date();
         searchParams.start_date.setHours(searchParams.start_date.getHours() - 1);
 
-        this.clipService.getClips(channel, searchParams).subscribe(response => response.data.forEach(clip => {
+        this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
           newClipDisplays = newClipDisplays.concat(
             new ClipDisplay(clip, channel.name)
           );
         }),
-        error => console.log('Error: ', error),
-        () => {
+          error => console.log('Error: ', error),
+          () => {
 
-          this.clipDisplays = newClipDisplays.sort((a, b) =>
-            a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
+            this.clipDisplays = newClipDisplays.sort((a, b) =>
+              a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
             );
-        });
+          });
       }
     });
   }
@@ -105,27 +106,27 @@ export class LiveComponent implements OnInit {
         searchParams.start_date = new Date();
         searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 1);
 
-        this.clipService.getClips(channel, searchParams).subscribe(response => response.data.forEach(clip => {
+        this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
           newClipDisplays = newClipDisplays.concat(
             new ClipDisplay(clip, channel.name)
           );
         }),
-        error => console.log('Error: ', error),
-        () => {
+          error => console.log('Error: ', error),
+          () => {
 
-          // this.clipDisplays = newClipDisplays.sort((a, b) =>
-          //   a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
-          //   );
-          newClipDisplays = newClipDisplays.filter(newClipDisplay =>
-            this.clipDisplays.filter(oldClipDiplay => newClipDisplay.clip.id === oldClipDiplay.clip.id).length === 0
-          );
-          newClipDisplays = newClipDisplays.concat(this.clipDisplays)
-          .sort((a, b) =>
-             a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
-          );
+            // this.clipDisplays = newClipDisplays.sort((a, b) =>
+            //   a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
+            //   );
+            newClipDisplays = newClipDisplays.filter(newClipDisplay =>
+              this.clipDisplays.filter(oldClipDiplay => newClipDisplay.clip.id === oldClipDiplay.clip.id).length === 0
+            );
+            newClipDisplays = newClipDisplays.concat(this.clipDisplays)
+              .sort((a, b) =>
+                a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
+              );
 
-          this.clipDisplays = newClipDisplays;
-        });
+            this.clipDisplays = newClipDisplays;
+          });
       }
     });
   }
@@ -157,7 +158,7 @@ export class LiveComponent implements OnInit {
   }
 
   shouldDisplayClip(clipDisplay: ClipDisplay): boolean {
-    const channel = this.findChannelFromId(clipDisplay.clip.channel_id);
+    let channel = this.findChannelFromId(clipDisplay.clip.channel.id);
     if (channel !== undefined && channel !== null) {
       return channel.displayed;
     }
