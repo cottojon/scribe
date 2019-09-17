@@ -77,7 +77,7 @@ export class LiveComponent implements OnInit {
   }
 
   getMaximumChannelWidth(): number {
-    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1))) - (this.channelMargin * 2);
+    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1))) - (this.channelMargin + 15);
   }
 
   setActiveChannelById(channelId: number): void {

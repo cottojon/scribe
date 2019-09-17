@@ -12,8 +12,8 @@
         </button>
       </div>
     </div>
-    <div class="row" style="overflow-x: hidden; white-space: nowrap;">
-      <div class="col-12" style="height: calc(100vh - 185px); overflow-x: hidden; overflow-y: hidden; margin-left: 5px;">
+    <div class="row" style="overflow-x: hidden; white-space: nowrap; margin-right: 10px;">
+      <div class="col-12" style="height: calc(100vh - 185px); overflow-x: hidden; overflow-y: hidden; margin-left: 5px; margin-right: 10px;">
 
         <div *ngFor="let channel of activeChannels" class="channel-container center-block" [style.width.px]="getMaximumChannelWidth()">
           <div class="card bg-light mb-3" style="height: 100%">
@@ -27,7 +27,7 @@
                         src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
                     </div>
                     <div class="col-11">
-                      {{clipDisplay.clip.text}}
+                      &nbsp;&nbsp;{{clipDisplay.clip.text}}
                     </div>
                   </div>
                 </div>
