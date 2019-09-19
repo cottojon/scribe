@@ -1,5 +1,5 @@
 import { SearchParams } from './../../classes/search-params';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Clip } from 'src/app/classes/clip';
 import { ClipDisplay } from 'src/app/classes/clip-display';
 import { Channel } from 'src/app/classes/channel';
@@ -73,11 +73,11 @@ export class LiveComponent implements OnInit {
   }
 
   getMaximumDisplayedChannels(): number {
-    return Math.floor(window.innerWidth/(this.minimumChannelWidth + this.channelMargin * 2));
+    return Math.floor(window.innerWidth/(this.minimumChannelWidth));
   }
 
   getMaximumChannelWidth(): number {
-    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1))) - (this.channelMargin + 15);
+    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1)));
   }
 
   setActiveChannelById(channelId: number): void {
@@ -226,5 +226,10 @@ export class LiveComponent implements OnInit {
     audio.src = ('../../../assets/clips/' + clipDisplay.clip.path_to_file.toString());
     audio.load();
     audio.play();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.setActiveChannelByIdx(this.lastActiveIdx);
   }
 }

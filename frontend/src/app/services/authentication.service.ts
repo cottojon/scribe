@@ -32,4 +32,8 @@ export class AuthenticationService {
 
     return observable;
   }
+
+  checkToken(): boolean {
+    return this.token === "";
+  }
 }

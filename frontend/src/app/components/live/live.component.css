@@ -1,22 +1,30 @@
 .channel-button{
     width: 140px; 
     font-size:30px;
-    margin-left: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .add-channel-button{
     width: 60px; 
     font-size:30px;
-    margin-left: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .channel-header{
     font-size:22px;
 }
 
+.channels-container{
+    height: calc(100vh - 140px);
+    overflow: hidden;
+}
+
 .channel-container{
     display: inline-block; 
     height: 100%;
-    margin-left: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     float: none;
 }
