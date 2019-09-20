@@ -34,6 +34,11 @@ export class AuthenticationService {
     return observable;
   }
 
+  logoutAndRedirect(): void {
+    this.token = "";
+    this.router.navigate(['']);
+  }
+
   checkToken(): boolean {
     return this.token !== "";
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-main-view',
@@ -9,7 +10,7 @@ export class MainViewComponent implements OnInit {
   @Input()
   navToggle: boolean;
 
-  constructor() { }
+  constructor(private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.navToggle = false;
