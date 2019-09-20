@@ -9,14 +9,10 @@ import { Router } from '@angular/router';
 })
 export class TrainingComponent implements OnInit {
 
-  constructor(
-    private authService: AuthenticationService,
-    private router: Router) { }
+  constructor(private authService: AuthenticationService) { }
 
   ngOnInit() {
-    if (!this.authService.checkToken()){
-      this.router.navigate(['']);
-    }
+    this.authService.checkAndNavigateToLogin();
   }
 
 }

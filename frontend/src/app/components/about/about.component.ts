@@ -14,9 +14,7 @@ export class AboutComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    if (!this.authService.checkToken()){
-      this.router.navigate(['']);
-    }
+    this.authService.checkAndNavigateToLogin();
   }
 
 }

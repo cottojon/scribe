@@ -15,15 +15,15 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router
-  ) { }
+    private router: Router) { }
 
   ngOnInit() {
+    this.authService.checkAndNavigateToLogin();
   }
 
   login() {
     this.authService.signin(this.usernameInput, this.passwordInput).subscribe(
-      x => { this.router.navigate(['/live'])},
+      x => { setTimeout(x => this.router.navigate(['/live']), 500) },
       error => { console.log("Login Error: " + error)});
   }
 

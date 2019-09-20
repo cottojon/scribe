@@ -33,9 +33,7 @@ export class ArchiveComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (!this.authService.checkToken()){
-      this.router.navigate(['']);
-    }
+    this.authService.checkAndNavigateToLogin();
 
     this.clipDisplays = [];
   }

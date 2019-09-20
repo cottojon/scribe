@@ -9,6 +9,8 @@ import { ClipService } from 'src/app/services/clip.service';
 import { Observable, Subscription, interval } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { LikesService } from 'src/app/services/likes.service';
+import { LikedClip } from 'src/app/classes/liked-clip';
 
 @Component({
   selector: 'app-live',
@@ -25,6 +27,7 @@ export class LiveComponent implements OnInit {
   clipDisplays: ClipDisplay[];
   showNotification = false;
   sub: Subscription;
+  likedClips: LikedClip[];
   
   private minimumChannelWidth = 600;
   private channelMargin = 5;
@@ -34,24 +37,22 @@ export class LiveComponent implements OnInit {
     private clipService: ClipService,
     private modalService: NgbModal,
     private authService: AuthenticationService,
-    private router: Router
+    private likesService: LikesService
   ) { }
 
   ngOnInit() {
+    if (this.authService.checkAndNavigateToLogin()){
+      this.activeChannels = [];
+      this.addedChannels = [];
+      this.clipDisplays = [];
+      this.likedClips = [];
+      this.lastActiveIdx = 0;
 
-    if (!this.authService.checkToken()){
-      this.router.navigate(['']);
-    }
-
-    this.activeChannels = [];
-    this.addedChannels = [];
-    this.clipDisplays = [];
-    this.lastActiveIdx = 0;
-
-    this.sub = interval(2000)
+      this.sub = interval(2000)
       .subscribe((val) => {
         this.getNewClips();
       });
+    }
   }
 
   open(content) {
@@ -118,7 +119,6 @@ export class LiveComponent implements OnInit {
       .subscribe(
         (response: Array<Channel>) => {
           this.channelSearchResults = [];
-          console.log("Recieved channels: ", response)
           response.forEach(item => {
             this.channelSearchResults = this.channelSearchResults.concat(item)
           });
@@ -129,6 +129,8 @@ export class LiveComponent implements OnInit {
   }
 
   getClips(): void {
+    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
+    
     let newClipDisplays: ClipDisplay[] = [];
 
     this.activeChannels.forEach(channel => {
@@ -155,6 +157,8 @@ export class LiveComponent implements OnInit {
   }
 
   getNewClips(): void {
+    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
+
     let newClipDisplays: ClipDisplay[] = [];
 
     this.activeChannels.forEach(channel => {
@@ -187,6 +191,10 @@ export class LiveComponent implements OnInit {
           });
       }
     });
+  }
+
+  checkIfClipIsLiked(clipId: number): boolean {
+    return this.likedClips.some(x => x.clipId === clipId);
   }
 
   getCurrentClipsForChannel(channelId: number): ClipDisplay[]
