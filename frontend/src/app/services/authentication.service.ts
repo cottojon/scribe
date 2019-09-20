@@ -34,6 +34,6 @@ export class AuthenticationService {
   }
 
   checkToken(): boolean {
-    return this.token === "";
+    return this.token !== "";
   }
 }

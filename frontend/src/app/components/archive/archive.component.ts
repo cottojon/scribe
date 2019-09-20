@@ -7,6 +7,8 @@ import { ChannelService } from 'src/app/services/channel.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ClipService } from 'src/app/services/clip.service';
 import { Observable, Subscription, interval } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-archive',
@@ -25,10 +27,16 @@ export class ArchiveComponent implements OnInit {
   constructor(
     private channelService: ChannelService,
     private clipService: ClipService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private authService: AuthenticationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    if (!this.authService.checkToken()){
+      this.router.navigate(['']);
+    }
+
     this.clipDisplays = [];
   }
 
