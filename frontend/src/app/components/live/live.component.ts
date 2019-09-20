@@ -1,5 +1,5 @@
 import { SearchParams } from './../../classes/search-params';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Clip } from 'src/app/classes/clip';
 import { ClipDisplay } from 'src/app/classes/clip-display';
 import { Channel } from 'src/app/classes/channel';
@@ -7,6 +7,10 @@ import { ChannelService } from 'src/app/services/channel.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ClipService } from 'src/app/services/clip.service';
 import { Observable, Subscription, interval } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Router } from '@angular/router';
+import { LikesService } from 'src/app/services/likes.service';
+import { LikedClip } from 'src/app/classes/liked-clip';
 
 @Component({
   selector: 'app-live',
@@ -23,6 +27,7 @@ export class LiveComponent implements OnInit {
   clipDisplays: ClipDisplay[];
   showNotification = false;
   sub: Subscription;
+  likedClips: LikedClip[];
   
   private minimumChannelWidth = 600;
   private channelMargin = 5;
@@ -30,19 +35,24 @@ export class LiveComponent implements OnInit {
   constructor(
     private channelService: ChannelService,
     private clipService: ClipService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private authService: AuthenticationService,
+    private likesService: LikesService
   ) { }
 
   ngOnInit() {
-    this.activeChannels = [];
-    this.addedChannels = [];
-    this.clipDisplays = [];
-    this.lastActiveIdx = 0;
+    if (this.authService.checkAndNavigateToLogin()){
+      this.activeChannels = [];
+      this.addedChannels = [];
+      this.clipDisplays = [];
+      this.likedClips = [];
+      this.lastActiveIdx = 0;
 
-    this.sub = interval(2000)
+      this.sub = interval(2000)
       .subscribe((val) => {
         this.getNewClips();
       });
+    }
   }
 
   open(content) {
@@ -109,7 +119,6 @@ export class LiveComponent implements OnInit {
       .subscribe(
         (response: Array<Channel>) => {
           this.channelSearchResults = [];
-          console.log("Recieved channels: ", response)
           response.forEach(item => {
             this.channelSearchResults = this.channelSearchResults.concat(item)
           });
@@ -120,6 +129,8 @@ export class LiveComponent implements OnInit {
   }
 
   getClips(): void {
+    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
+    
     let newClipDisplays: ClipDisplay[] = [];
 
     this.activeChannels.forEach(channel => {
@@ -146,6 +157,8 @@ export class LiveComponent implements OnInit {
   }
 
   getNewClips(): void {
+    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
+
     let newClipDisplays: ClipDisplay[] = [];
 
     this.activeChannels.forEach(channel => {
@@ -178,6 +191,10 @@ export class LiveComponent implements OnInit {
           });
       }
     });
+  }
+
+  checkIfClipIsLiked(clipId: number): boolean {
+    return this.likedClips.some(x => x.clipId === clipId);
   }
 
   getCurrentClipsForChannel(channelId: number): ClipDisplay[]
@@ -226,5 +243,10 @@ export class LiveComponent implements OnInit {
     audio.src = ('../../../assets/clips/' + clipDisplay.clip.path_to_file.toString());
     audio.load();
     audio.play();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.setActiveChannelByIdx(this.lastActiveIdx);
   }
 }

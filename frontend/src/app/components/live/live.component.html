@@ -1,21 +1,19 @@
 <div class="row">
   <div class="col-12">
-    <div class="row" style="padding-bottom:10px; padding-top: -10px;">
-      <div class="col-12">
+    <div class="row">
+      <div class="col-12" style="margin-left: 3px; margin-bottom: 5px; margin-top: -18px;">
         <button *ngFor="let channel of addedChannels" class="channel-button btn text-center"
           [ngClass]="getColor(channel.id)" (click)="setActiveChannelById(channel.id)">
           {{channel.name}}
         </button>
-
         <button class="add-channel-button btn btn-primary text-center" (click)="open(addChannelModal)">
           <span class="fa fa-plus"></span>
         </button>
       </div>
     </div>
     <div class="row" style="overflow-x: hidden; white-space: nowrap;">
-      <div class="col-12" style="height: calc(100vh - 185px); overflow-x: hidden; overflow-y: hidden; margin-left: 5px;">
-
-        <div *ngFor="let channel of activeChannels" class="channel-container center-block" [style.width.px]="getMaximumChannelWidth()">
+      <div class="col-12 channels-container">
+        <div *ngFor="let channel of activeChannels" class="channel-container" [style.width.px]="getMaximumChannelWidth()">
           <div class="card bg-light mb-3" style="height: 100%">
             <div class="card-header channel-header" [ngClass]="getColor(channel.id)">{{channel.name}}</div>
             <div class="card-body bg-light" style="overflow-y: auto;">
@@ -27,7 +25,7 @@
                         src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
                     </div>
                     <div class="col-11">
-                      {{clipDisplay.clip.text}}
+                      &nbsp;&nbsp;{{clipDisplay.clip.text}}
                     </div>
                   </div>
                 </div>
@@ -36,14 +34,21 @@
                   <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}&nbsp;
                   <div class="pull-right">
 
-                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary">
+                    <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-primary clip-btn" (click)="this.likesService.likeClip(clipDisplay.clip.id); this.getNewClips();">
+                      <span class="fa fa-thumbs-up"></span>
+                    </button>
+                    <button *ngIf="checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-success clip-btn" (click)="this.likesService.unlikeClip(clipDisplay.clip.id); this.getNewClips();">
+                      <span class="fa fa-thumbs-up"></span>
+                    </button>
+
+                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary clip-btn">
                       <span class="fa fa-edit"></span>
                     </button>
-                    <button *ngIf="clipDisplay.editing" class="btn btn-success">
+                    <button *ngIf="clipDisplay.editing" class="btn btn-success clip-btn">
                       <span class="fa fa-edit"></span>
                     </button>
 
-                    <button class="btn btn-primary" style="margin-left:5px">
+                    <button class="btn btn-primary clip-btn">
                       <span class="fa fa-play"></span>
                     </button>
                   </div>
