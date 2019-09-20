@@ -18,6 +18,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
 import { LoginComponent } from './components/login/login.component';
 import { MainViewComponent } from './views/main-view/main-view.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { MainViewComponent } from './views/main-view/main-view.component';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    CommonModule
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.

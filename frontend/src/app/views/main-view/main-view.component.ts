@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-main-view',
@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main-view.component.css']
 })
 export class MainViewComponent implements OnInit {
+  @Input()
+  navToggle: boolean;
 
   constructor() { }
 
   ngOnInit() {
+    this.navToggle = false;
   }
-
 }

@@ -7,6 +7,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ArchiveComponent } from './components/archive/archive.component';
 import { TrainingComponent } from './components/training/training.component';
 import { MainViewComponent } from './views/main-view/main-view.component';
+import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
   { path: '', component: LoginComponent},
@@ -25,7 +26,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
+  imports: [ RouterModule.forRoot(routes)],
   exports: [ RouterModule ]
 })
 export class AppRoutingModule { }
