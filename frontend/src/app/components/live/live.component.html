@@ -34,10 +34,10 @@
                   <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}&nbsp;
                   <div class="pull-right">
 
-                    <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-primary clip-btn" (click)="this.likesService.likeClip(clipDisplay.clip.id); this.getNewClips();">
+                    <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-primary clip-btn" (click)="this.likeClip(clipDisplay)">
                       <span class="fa fa-thumbs-up"></span>
                     </button>
-                    <button *ngIf="checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-success clip-btn" (click)="this.likesService.unlikeClip(clipDisplay.clip.id); this.getNewClips();">
+                    <button *ngIf="checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-success clip-btn" (click)="this.unlikeClip(clipDisplay)">
                       <span class="fa fa-thumbs-up"></span>
                     </button>
 

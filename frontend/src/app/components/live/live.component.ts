@@ -47,7 +47,6 @@ export class LiveComponent implements OnInit {
       this.clipDisplays = [];
       this.likedClips = [];
       this.lastActiveIdx = 0;
-
       this.sub = interval(2000)
       .subscribe((val) => {
         this.getNewClips();
@@ -129,7 +128,7 @@ export class LiveComponent implements OnInit {
   }
 
   getClips(): void {
-    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
+    this.updateLikedClips();
     
     let newClipDisplays: ClipDisplay[] = [];
 
@@ -157,7 +156,7 @@ export class LiveComponent implements OnInit {
   }
 
   getNewClips(): void {
-    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
+    this.updateLikedClips();
 
     let newClipDisplays: ClipDisplay[] = [];
 
@@ -243,6 +242,18 @@ export class LiveComponent implements OnInit {
     audio.src = ('../../../assets/clips/' + clipDisplay.clip.path_to_file.toString());
     audio.load();
     audio.play();
+  }
+
+  likeClip(clipDisplay: ClipDisplay) {
+    this.likesService.likeClip(clipDisplay.clip.id).subscribe(x => this.updateLikedClips());
+  }
+
+  unlikeClip(clipDisplay: ClipDisplay) {
+    this.likesService.unlikeClip(clipDisplay.clip.id).subscribe(x => this.updateLikedClips());
+  }
+
+  updateLikedClips(): void {
+    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
   }
 
   @HostListener('window:resize', ['$event'])
