@@ -1,27 +1,38 @@
 <nav class="navbar navbar-expand-md bg-secondary navbar-dark">
-  <div class="container no-margin">
-    <a class="navbar-brand" routerLink="/">
-      <span class="fa fa-space-shuttle"></span>&nbsp;Scribe</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="navToggle = !navToggle;">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" [class.show]="navToggle" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/live">Live</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/archive">Archive</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/training">Training</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/about">About</a>
-        </li>
-      </ul>
-    </div>
+  <a class="navbar-brand" routerLink="/">
+    <span class="fa fa-space-shuttle"></span>&nbsp;Scribe</a>
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" (click)="navToggle = !navToggle;">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" [class.show]="navToggle" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/live">Live</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/archive">Archive</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/training">Training</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/about">About</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="fa fa-user"></i> Profile
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-info" role="menu">
+          <a class="dropdown-item" routerLink="/profile">My account</a>
+          <a class="dropdown-item" type="button" (click)="this.authService.logoutAndRedirect()">Log out</a>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>
-<br/>
+<br />
 <router-outlet></router-outlet>
