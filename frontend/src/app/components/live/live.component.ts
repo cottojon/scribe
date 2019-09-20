@@ -1,5 +1,5 @@
 import { SearchParams } from './../../classes/search-params';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { Clip } from 'src/app/classes/clip';
 import { ClipDisplay } from 'src/app/classes/clip-display';
 import { Channel } from 'src/app/classes/channel';
@@ -47,9 +47,16 @@ export class LiveComponent implements OnInit {
       this.clipDisplays = [];
       this.likedClips = [];
       this.lastActiveIdx = 0;
+
       this.sub = interval(2000)
       .subscribe((val) => {
         this.getNewClips();
+      });
+
+      this.channelService.getSubscribedChannels().subscribe(channels => { 
+        channels.forEach(subbedChannel => {
+          this.addChannel(subbedChannel.channel);
+        });
       });
     }
   }
@@ -67,6 +74,7 @@ export class LiveComponent implements OnInit {
 
   addChannel(channel: Channel): void {
     if (!this.addedChannels.some(x => x.id === channel.id)) {
+      this.channelService.subscribeToChannel(channel.id).subscribe();
       this.addedChannels.push(channel);
       this.getClips();
 
@@ -77,6 +85,10 @@ export class LiveComponent implements OnInit {
   }
 
   removeChannel(channel: Channel): void{
+    if (this.addedChannels.some(x => x.id == channel.id)) {
+      this.channelService.unsubscribeFromChannel(channel.id).subscribe();
+    }
+    
     this.addedChannels = this.addedChannels.filter(x => x.id != channel.id);
     this.setActiveChannelByIdx(this.lastActiveIdx);
   }
@@ -86,7 +98,7 @@ export class LiveComponent implements OnInit {
   }
 
   getMaximumChannelWidth(): number {
-    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1))) - (this.channelMargin * 2);
+    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1)));
   }
 
   setActiveChannelById(channelId: number): void {
