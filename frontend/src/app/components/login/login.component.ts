@@ -18,7 +18,9 @@ export class LoginComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.authService.checkAndNavigateToLogin();
+    if (this.authService.checkToken()){
+      this.router.navigate(['/live']);
+    }
   }
 
   login() {
