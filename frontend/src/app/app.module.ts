@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LiveComponent } from './components/live/live.component';
 import { ArchiveComponent } from './components/archive/archive.component';
-import { AboutComponent } from './components/about/about.component';
+import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
 import { TrainingComponent } from './components/training/training.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
     AppComponent,
     LiveComponent,
     ArchiveComponent,
-    AboutComponent,
+    HelpComponent,
     HomeComponent,
     TrainingComponent,
     LoginComponent,

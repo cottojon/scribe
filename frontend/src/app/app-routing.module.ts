@@ -3,9 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { LiveComponent } from './components/live/live.component';
-import { AboutComponent } from './components/about/about.component';
 import { ArchiveComponent } from './components/archive/archive.component';
 import { TrainingComponent } from './components/training/training.component';
+import { HelpComponent } from './components/help/help.component'
+
 import { MainViewComponent } from './views/main-view/main-view.component';
 import { CommonModule } from '@angular/common';
 
@@ -21,7 +22,7 @@ const routes: Routes = [
     { path: 'training', component: TrainingComponent }
   ]},
   { path: '', component: MainViewComponent, children: [
-    { path: 'about', component: AboutComponent }
+    { path: 'help', component: HelpComponent }
   ]}
 ];
 

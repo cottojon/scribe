@@ -3,11 +3,11 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
+  selector: 'app-help',
+  templateUrl: './help.component.html',
+  styleUrls: ['./help.component.css']
 })
-export class AboutComponent implements OnInit {
+export class HelpComponent implements OnInit {
 
   constructor(
     private authService: AuthenticationService,
