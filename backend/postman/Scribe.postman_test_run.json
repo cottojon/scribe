@@ -1,0 +1,664 @@
+{
+	"id": "a344dbb4-6ad7-4533-aecf-dcc56641c3eb",
+	"name": "Scribe",
+	"allTests": [],
+	"timestamp": "2019-08-26T13:22:21.703Z",
+	"collection_id": "501674cd-6570-40e0-b555-225bbaa0cef3",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "0",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "501674cd-6570-40e0-b555-225bbaa0cef3",
+		"name": "Scribe",
+		"description": null,
+		"auth": null,
+		"events": null,
+		"variables": null,
+		"order": [
+			"f8d32ff5-2d4e-410e-84e9-92bea1f995ae",
+			"31c0a093-8263-452c-b67c-5332bbd82c95",
+			"edddbb1b-48c4-4512-9aba-6b8c7a3c3459",
+			"3f8c91fb-7ccb-4e78-981c-9bc5826793f5",
+			"fdad2fe0-0a91-4fd2-b7a6-18c7ee0739b2",
+			"87b0d193-8866-4173-a88d-3255a9eb22f3",
+			"3541d77e-a954-4d16-8f9b-2af405fa615c",
+			"8bfe9448-6ac2-42b9-ae32-0dda93cdee34",
+			"e44f5f5c-f21e-4258-b361-49f286d12e21",
+			"bfdee633-a672-4311-9ab6-b77a331319df",
+			"52fbe067-4839-41a7-88ea-bb14fa29022f",
+			"ebfa0f7c-aece-4943-a435-2f8be60ab917",
+			"08ad66b3-6e20-40c5-9c7d-094426448ac6",
+			"fb39f1bb-8a96-4872-99d7-7cee9512cbe8",
+			"63381377-3b5e-47da-9252-9b5f8f20f68d"
+		],
+		"folders_order": [],
+		"owner": "0",
+		"favorite": false
+	},
+	"folder": null,
+	"environment": null,
+	"globals": [
+		{
+			"key": "accessToken_user1",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuQ290dG8iLCJpYXQiOjE1NjYzMTU0OTMsImV4cCI6MTU2NjMxOTA5M30.iUmrRvTR4Vk0YPcYxLags69UXWgFRDNLY67meCXHUNY",
+			"enabled": true
+		},
+		{
+			"key": "accessToken_user2",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvbmF0aGFuQ290dG8yIiwiaWF0IjoxNTY2MzE1NTM1LCJleHAiOjE1NjYzMTkxMzV9.Z3API9FiwqF7Lp-Z8b0hs5pEiWIx8UQgw2MthapJfj0",
+			"enabled": true
+		}
+	],
+	"results": [
+		{
+			"name": "createChannel()",
+			"id": "f8d32ff5-2d4e-410e-84e9-92bea1f995ae",
+			"url": "http://localhost:3000/channels",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"146"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "146",
+			"totalRequestTime": "146",
+			"iterationResults": {}
+		},
+		{
+			"name": "getAllChannels()",
+			"id": "31c0a093-8263-452c-b67c-5332bbd82c95",
+			"url": "http://localhost:3000/channels",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"8"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "8",
+			"totalRequestTime": "8",
+			"iterationResults": {}
+		},
+		{
+			"name": "createClip()",
+			"id": "edddbb1b-48c4-4512-9aba-6b8c7a3c3459",
+			"url": "http://localhost:3000/clips",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"11"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "11",
+			"totalRequestTime": "11",
+			"iterationResults": {}
+		},
+		{
+			"name": "getClipById()",
+			"id": "3f8c91fb-7ccb-4e78-981c-9bc5826793f5",
+			"url": "http://localhost:3000/clips/3",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"13"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "13",
+			"totalRequestTime": "13",
+			"iterationResults": {}
+		},
+		{
+			"name": "getClipsFilterQuery()",
+			"id": "fdad2fe0-0a91-4fd2-b7a6-18c7ee0739b2",
+			"url": "http://localhost:3000/clips",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"10"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "10",
+			"totalRequestTime": "10",
+			"iterationResults": {}
+		},
+		{
+			"name": "updateClipText()",
+			"id": "87b0d193-8866-4173-a88d-3255a9eb22f3",
+			"url": "http://localhost:3000/clips/5/revised_text",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"21"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "21",
+			"totalRequestTime": "21",
+			"iterationResults": {}
+		},
+		{
+			"name": "deleteClipById()",
+			"id": "3541d77e-a954-4d16-8f9b-2af405fa615c",
+			"url": "http://localhost:3000/clips/3",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 500,
+				"name": "Internal Server Error",
+				"detail": {
+					"name": "Internal Server Error",
+					"detail": "A generic error message, given when no more specific message is suitable."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"7"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "7",
+			"totalRequestTime": "7",
+			"iterationResults": {}
+		},
+		{
+			"name": "subscribeUserToChannel()",
+			"id": "8bfe9448-6ac2-42b9-ae32-0dda93cdee34",
+			"url": "http://localhost:3000/subscribe/2",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"81"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "81",
+			"totalRequestTime": "81",
+			"iterationResults": {}
+		},
+		{
+			"name": "signup()",
+			"id": "e44f5f5c-f21e-4258-b361-49f286d12e21",
+			"url": "http://localhost:3000/auth/signup",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict",
+				"detail": {
+					"name": "Conflict",
+					"detail": "Indicates that the request could not be processed because of conflict in the request, such as an edit conflict."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"86"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "86",
+			"totalRequestTime": "86",
+			"iterationResults": {}
+		},
+		{
+			"name": "signin()",
+			"id": "bfdee633-a672-4311-9ab6-b77a331319df",
+			"url": "http://localhost:3000/auth/signin",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"80"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "80",
+			"totalRequestTime": "80",
+			"iterationResults": {}
+		},
+		{
+			"name": "getUserSubscribedChannels()",
+			"id": "52fbe067-4839-41a7-88ea-bb14fa29022f",
+			"url": "http://localhost:3000/subscribe",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"9"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "9",
+			"totalRequestTime": "9",
+			"iterationResults": {}
+		},
+		{
+			"name": "unsubscribeUserFromChannel()",
+			"id": "ebfa0f7c-aece-4943-a435-2f8be60ab917",
+			"url": "http://localhost:3000/subscribe/2",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"6"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "6",
+			"totalRequestTime": "6",
+			"iterationResults": {}
+		},
+		{
+			"name": "getUserLikeClips()",
+			"id": "08ad66b3-6e20-40c5-9c7d-094426448ac6",
+			"url": "http://localhost:3000/likes",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"9"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "9",
+			"totalRequestTime": "9",
+			"iterationResults": {}
+		},
+		{
+			"name": "userLikesClip()",
+			"id": "fb39f1bb-8a96-4872-99d7-7cee9512cbe8",
+			"url": "http://localhost:3000/likes/9",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"11"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "11",
+			"totalRequestTime": "11",
+			"iterationResults": {}
+		},
+		{
+			"name": "userUnlikesClip()",
+			"id": "63381377-3b5e-47da-9252-9b5f8f20f68d",
+			"url": "http://localhost:3000/likes/9",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"5"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "5",
+			"totalRequestTime": "5",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 0,
+	"totalFail": 0,
+	"totalTime": 503,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "createChannel()",
+			"id": "f8d32ff5-2d4e-410e-84e9-92bea1f995ae",
+			"url": "http://localhost:3000/channels",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "getAllChannels()",
+			"id": "31c0a093-8263-452c-b67c-5332bbd82c95",
+			"url": "http://localhost:3000/channels",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "createClip()",
+			"id": "edddbb1b-48c4-4512-9aba-6b8c7a3c3459",
+			"url": "http://localhost:3000/clips",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "getClipById()",
+			"id": "3f8c91fb-7ccb-4e78-981c-9bc5826793f5",
+			"url": "http://localhost:3000/clips/3",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "getClipsFilterQuery()",
+			"id": "fdad2fe0-0a91-4fd2-b7a6-18c7ee0739b2",
+			"url": "http://localhost:3000/clips",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "updateClipText()",
+			"id": "87b0d193-8866-4173-a88d-3255a9eb22f3",
+			"url": "http://localhost:3000/clips/5/revised_text",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "deleteClipById()",
+			"id": "3541d77e-a954-4d16-8f9b-2af405fa615c",
+			"url": "http://localhost:3000/clips/3",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 500,
+				"name": "Internal Server Error",
+				"detail": {
+					"name": "Internal Server Error",
+					"detail": "A generic error message, given when no more specific message is suitable."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "subscribeUserToChannel()",
+			"id": "8bfe9448-6ac2-42b9-ae32-0dda93cdee34",
+			"url": "http://localhost:3000/subscribe/2",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "signup()",
+			"id": "e44f5f5c-f21e-4258-b361-49f286d12e21",
+			"url": "http://localhost:3000/auth/signup",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict",
+				"detail": {
+					"name": "Conflict",
+					"detail": "Indicates that the request could not be processed because of conflict in the request, such as an edit conflict."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "signin()",
+			"id": "bfdee633-a672-4311-9ab6-b77a331319df",
+			"url": "http://localhost:3000/auth/signin",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "getUserSubscribedChannels()",
+			"id": "52fbe067-4839-41a7-88ea-bb14fa29022f",
+			"url": "http://localhost:3000/subscribe",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "unsubscribeUserFromChannel()",
+			"id": "ebfa0f7c-aece-4943-a435-2f8be60ab917",
+			"url": "http://localhost:3000/subscribe/2",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "getUserLikeClips()",
+			"id": "08ad66b3-6e20-40c5-9c7d-094426448ac6",
+			"url": "http://localhost:3000/likes",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "userLikesClip()",
+			"id": "fb39f1bb-8a96-4872-99d7-7cee9512cbe8",
+			"url": "http://localhost:3000/likes/9",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "userUnlikesClip()",
+			"id": "63381377-3b5e-47da-9252-9b5f8f20f68d",
+			"url": "http://localhost:3000/likes/9",
+			"time": "2019-08-26T13:22:21.703Z",
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found",
+				"detail": {
+					"name": "Not Found",
+					"detail": "The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible."
+				}
+			},
+			"testPassFailCounts": {}
+		}
+	],
+	"synced": false
+}
