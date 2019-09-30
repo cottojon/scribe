@@ -55,8 +55,14 @@ export class UserRepository extends Repository<User>{
     }
 
 
+   
+
+
     // hashing password and salt using bcrypt
     private async hashPassword(password: string, salt: string): Promise<string>{
         return bcrypt.hash(password, salt);
     }
+
+
+
 }

@@ -6,6 +6,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from './user.entity';
 
+
+var fs = require('fs');  // file system
+
 @Controller('auth')
 export class AuthController {
 
@@ -35,26 +38,33 @@ export class AuthController {
 
     //upload user image
     @Post('/upload')
+    @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
     @UseInterceptors(FileInterceptor('file'))
     uploadFile(@UploadedFile() file, @GetUser() user) {
         console.log(file);
         console.log(user);
+        return this.authService.uploadImage(file, user);
     }
 
 
     //get user image
     @Get('/image')
-    getUserImage(@GetUser() user: User, @Res() res){
-       // res.sendFile(fileId, { root: 'avatars' });
+    @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
+    getUserImage(@GetUser() user: User, @Res() res) {
+        console.log(user);
+        res.contentType('image/jpeg');
+        res.send(user.image);
     }
 
 
 
     //get user info
     @Get('/user')
-    getUser(@GetUser() user: User){
+    @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
+    getUser(@GetUser() user: User) {
         delete user.salt;
         delete user.password;
+        delete user.image;
         console.log(user);
         return user;
     }

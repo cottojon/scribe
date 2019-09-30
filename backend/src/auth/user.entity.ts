@@ -22,6 +22,14 @@ export class User extends BaseEntity {
 
 
 
+
+    @Column({
+        type: 'bytea',
+        nullable: true,
+    })
+    image: Buffer;
+
+
     // custom mehtod to validate our password
     // receive in a password from the client and hash it with user salt
     // compare user password(hash) with generated hash

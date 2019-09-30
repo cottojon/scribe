@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
+import { User } from './user.entity';
 
 @Injectable()
 export class AuthService {
@@ -35,5 +36,19 @@ export class AuthService {
 
         // return object with the jwt accessToken
         return {accessToken};
+    }
+
+    async uploadImage(file, user: User): Promise<void>{
+
+        user.image = file.buffer;
+
+        user.save();
+
+        return;
+  }
+
+
+    async getImage(user: User){
+
     }
 }
