@@ -14,59 +14,57 @@ export class AuthController {
 
     constructor(private authService: AuthService) { }
 
-    //post request
+    // post request
     @Post('/signup') // validation pipe added for authCredentialsDto
     signUp(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<void> {
         return this.authService.signUp(authCredentialsDto);
     }
 
 
-    //post request
+    // post request
     @Post('/signin') // validation pipe added for authCredentialsDto
     signin(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
         return this.authService.signIn(authCredentialsDto);
     }
 
-
-    // to test our jwt strategy and getuser decorator
-    @Post('/test')
-    @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
-    test(@GetUser() user) {
-        console.log(user);
-    }
-
-
-    //upload user image
+    // upload user image
+    // user should only upload a jpeg image or png
     @Post('/upload')
     @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
     @UseInterceptors(FileInterceptor('file'))
     uploadFile(@UploadedFile() file, @GetUser() user) {
-        console.log(file);
-        console.log(user);
         return this.authService.uploadImage(file, user);
     }
 
 
-    //get user image
+    // get user image
+    // 
     @Get('/image')
     @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
     getUserImage(@GetUser() user: User, @Res() res) {
-        console.log(user);
-        res.contentType('image/jpeg');
+        res.contentType('image/jpeg'); // we only respond jpeg images
         res.send(user.image);
     }
 
 
 
-    //get user info
-    @Get('/user')
+    // get username from accessToken ..
+    @Get('/username')
     @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
     getUser(@GetUser() user: User) {
         delete user.salt;
         delete user.password;
         delete user.image;
-        console.log(user);
+        delete user.id;
         return user;
+    }
+
+
+    // reset the password
+    // currently only a new password needs t be provided
+    @Post('/password_reset')
+    changePassword(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<void>{
+        return this.authService.changePassword(authCredentialsDto);
     }
 
 }
