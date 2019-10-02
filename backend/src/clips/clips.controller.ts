@@ -1,9 +1,10 @@
-import { Controller, Post, Body, ValidationPipe, ParseIntPipe, Get, Param, Query, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, ParseIntPipe, Get, Param, Query, Patch, Delete, UseGuards } from '@nestjs/common';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ClipsService } from './clips.service';
 import { Clip } from './clip.entity';
 import { GetClipFilterDto } from './dto/get-clip-filter.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('clips')
 export class ClipsController {
@@ -20,6 +21,7 @@ export class ClipsController {
 
 
     @Get(':id')
+    @UseGuards(AuthGuard())
     getClipById(@Param('id', ParseIntPipe) id: number): Promise<Clip> {
         return this.clipService.getClipById(id);
     }
@@ -35,6 +37,7 @@ export class ClipsController {
     */
 
     @Get()
+    @UseGuards(AuthGuard())
     getAllClips(@Query(ValidationPipe) getClipFilterDto: GetClipFilterDto): Promise<Clip[]> {
         return this.clipService.getClips(getClipFilterDto);
     }
@@ -47,6 +50,7 @@ export class ClipsController {
     as a key-value pair
     */
     @Patch(':id/revised_text')
+    @UseGuards(AuthGuard())
     updateClipText(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) updateClipDto: UpdateClipDto): Promise<Clip> {
         return this.clipService.updateClipText(id, updateClipDto);
     }
@@ -57,6 +61,7 @@ export class ClipsController {
     The clip id will be in the url as a paramater
     */
     @Delete('/:id')
+    @UseGuards(AuthGuard())
     deleteClipById(@Param('id', ParseIntPipe) id: number): Promise<void> {
        return this.clipService.deleteClipById(id);
     }
