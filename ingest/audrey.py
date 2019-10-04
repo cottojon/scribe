@@ -44,28 +44,22 @@ def notify_db(filename, transcription):
 	# For now just print, we should notify postgres with like pg8000/sqlalch
 	print(str([filename, transcription]))
 
-def transcribe(audioFile):
-    model_load_start = timer()
-    ds = Model("models/output_graph.pbmm", N_FEATURES, N_CONTEXT, "models/alphabet.txt", BEAM_WIDTH)
-    ds.enableDecoderWithLM("models/alphabet.txt", "models/lm.binary", "models/trie", LM_ALPHA, LM_BETA)
-
+def transcribe(ds, audioFile):
     fin = wave.open(audioFile, 'rb')
     fs = fin.getframerate()
     if fs != 16000:
-        #print('Warning: original sample rate ({}) is different than 16kHz. Resampling might produce erratic speech recognition.'.format(fs), file=sys.stderr)
         fs, audio = convert_samplerate(audioFile)
     else:
         audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
-
     audio_length = fin.getnframes() * (1/16000)
     fin.close()
-
-    #if args.extended:
     notify_db(audioFile, metadata_to_string(ds.sttWithMetadata(audio, fs)))
-    #else:
-    #print(ds.stt(audio, fs))
 
 if __name__ == '__main__':
+    ds = Model("models/output_graph.pbmm", N_FEATURES, N_CONTEXT, "models/alphabet.txt", BEAM_WIDTH)
+    ds.enableDecoderWithLM("models/alphabet.txt", "models/lm.binary", "models/trie", LM_ALPHA, LM_BETA)
+
+
     consumer = KafkaConsumer(
      'audioStream',
      bootstrap_servers=['localhost:9092'],
@@ -77,5 +71,5 @@ if __name__ == '__main__':
 
     for message in consumer:
         message = message.value
-        transcribe(message)
+        transcribe(ds, message)
 
