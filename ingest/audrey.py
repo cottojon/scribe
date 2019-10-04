@@ -42,7 +42,7 @@ def metadata_to_string(metadata):
 
 def notify_db(filename, transcription):
 	# For now just print, we should notify postgres with like pg8000/sqlalch
-	print(string([filename, trascrption]))
+	print(str([filename, trascrption]))
 
 def transcribe(audioFile):
     model_load_start = timer()
