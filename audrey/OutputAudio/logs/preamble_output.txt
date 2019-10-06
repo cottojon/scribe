@@ -1,0 +1,46 @@
+ffmpeg version N-93544-g0a347ff422 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8.2.1 (GCC) 20190212
+  configuration: --enable-gpl --enable-version3 --enable-sdl2 --enable-fontconfig --enable-gnutls --enable-iconv --enable-libass --enable-libdav1d --enable-libbluray --enable-libfreetype --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libopus --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libtheora --enable-libtwolame --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libzimg --enable-lzma --enable-zlib --enable-gmp --enable-libvidstab --enable-libvorbis --enable-libvo-amrwbenc --enable-libmysofa --enable-libspeex --enable-libxvid --enable-libaom --enable-libmfx --enable-amf --enable-ffnvcodec --enable-cuvid --enable-d3d11va --enable-nvenc --enable-nvdec --enable-dxva2 --enable-avisynth --enable-libopenmpt
+  libavutil      56. 26.100 / 56. 26.100
+  libavcodec     58. 48.101 / 58. 48.101
+  libavformat    58. 27.100 / 58. 27.100
+  libavdevice    58.  7.100 / 58.  7.100
+  libavfilter     7. 48.100 /  7. 48.100
+  libswscale      5.  4.100 /  5.  4.100
+  libswresample   3.  4.100 /  3.  4.100
+  libpostproc    55.  4.100 / 55.  4.100
+Guessed Channel Layout for Input Stream #0.0 : mono
+Input #0, wav, from './InputAudio/preamble.wav':
+  Duration: 00:00:19.10, bitrate: 352 kb/s
+    Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 22050 Hz, mono, s16, 352 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16le (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    encoder         : Lavf58.27.100
+    Stream #0:0: Audio: pcm_s16le, 22050 Hz, mono, s16, 352 kb/s
+    Metadata:
+      encoder         : Lavc58.48.101 pcm_s16le
+[silencedetect @ 000001b8eab2c100] silence_start: 0
+[silencedetect @ 000001b8eab2c100] silence_end: 0.398231 | silence_duration: 0.398231
+[silencedetect @ 000001b8eab2c100] silence_start: 2.29846
+[silencedetect @ 000001b8eab2c100] silence_end: 2.54553 | silence_duration: 0.247075
+[silencedetect @ 000001b8eab2c100] silence_start: 4.22395
+[silencedetect @ 000001b8eab2c100] silence_end: 4.66009 | silence_duration: 0.436145
+[silencedetect @ 000001b8eab2c100] silence_start: 5.74345
+[silencedetect @ 000001b8eab2c100] silence_end: 6.0619 | silence_duration: 0.318458
+[silencedetect @ 000001b8eab2c100] silence_start: 7.50494
+[silencedetect @ 000001b8eab2c100] silence_end: 7.93977 | silence_duration: 0.43483
+[silencedetect @ 000001b8eab2c100] silence_start: 9.39188
+[silencedetect @ 000001b8eab2c100] silence_end: 9.70893 | silence_duration: 0.317052
+[silencedetect @ 000001b8eab2c100] silence_start: 10.8625
+[silencedetect @ 000001b8eab2c100] silence_end: 11.1093 | silence_duration: 0.246757
+[silencedetect @ 000001b8eab2c100] silence_start: 12.5673
+[silencedetect @ 000001b8eab2c100] silence_end: 12.7818 | silence_duration: 0.214467
+[silencedetect @ 000001b8eab2c100] silence_start: 14.2106
+[silencedetect @ 000001b8eab2c100] silence_end: 14.7254 | silence_duration: 0.514785
+[silencedetect @ 000001b8eab2c100] silence_start: 18.5529
+size=N/A time=00:00:19.09 bitrate=N/A speed=4.78e+03x    
+video:0kB audio:822kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+[silencedetect @ 000001b8eab2c100] silence_end: 19.098 | silence_duration: 0.545034
