@@ -11,10 +11,10 @@ COPY start.sh /app
 
 RUN curl http://mirror.metrocast.net/apache/kafka/2.3.0/kafka_2.12-2.3.0.tgz -o kafka.tgz
 RUN tar -xvf kafka.tgz kafka_2.12-2.3.0/
-RUN mv kafka_2.12-2.3.0/ kafka
-RUN mv start.sh kafka
-RUN chmod +x /app/kafka/start.sh
+RUN rm kafka.tgz
+RUN mv kafka_2.12-2.3.0/* .
+RUN chmod +x /app/start.sh
 
 EXPOSE 9092
 
-CMD ["sh","/app/kafka/start.sh"]
+CMD ["sh","/app/start.sh"]

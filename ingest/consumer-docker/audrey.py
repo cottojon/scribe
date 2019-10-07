@@ -6,12 +6,8 @@ from json import loads
 from kafka import KafkaConsumer 
 from timeit import default_timer as timer
 
-import argparse
+import argparse, shlex, os, subprocess, sys, wave
 import numpy as np
-import shlex
-import subprocess
-import sys
-import wave
 
 try:
     from shhlex import quote
@@ -62,7 +58,7 @@ if __name__ == '__main__':
 
     consumer = KafkaConsumer(
      'audioStream',
-     bootstrap_servers=['localhost:9092'],
+     bootstrap_servers=[os.getenv('KAFKA_HOST')+':9092'],
      auto_offset_reset='earliest',
      enable_auto_commit=True,
      auto_commit_interval_ms=500,

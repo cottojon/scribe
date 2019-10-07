@@ -4,11 +4,11 @@ from __future__ import absolute_import, division, print_function
 from json import dumps
 from kafka import KafkaProducer
 from kafka.errors import KafkaError
-import glob
+import glob, os
 
 
 def main():
-    producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
+    producer = KafkaProducer(bootstrap_servers=[os.getenv('KAFKA_HOST')+':9092'],
      value_serializer=lambda x: 
      dumps(x).encode('utf-8'))
     files = glob.glob("speech/*.wav")
