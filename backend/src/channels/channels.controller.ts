@@ -1,8 +1,9 @@
-import { Controller, Post, Body, ValidationPipe, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Get, Query, UseGuards } from '@nestjs/common';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { ChannelsService } from './channels.service';
 import { Channel } from './channel.entity';
 import { GetChannelFilterDto } from './dto/get-channel-filter.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('channels')
 export class ChannelsController {
@@ -34,6 +35,7 @@ export class ChannelsController {
     The body will just have a name
     */
     @Get()
+    @UseGuards(AuthGuard())
     getChannels(@Query(ValidationPipe) channelFilterDto: GetChannelFilterDto): Promise<Channel[]>{
         return this.channelsService.getChannels(channelFilterDto);
     }

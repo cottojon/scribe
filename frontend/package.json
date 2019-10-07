@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^2.2.2",
     "angular-in-memory-web-api": "^0.6.1",
     "bootstrap": "^4.1.3",
+    "popper.js": "^1.14.7",
     "core-js": "^2.5.4",
     "express": "^4.16.4",
     "font-awesome": "^4.7.0",
