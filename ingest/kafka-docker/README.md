@@ -2,4 +2,4 @@
 ```docker build . -t "kafka"```
 
 # Creating
-```docker create --net=host kafka```
+```docker create -e KAFKA_HOST=changeme --net=host kafka```
