@@ -1,10 +1,7 @@
-# Dockerfile
-FROM openjdk:12-alpine
+FROM clearlinux
 
-RUN apk --update --no-cache add bash \
-    curl \
-    tar \
-    screen
+RUN swupd update
+RUN swupd bundle-add java-runtime curl
 
 WORKDIR /app
 COPY start.sh /app
@@ -14,7 +11,7 @@ RUN tar -xvf kafka.tgz kafka_2.12-2.3.0/
 RUN rm kafka.tgz
 RUN mv kafka_2.12-2.3.0/* .
 RUN chmod +x /app/start.sh
+RUN swupd bundle-remove curl
 
 EXPOSE 9092
-
 CMD ["sh","/app/start.sh"]

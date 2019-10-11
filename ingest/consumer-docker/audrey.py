@@ -67,5 +67,6 @@ if __name__ == '__main__':
 
     for message in consumer:
         message = message.value
+        print(str(message)+"\n")
         transcribe(ds, message)
 
