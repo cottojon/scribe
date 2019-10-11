@@ -15,4 +15,8 @@ export class MainViewComponent implements OnInit {
   ngOnInit() {
     this.navToggle = false;
   }
+
+  logout(): void {
+    this.authService.logoutAndRedirect();
+  }
 }
