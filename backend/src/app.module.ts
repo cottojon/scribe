@@ -7,11 +7,12 @@ import { TypeOrmModule} from '@nestjs/typeorm';
 import { SubscribeModule } from './subscribe/subscribe.module';
 import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
+import { RealtimeGateway } from './realtime/realtime.gateway';
 
 
 @Module({
   imports: [TypeOrmModule.forRoot(typeOrmConfig), ChannelsModule, ClipsModule, AuthModule, SubscribeModule, LikesModule, CommentsModule],
   controllers: [],
-  providers: [],
+  providers: [RealtimeGateway],
 })
 export class AppModule {}
