@@ -1,5 +1,5 @@
 import createSubscriber from 'pg-listen';
-const databaseURL = 'postgres://postgres:Motorcycle3232!@localhost:5432/scribe';
+const databaseURL = 'postgres://postgres:password!@localhost:5432/scribe';
  
 // Accepts the same connection config object that the "pg" package would take
 const subscriber = createSubscriber({ connectionString: databaseURL });
