@@ -5,7 +5,7 @@
     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" (click)="navToggle = !navToggle;">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" [class.show]="navToggle" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" routerLink="/live">Live</a>
@@ -20,17 +20,28 @@
         <a class="nav-link" routerLink="/help">Help</a>
       </li>
     </ul>
+
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          <i class="fa fa-user"></i> Profile
-        </a>
-        <div class="dropdown-menu dropdown-menu-right dropdown-info" role="menu">
-          <a class="dropdown-item" routerLink="/profile">My account</a>
-          <a class="dropdown-item" type="button" (click)="logout()">Log out</a>
-        </div>
-      </li>
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Profile</a>
+          <ul class="dropdown-menu dropdown-menu-right multi-column columns-2">
+            <div class="row" style="width: 370px;">
+              <div class="col-sm-5">
+                <ul class="multi-column-dropdown" style="list-style-type: none">
+                  <li><h3>IMAGE</h3></li>
+                  <li><a href="#" style="font-size: 14px">Upload Image</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-7">
+                <ul class="multi-column-dropdown" style="list-style-type: none">
+                  <li><h3>Username</h3></li>
+                  <li><a href="#" style="font-size: 14px">Change Password</a></li>
+                  <li><a href="#" style="font-size: 14px">Logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </li>
     </ul>
   </div>
 </nav>
