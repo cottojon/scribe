@@ -23,25 +23,30 @@
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Profile</a>
-          <ul class="dropdown-menu dropdown-menu-right multi-column columns-2">
-            <div class="row" style="width: 370px;">
-              <div class="col-sm-5">
-                <ul class="multi-column-dropdown" style="list-style-type: none">
-                  <li><h3>IMAGE</h3></li>
-                  <li><a href="#" style="font-size: 14px">Upload Image</a></li>
-                </ul>
-              </div>
-              <div class="col-sm-7">
-                <ul class="multi-column-dropdown" style="list-style-type: none">
-                  <li><h3>Username</h3></li>
-                  <li><a href="#" style="font-size: 14px">Change Password</a></li>
-                  <li><a href="#" style="font-size: 14px">Logout</a></li>
-                </ul>
-              </div>
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Profile</a>
+        <ul class="dropdown-menu dropdown-menu-right multi-column columns-2">
+          <div class="row" style="width: 370px;">
+            <div class="col-sm-4 pl-3">
+              <ul class="multi-column-dropdown px-0" style="list-style-type: none">
+                <li style="display: inline-block;">
+                  <img class="img" style="width:80px"
+                    src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
+                </li>
+                <li style="display: inline-block;"><a href="#" style="font-size: 14px">Upload Image</a></li>
+              </ul>
             </div>
-          </ul>
-        </li>
+            <div class="col-sm-8 pl-2 pr-3">
+              <ul class="multi-column-dropdown justify-content-center px-0" style="list-style-type: none">
+                <li class="pt-1">
+                  <h3>{{username}}</h3>
+                </li>
+                <li class="pt-1"><a href="#" style="font-size: 14px">Change Password</a></li>
+                <li><a href="#" style="font-size: 14px" type="button" (click)="logout()">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </ul>
+      </li>
     </ul>
   </div>
 </nav>

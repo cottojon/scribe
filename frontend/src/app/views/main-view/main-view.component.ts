@@ -9,11 +9,15 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class MainViewComponent implements OnInit {
   @Input()
   navToggle: boolean;
+  username: string;
 
   constructor(private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.navToggle = false;
+    this.username = "UserName";
+
+
   }
 
   logout(): void {
