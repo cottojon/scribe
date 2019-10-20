@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
   selector: 'app-main-view',
@@ -11,13 +12,14 @@ export class MainViewComponent implements OnInit {
   navToggle: boolean;
   username: string;
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(private authService: AuthenticationService,
+    private profileService: ProfileService) { }
 
   ngOnInit() {
     this.navToggle = false;
     this.username = "UserName";
 
-
+    this.profileService.getUsername().subscribe((name) => {this.username = name["username"];});
   }
 
   logout(): void {
