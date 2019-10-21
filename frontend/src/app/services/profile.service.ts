@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ export class ProfileService {
     private http: HttpClient,
     private authService: AuthenticationService) { }
 
-  private profileBaseUrl = environment.api_endpoint+'/Auth';
+  private profileBaseUrl = environment.api_endpoint+'/auth';
   private profileGetImageUrl = this.profileBaseUrl + '/image';
   private profileUploadImageUrl = this.profileBaseUrl + '/upload';
   private profileUsernameUrl = this.profileBaseUrl + '/username';
@@ -22,5 +22,19 @@ export class ProfileService {
   getUsername() : Observable<string> {
     this.authService.checkAndNavigateToLogin();
     return this.http.get<string>(this.profileUsernameUrl, {headers: this.authService.getAuthorizationHeader()});
+  }
+
+  getImage(): Observable<Blob> {
+    this.authService.checkAndNavigateToLogin();
+    return this.http.get(this.profileGetImageUrl, {headers: this.authService.getAuthorizationHeader(), responseType: 'blob'});
+  }
+
+  uploadProfileImage(image): Observable<any> {
+    this.authService.checkAndNavigateToLogin();
+
+    let body = new FormData();
+    body.append('file', image, image.name);
+
+    return this.http.post(this.profileUploadImageUrl, body, {headers: this.authService.getAuthorizationHeader()});
   }
 }
