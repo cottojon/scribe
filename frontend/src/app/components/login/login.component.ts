@@ -12,6 +12,11 @@ export class LoginComponent implements OnInit {
 
   usernameInput: string;
   passwordInput: string;
+  errorMessage: string;
+  showError: boolean;
+
+  badLoginMessage: string = "Incorrect username or password";
+  serverErrorMessage: string = "Internal server error, please try again later";
 
   constructor(
     private authService: AuthenticationService,
@@ -21,12 +26,23 @@ export class LoginComponent implements OnInit {
     if (this.authService.checkToken()){
       this.router.navigate(['/live']);
     }
+    this.errorMessage = "";
+    this.showError = false;
   }
 
   login() {
     this.authService.signin(this.usernameInput, this.passwordInput).subscribe(
-      x => { setTimeout(x => this.router.navigate(['/live']), 500) },
-      error => { console.log("Login Error: " + error)});
+      x => { setTimeout(x => this.router.navigate(['/live']), 500); this.showError = false; },
+      error => { 
+        if (error.status == 400) {
+          this.errorMessage = this.badLoginMessage;
+          this.showError = true;
+        }
+        else {
+          this.errorMessage = this.serverErrorMessage;
+          this.showError = true;
+        }
+      });
   }
 
 }

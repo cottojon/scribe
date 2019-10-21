@@ -5,7 +5,7 @@
     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" (click)="navToggle = !navToggle;">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" [class.show]="navToggle" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" routerLink="/live">Live</a>
@@ -20,19 +20,52 @@
         <a class="nav-link" routerLink="/help">Help</a>
       </li>
     </ul>
+
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          <i class="fa fa-user"></i> Profile
-        </a>
-        <div class="dropdown-menu dropdown-menu-right dropdown-info" role="menu">
-          <a class="dropdown-item" routerLink="/profile">My account</a>
-          <a class="dropdown-item" type="button" (click)="logout()">Log out</a>
-        </div>
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Profile</a>
+        <ul class="dropdown-menu dropdown-menu-right multi-column columns-2">
+          <div class="row" style="width: 370px;">
+            <div class="col-sm-4 pl-3">
+              <ul class="multi-column-dropdown px-0" style="list-style-type: none">
+                <li style="display: inline-block;">
+                  <img class="img" style="width:80px" [src]="profileImage" *ngIf="profileImageLoaded; else defaultProfileImage"/>
+                  <ng-template #defaultProfileImage>
+                    <img class="img" style="width:80px" src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200"/>
+                  </ng-template>
+                </li>
+                <li style="display: inline-block;"><span class="fake-link" style="font-size: 12px" (click)="open(uploadProfileImageModal)">Upload Image</span></li>
+              </ul>
+            </div>
+            <div class="col-sm-8 pl-2 pr-3">
+              <ul class="multi-column-dropdown justify-content-center px-0" style="list-style-type: none">
+                <li class="pt-1">
+                  <h3>{{username}}</h3>
+                </li>
+                <li class="pt-2" style="font-size: 12px">Not you? <span class="fake-link" (click)="logout()">Logout</span></li>
+                <li><span class="fake-link" style="font-size: 12px">Change Password</span></li>
+              </ul>
+            </div>
+          </div>
+        </ul>
       </li>
     </ul>
   </div>
 </nav>
 <br />
 <router-outlet></router-outlet>
+
+<ng-template #uploadProfileImageModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Upload Profile Image</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type='file' (change)="onProfileImageSelected($event)">
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="uploadSelectedImage(); c('Submit click');">Submit</button>
+    </div>
+  </ng-template>

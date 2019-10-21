@@ -32,3 +32,8 @@ input:focus{
     margin-bottom: auto;
     width: 400px;
 }
+
+.error-message{
+    color: #D8000C;
+    padding-bottom:12px;
+}

@@ -1,3 +1,9 @@
 .no-margin{
     margin: 0px;
 }
+
+.fake-link{
+    cursor:pointer;
+    color:blue;
+    text-decoration:underline;
+}
