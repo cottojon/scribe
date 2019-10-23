@@ -1,0 +1,6 @@
+FROM python:3
+ADD . .
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN apt-get install -y ffmpeg
+CMD [ "python", "./split_clips.py"]
