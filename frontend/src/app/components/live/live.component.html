@@ -4,7 +4,7 @@
       <div class="col-12" style="margin-left: 3px; margin-bottom: 5px; margin-top: -18px;">
         <button *ngFor="let channel of addedChannels" class="channel-button btn text-center"
           [ngClass]="getColor(channel.id)" (click)="setActiveChannelById(channel.id)">
-          {{channel.name}}
+          {{channel.name}} ({{channel.id}})
         </button>
         <button class="add-channel-button btn btn-primary text-center" (click)="open(addChannelModal)">
           <span class="fa fa-plus"></span>

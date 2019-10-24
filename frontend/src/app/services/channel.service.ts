@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 
 import { Channel } from '../classes/channel';
-import { Observable, of } from 'rxjs';
+import { Clip } from '../classes/clip';
+import { SearchParams } from '../classes/search-params';
+import { Observable, Subscription, interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { SubscribedChannel } from '../classes/subscribed-channel';
+import { ClipDisplay } from '../classes/clip-display';
+import { LikedClip } from '../classes/liked-clip';
+import { LikesService } from './likes.service';
+import { EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -15,34 +22,160 @@ export class ChannelService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService,
+    private likesService: LikesService) {
+    this.subscribedChannelsUpdates.subscribe(channels => this.subscribedChannels = channels);
+    this.displayedClipsUpdates.subscribe(clips => this.displayedClips = clips);
+    this.likedClipsUpdates.subscribe(likedClips => this.likedClips = likedClips);
+  }
 
-  private channelsUrl = environment.api_endpoint+'/channels';
-  private subscribeUrl = environment.api_endpoint+'/subscribe';
+  private channelsUrl = environment.api_endpoint + '/channels';
+  private subscribeUrl = environment.api_endpoint + '/subscribe';
+  private clipsUrl = environment.api_endpoint + '/clips';
+
+  private clipRefreshRateMs = 2000;
+  private clipRefreshTrigger;
+  private initalized = false;
+
+  public subscribedChannels: Array<Channel> = [];
+  public displayedClips: Array<ClipDisplay> = [];
+  public likedClips: Array<LikedClip> = [];
+
+  public subscribedChannelsUpdates: EventEmitter<Array<Channel>> = new EventEmitter();
+  public displayedClipsUpdates: EventEmitter<Array<ClipDisplay>> = new EventEmitter();
+  public likedClipsUpdates: EventEmitter<Array<LikedClip>> = new EventEmitter();
+
+  getClips(channel: Channel, parameters: SearchParams): Observable<Array<Clip>> {
+    this.authService.checkAndNavigateToLogin();
+    const minDate = (new Date('1/1/0001'));
+    const maxDate = (new Date('12/30/9999'));
+
+    if (parameters.start_date === undefined) {
+      parameters.start_date = minDate;
+    } else {
+      if (parameters.start_date.toString() === 'Invalid Date') {
+        parameters.start_date = minDate;
+      }
+    }
+
+    if (parameters.end_date === undefined) {
+      parameters.end_date = maxDate;
+    } else {
+      if (parameters.end_date.toString() === 'Invalid Date') {
+        parameters.end_date = maxDate;
+      }
+    }
+    return this.http.get<Array<Clip>>(this.clipsUrl, {
+      headers: this.authService.getAuthorizationHeader(),
+      params: {
+        text: (parameters.text === undefined ? '' : parameters.text),
+        speaker: (parameters.speaker === undefined ? '' : parameters.speaker),
+        start_date: parameters.start_date.toJSON(),
+        end_date: (parameters.end_date.toString() === 'Invalid Date' ? maxDate.toJSON() : parameters.end_date.toJSON())
+      }
+    });
+  }
+
+  saveClip(clip: Clip) {
+    this.authService.checkAndNavigateToLogin();
+    return this.http.put(this.clipsUrl, {
+      'text': clip.text.toString(),
+      'id': clip.id.toString()
+    })
+      .subscribe(data => {
+        console.log('PUT Request is successful ', data);
+      },
+        error => {
+          console.log('Error', error);
+        });
+  }
 
   getChannels(search: string): Observable<Array<Channel>> {
-    if (search == null || search == "")
-    {
-      return this.http.get<Array<Channel>>(this.channelsUrl);
+    this.authService.checkAndNavigateToLogin();
+    if (search == null || search == "") {
+      return this.http.get<Array<Channel>>(this.channelsUrl, { headers: this.authService.getAuthorizationHeader() });
     }
-    else
-    {
-      return this.http.get<Array<Channel>>(this.channelsUrl, { params: { 'name': search} });;
+    else {
+      return this.http.get<Array<Channel>>(this.channelsUrl, { headers: this.authService.getAuthorizationHeader(), params: { 'name': search } });;
     }
   }
 
   subscribeToChannel(id: number): Observable<any> {
     this.authService.checkAndNavigateToLogin();
-    return this.http.post(this.subscribeUrl+'/'+id, '', {headers: this.authService.getAuthorizationHeader()});
+    return this.http.post(this.subscribeUrl + '/' + id, '', { headers: this.authService.getAuthorizationHeader() });;
   }
 
   unsubscribeFromChannel(id: number): Observable<any> {
     this.authService.checkAndNavigateToLogin();
-    return this.http.delete(this.subscribeUrl+'/'+id, {headers: this.authService.getAuthorizationHeader()});
+    return this.http.delete(this.subscribeUrl + '/' + id, { headers: this.authService.getAuthorizationHeader() });;
   }
 
   getSubscribedChannels(): Observable<Array<SubscribedChannel>> {
     this.authService.checkAndNavigateToLogin();
-    return this.http.get<Array<SubscribedChannel>>(this.subscribeUrl, {headers: this.authService.getAuthorizationHeader()});
+    return this.http.get<Array<SubscribedChannel>>(this.subscribeUrl, { headers: this.authService.getAuthorizationHeader() });
+  }
+
+  initalizeServiceIfNeeded(): void {
+    if (!this.initalized && this.authService.checkToken()) {
+      this.initalizeChannels();
+      this.clipRefreshTrigger = interval(this.clipRefreshRateMs).subscribe(() => this.refreshSubscribedChannels());
+      this.initalized = true;
+    }
+  }
+
+  initalizeChannels(): void {
+    this.getSubscribedChannels().subscribe(channels => {
+      let newSubscribedChannels = [];
+      channels.forEach(channel => { newSubscribedChannels.push(channel.channel); });
+      this.subscribedChannelsUpdates.emit(newSubscribedChannels);
+
+      this.updateLikedClips();
+
+      let newDisplayedClips = [];
+      this.subscribedChannels.forEach((channel) => {
+        const searchParams = new SearchParams();
+        searchParams.start_date = new Date();
+        searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 15);
+
+        console.log(searchParams);
+
+        this.getClips(channel, searchParams).subscribe((response: Array<Clip>) => {
+          response.forEach(clip => {
+            newDisplayedClips.push(new ClipDisplay(clip, channel.id));
+          });
+          this.displayedClipsUpdates.emit(this.displayedClips.concat(newDisplayedClips));
+        });
+      });
+    });
+  }
+
+  refreshSubscribedChannels(): void {
+    this.updateLikedClips();
+
+    let newDisplayedClips = [];
+    this.subscribedChannels.forEach(channel => {
+      const searchParams = new SearchParams();
+      searchParams.start_date = new Date();
+      searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 1);
+
+      this.getClips(channel, searchParams).subscribe((response: Array<Clip>) => {
+        response.forEach(clip => {
+          newDisplayedClips = newDisplayedClips.concat(
+            new ClipDisplay(clip, channel.id)
+          );
+        });
+        this.displayedClipsUpdates.emit(this.displayedClips.concat(newDisplayedClips));
+      });
+
+    });
+  }
+
+  updateLikedClips(): void {
+    this.likesService.getLikedClips().subscribe(x => {
+      this.likedClipsUpdates.pipe(map((likedClips) => {
+        likedClips = x;
+        return likedClips;
+      }));
+    });
   }
 }
