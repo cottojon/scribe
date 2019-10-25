@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Websocket Tutorial</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!--no path being used in gateway so default to the above line-->
+</head>
+
+<body>
+    <div id='v-app'>
+        <h1>{{ title }}</h1>
+        <form>
+            <input v-model='text' type="text" />
+            <button type='submit' @click.prevent='sendChatMessage()'>Send</button>
+        </form>
+
+
+        <p>
+            <ul>
+                <li v-for='msg of messages'>{{msg}}</li>
+            </ul>
+        </p>
+    </div>
+
+
+    <script>
+
+        var app = new Vue({
+            el: '#v-app',
+            data: {
+                title: 'WebSockets Tester',
+                text: '', //message text to be sent in the input
+                messages: [],
+                socket: {chat: null}, //we will have two sockets this time to deal with the two namespaces we will create
+
+
+            },
+            methods: {
+                sendChatMessage() {
+                    this.socket.chat.emit('chatToServer', this.text); //send message to socket with event name 'msgToServer'
+                    this.text = ''; //clear input
+                },
+                receivedChatMessage(msg) {
+                    this.
+                    this.messages.push(msg); // add to array
+
+                }
+            },
+            created() { // when the vue instance loads
+                this.socket.chat = io('http://localhost:3000/chat'); //create socket.io client for the chat namee space
+
+                this.socket.chat.on('chatToClient', (msg) => { //when we receive a message for the chat
+                    this.receivedChatMessage(msg);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
