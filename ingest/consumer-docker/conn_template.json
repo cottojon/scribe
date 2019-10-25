@@ -1,0 +1,9 @@
+{
+    "driver": "<driverhere>",
+    "database": "<databasehere>",
+    "uid": "<uidhere>",
+    "pwd": "<pwdhere>",
+    "server": "<servernamehere>",
+    "port": "<porthere>",
+    "boolsaschar": "<0here>"
+}
