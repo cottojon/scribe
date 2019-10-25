@@ -5,7 +5,6 @@ import { ClipDisplay } from 'src/app/classes/clip-display';
 import { Channel } from 'src/app/classes/channel';
 import { ChannelService } from 'src/app/services/channel.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { ClipService } from 'src/app/services/clip.service';
 import { Observable, Subscription, interval } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
@@ -28,36 +27,33 @@ export class LiveComponent implements OnInit {
   showNotification = false;
   sub: Subscription;
   likedClips: LikedClip[];
-  
+
   private minimumChannelWidth = 600;
   private channelMargin = 5;
 
   constructor(
     private channelService: ChannelService,
-    private clipService: ClipService,
     private modalService: NgbModal,
     private authService: AuthenticationService,
     private likesService: LikesService
   ) { }
 
   ngOnInit() {
-    if (this.authService.checkAndNavigateToLogin()){
+    if (this.authService.checkAndNavigateToLogin()) {
       this.activeChannels = [];
-      this.addedChannels = [];
-      this.clipDisplays = [];
-      this.likedClips = [];
+      this.addedChannels = this.channelService.subscribedChannels;
+      this.clipDisplays = this.channelService.displayedClips;
+      this.likedClips = this.channelService.likedClips;
       this.lastActiveIdx = 0;
+      this.setActiveChannelByIdx(this.lastActiveIdx);
 
-      this.sub = interval(2000)
-      .subscribe((val) => {
-        this.getNewClips();
+      this.channelService.subscribedChannelsUpdates.subscribe((channels) => { 
+        this.addedChannels = channels;
+        this.setActiveChannelByIdx(this.lastActiveIdx);
       });
-
-      this.channelService.getSubscribedChannels().subscribe(channels => { 
-        channels.forEach(subbedChannel => {
-          this.addChannel(subbedChannel.channel);
-        });
-      });
+      this.channelService.displayedClipsUpdates.subscribe((clips) => { this.clipDisplays = clips; });
+      this.channelService.likedClipsUpdates.subscribe((likedClips) => { this.likedClips = likedClips; });
+      this.channelService.initalizeServiceIfNeeded();
     }
   }
 
@@ -74,38 +70,34 @@ export class LiveComponent implements OnInit {
 
   addChannel(channel: Channel): void {
     if (!this.addedChannels.some(x => x.id === channel.id)) {
-      this.channelService.subscribeToChannel(channel.id).subscribe();
-      this.addedChannels.push(channel);
-      this.getClips();
+      this.channelService.subscribeToChannel(channel.id).subscribe(() => this.channelService.initalizeChannels());
 
-      if (this.addedChannels.length <= this.getMaximumDisplayedChannels()){
+      if (this.addedChannels.length <= this.getMaximumDisplayedChannels()) {
         this.setActiveChannelByIdx(0);
       }
     }
   }
 
-  removeChannel(channel: Channel): void{
+  removeChannel(channel: Channel): void {
     if (this.addedChannels.some(x => x.id == channel.id)) {
-      this.channelService.unsubscribeFromChannel(channel.id).subscribe();
+      this.channelService.unsubscribeFromChannel(channel.id).subscribe(() => this.channelService.initalizeChannels());
     }
-    
-    this.addedChannels = this.addedChannels.filter(x => x.id != channel.id);
+
     this.setActiveChannelByIdx(this.lastActiveIdx);
   }
 
   getMaximumDisplayedChannels(): number {
-    return Math.floor(window.innerWidth/(this.minimumChannelWidth + this.channelMargin * 2));
+    return Math.floor(window.innerWidth / (this.minimumChannelWidth + this.channelMargin * 2));
   }
 
   getMaximumChannelWidth(): number {
-    return Math.floor(window.innerWidth/Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1)));
+    return Math.floor(window.innerWidth / Math.min(this.getMaximumDisplayedChannels(), Math.max(this.addedChannels.length, 1)));
   }
 
   setActiveChannelById(channelId: number): void {
     let idx = this.addedChannels.findIndex(x => x.id === channelId);
 
-    if (idx === -1)
-    {
+    if (idx === -1) {
       console.log("ERROR: Tried to set active channel to " + channelId + " but no added channel has this id");
       return;
     }
@@ -114,15 +106,14 @@ export class LiveComponent implements OnInit {
   }
 
   setActiveChannelByIdx(idx: number): void {
-    let maxChannels = this.getMaximumDisplayedChannels();
+    let maxDisplayedChannels = this.getMaximumDisplayedChannels();
 
-    if (idx > this.addedChannels.length - maxChannels)
-    {
-      idx = Math.max(0, this.addedChannels.length - maxChannels);
+    if (idx > this.addedChannels.length - maxDisplayedChannels) {
+      idx = Math.max(0, this.addedChannels.length - maxDisplayedChannels);
     }
 
     this.lastActiveIdx = idx;
-    this.activeChannels = this.addedChannels.filter((_, i) => i >= idx && i < idx + maxChannels);
+    this.activeChannels = this.addedChannels.filter((_, i) => i >= idx && i < idx + maxDisplayedChannels);
   }
 
   searchForChannel(): void {
@@ -139,82 +130,16 @@ export class LiveComponent implements OnInit {
         });
   }
 
-  getClips(): void {
-    this.updateLikedClips();
-    
-    let newClipDisplays: ClipDisplay[] = [];
-
-    this.activeChannels.forEach(channel => {
-      if (channel !== null) {
-
-        const searchParams = new SearchParams();
-        searchParams.start_date = new Date();
-        searchParams.start_date.setHours(searchParams.start_date.getHours() - 1);
-
-        this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
-          newClipDisplays = newClipDisplays.concat(
-            new ClipDisplay(clip, channel.id)
-          );
-        }),
-          error => console.log('Error: ', error),
-          () => {
-
-            this.clipDisplays = newClipDisplays.sort((a, b) =>
-              a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
-            );
-          });
-      }
-    });
-  }
-
-  getNewClips(): void {
-    this.updateLikedClips();
-
-    let newClipDisplays: ClipDisplay[] = [];
-
-    this.activeChannels.forEach(channel => {
-      if (channel !== null) {
-
-        const searchParams = new SearchParams();
-        searchParams.start_date = new Date();
-        searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 1);
-
-        this.clipService.getClips(channel, searchParams).subscribe((response: Array<Clip>) => response.forEach(clip => {
-          newClipDisplays = newClipDisplays.concat(
-            new ClipDisplay(clip, channel.id)
-          );
-        }),
-          error => console.log('Error: ', error),
-          () => {
-
-            // this.clipDisplays = newClipDisplays.sort((a, b) =>
-            //   a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
-            //   );
-            newClipDisplays = newClipDisplays.filter(newClipDisplay =>
-              this.clipDisplays.filter(oldClipDiplay => newClipDisplay.clip.id === oldClipDiplay.clip.id).length === 0
-            );
-            newClipDisplays = newClipDisplays.concat(this.clipDisplays)
-              .sort((a, b) =>
-                a.created_at.valueOf() > b.created_at.valueOf() ? -1 : a.created_at.valueOf() < b.created_at.valueOf() ? 1 : 0
-              );
-
-            this.clipDisplays = newClipDisplays;
-          });
-      }
-    });
-  }
-
   checkIfClipIsLiked(clipId: number): boolean {
     return this.likedClips.some(x => x.clipId === clipId);
   }
 
-  getCurrentClipsForChannel(channelId: number): ClipDisplay[]
-  {
+  getCurrentClipsForChannel(channelId: number): ClipDisplay[] {
     return this.clipDisplays.filter(x => x.channel_id === channelId);
   }
 
   getColor(idx: number): string {
-    switch (idx%4) {
+    switch (idx % 4) {
       case 0: {
         return 'bg-secondary';
       }
@@ -257,15 +182,11 @@ export class LiveComponent implements OnInit {
   }
 
   likeClip(clipDisplay: ClipDisplay) {
-    this.likesService.likeClip(clipDisplay.clip.id).subscribe(x => this.updateLikedClips());
+    this.likesService.likeClip(clipDisplay.clip.id).subscribe(x => this.channelService.updateLikedClips());
   }
 
   unlikeClip(clipDisplay: ClipDisplay) {
-    this.likesService.unlikeClip(clipDisplay.clip.id).subscribe(x => this.updateLikedClips());
-  }
-
-  updateLikedClips(): void {
-    this.likesService.getLikedClips().subscribe(x => this.likedClips = x);
+    this.likesService.unlikeClip(clipDisplay.clip.id).subscribe(x => this.channelService.updateLikedClips());
   }
 
   @HostListener('window:resize', ['$event'])

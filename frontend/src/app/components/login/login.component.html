@@ -5,6 +5,9 @@
 				<h3>Sign In</h3>
 			</div>
 			<div class="card-body">
+				<div class="error-message" *ngIf="showError">
+					{{errorMessage}}
+				</div>
 				<form>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">

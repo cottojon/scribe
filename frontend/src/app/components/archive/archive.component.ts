@@ -5,7 +5,6 @@ import { ClipDisplay } from 'src/app/classes/clip-display';
 import { Channel } from 'src/app/classes/channel';
 import { ChannelService } from 'src/app/services/channel.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { ClipService } from 'src/app/services/clip.service';
 import { Observable, Subscription, interval } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
@@ -26,7 +25,6 @@ export class ArchiveComponent implements OnInit {
 
   constructor(
     private channelService: ChannelService,
-    private clipService: ClipService,
     private modalService: NgbModal,
     private authService: AuthenticationService,
     private router: Router
@@ -43,7 +41,7 @@ export class ArchiveComponent implements OnInit {
 
     const channel = new Channel();
     channel.name = this.channel_name;
-
+    /*
     if (channel !== null) {
       const searchParams = new SearchParams();
       searchParams.text = this.text;
@@ -73,6 +71,7 @@ export class ArchiveComponent implements OnInit {
         }
       );
     }
+    */
   }
 
   makeCorrection(clipDisplay: ClipDisplay): void {
@@ -81,7 +80,7 @@ export class ArchiveComponent implements OnInit {
 
   saveCorrection(clipDisplay: ClipDisplay): void {
     clipDisplay.editing = false;
-    this.clipService.saveClip(clipDisplay.clip);
+    //this.clipService.saveClip(clipDisplay.clip);
   }
 
   playClip(clipDisplay: ClipDisplay): void {
