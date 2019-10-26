@@ -8,10 +8,7 @@ from timeit import default_timer as timer
 
 import argparse, shlex, os, subprocess, sys, wave
 import numpy as np
-import pyodbc
-import datetime
 
-# Note: "shhlex" should be changed to "shlex" if we want it to work
 try:
     from shhlex import quote
 except ImportError:
@@ -40,31 +37,8 @@ def metadata_to_string(metadata):
     return ''.join(item.character for item in metadata.items)
 
 def notify_db(filename, transcription):
-    conn_str = (
-        "DRIVER={0};"
-        "DATABASE={1};"
-        "UID={2};"
-        "PWD={3};"
-        "SERVER={4};"
-        "PORT={5};"
-        "BoolsAsChar={6};"
-    )
-
-    json_import = loads.load(open("./conn.json"))
-    conn_str = conn_str.format(json_import["driver"], json_import["database"], 
-                               json_import["uid"], json_import["pwd"], 
-                               json_import["server"], json_import["port"], 
-                               json_import["boolsaschar"])
-
-    dt = datetime.datetime
-    conn = pyodbc.connect(conn_str)
-    crsr = conn.execute("INSERT INTO clip (text, revised_text, speaker, created_at, revised_at, revised, path_to_file, channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-                        , transcription, '', '', dt, dt, False, filename, -1)
-    
-    # other whatever here
-
-    crsr.close()
-    conn.close()
+	# For now just print, we should notify postgres with like pg8000/sqlalch
+	print(str([filename, transcription]))
 
 def transcribe(ds, audioFile):
     fin = wave.open(audioFile, 'rb')
