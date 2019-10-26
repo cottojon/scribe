@@ -1,0 +1,41 @@
+version: "3"
+services: #all of the containers we are going to do
+  db: # our postgres container and also the hostname so no localhost: but db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USERAME: postgres
+      POSTGRES_DB: scribe # create db called scribe
+    volumes: # store data in current directory folder pgdata
+      - ./pgdata:/var/lib/postgresql/data 
+    ports:
+     - '5432:5432' # port 5432 and inside the container as well
+    networks: 
+      - scribe-backend
+
+
+  pgadmin: ## pg admin
+    image: dpage/pgadmin4:4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@domain.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 8000
+    volumes:
+      - ./pgadmin/:/pgadmin4/servers.json
+    ports:
+      - "8000:8000"  
+  
+  web: # node js container /
+    image: backend #image we will use 
+    depends_on: # our server depends on db container so it starts up db container first, make sure to have retry logic in web app(we use wait-for-it script)
+      - db
+    ports:
+      - '3000:3000' # start at port 3000, and inside the container as well
+    command: ["./wait-for-it.sh", "db:5432", "--", "npm", "run", "start"] ## wait for the database to accept tcp connections
+    networks: 
+      - scribe-backend
+
+
+networks: 
+  scribe-backend:
+    external: true
