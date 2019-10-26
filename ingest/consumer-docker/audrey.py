@@ -6,11 +6,11 @@ from json import loads
 from kafka import KafkaConsumer 
 from timeit import default_timer as timer
 
-import argparse, shlex, os, subprocess, sys, wave
+import argparse, shlex, os, pg8000, subprocess, sys, time, wave
 import numpy as np
 
 try:
-    from shhlex import quote
+    from shlex import quote
 except ImportError:
     from pipes import quote
 
@@ -20,6 +20,14 @@ LM_ALPHA = 0.75
 LM_BETA = 1.85
 N_FEATURES = 26
 N_CONTEXT = 9
+
+dbhost = os.getenv('dbhost')
+database = os.getenv('db')
+username = os.getenv('user')
+passw = os.getenv('password')
+dbport = int(os.getenv('dbport'))
+
+chanID = int(os.getenv('channel'))
 
 
 def convert_samplerate(audio_path):
@@ -37,7 +45,19 @@ def metadata_to_string(metadata):
     return ''.join(item.character for item in metadata.items)
 
 def notify_db(filename, transcription):
-	# For now just print, we should notify postgres with like pg8000/sqlalch
+    currTime = int(time.time())
+    conn = pg8000.connect(user=username, password=passw, host=dbhost, port=dbport, database=database)
+	cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO clip (text, revised_text, speaker, created_at, revised_at, revised, path_to_file, channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """ , (transcription, '', '', currTime, currTime, False, filename, chanID)
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 	print(str([filename, transcription]))
 
 def transcribe(ds, audioFile):
@@ -55,7 +75,6 @@ if __name__ == '__main__':
     ds = Model("models/output_graph.pbmm", N_FEATURES, N_CONTEXT, "models/alphabet.txt", BEAM_WIDTH)
     ds.enableDecoderWithLM("models/alphabet.txt", "models/lm.binary", "models/trie", LM_ALPHA, LM_BETA)
 
-
     consumer = KafkaConsumer(
      'audioStream',
      bootstrap_servers=[os.getenv('KAFKA_HOST')+':9092'],
@@ -69,4 +88,3 @@ if __name__ == '__main__':
         message = message.value
         print(str(message)+"\n")
         transcribe(ds, message)
-
