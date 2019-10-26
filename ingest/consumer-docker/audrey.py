@@ -9,6 +9,7 @@ from timeit import default_timer as timer
 import argparse, shlex, os, subprocess, sys, wave
 import numpy as np
 
+# Note: "shhlex" should be changed to "shlex" if we want it to work
 try:
     from shhlex import quote
 except ImportError:
