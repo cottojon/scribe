@@ -51,7 +51,7 @@ def notify_db(filename, transcription):
 
     cursor.execute("""
         INSERT INTO clip (text, revised_text, speaker, created_at, revised_at, revised, path_to_file, channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """ , (transcription, '', '', dt, dt, False, filename, chanID)
+        """ , (transcription, '', '', currTime, currTime, False, filename, chanID)
     )
 
     conn.commit()
