@@ -200,6 +200,18 @@ export class LiveComponent implements OnInit {
 
   saveCorrection(clipDisplay: ClipDisplay): void {
     clipDisplay.editing = false;
-    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.clip.text);
+    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.displayed_text).subscribe(() => {
+      this.channelService.ReinitalizeService();
+    });
+  }
+
+  showRevisedText(clipDisplay: ClipDisplay): void {
+    clipDisplay.displayed_text = clipDisplay.clip.revised_text;
+    clipDisplay.displayingOriginalText = false;
+  }
+
+  showOriginalText(clipDisplay: ClipDisplay): void {
+    clipDisplay.displayed_text = clipDisplay.clip.text;
+    clipDisplay.displayingOriginalText = true;
   }
 }

@@ -94,7 +94,10 @@ export class ArchiveComponent implements OnInit {
 
   saveCorrection(clipDisplay: ClipDisplay): void {
     clipDisplay.editing = false;
-    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.clip.text);
+    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.displayed_text).subscribe(() => {
+      this.channelService.ReinitalizeService();
+      this.getClips();
+    });
   }
 
   playClip(clipDisplay: ClipDisplay): void {
@@ -111,5 +114,15 @@ export class ArchiveComponent implements OnInit {
     this.end_date = undefined;
     this.channel_name = clipDisplay.clip.channel.name;
     this.getClips();
+  }
+  
+  showRevisedText(clipDisplay: ClipDisplay): void {
+    clipDisplay.displayed_text = clipDisplay.clip.revised_text;
+    clipDisplay.displayingOriginalText = false;
+  }
+
+  showOriginalText(clipDisplay: ClipDisplay): void {
+    clipDisplay.displayed_text = clipDisplay.clip.text;
+    clipDisplay.displayingOriginalText = true;
   }
 }

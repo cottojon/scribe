@@ -6,7 +6,6 @@ import { LiveComponent } from './components/live/live.component';
 import { ArchiveComponent } from './components/archive/archive.component';
 import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
-import { TrainingComponent } from './components/training/training.component';
 import { AppRoutingModule } from './/app-routing.module';
 
 import { FormsModule } from '@angular/forms';
@@ -27,7 +26,6 @@ import { CommonModule } from '@angular/common';
     ArchiveComponent,
     HelpComponent,
     HomeComponent,
-    TrainingComponent,
     LoginComponent,
     MainViewComponent
   ],
