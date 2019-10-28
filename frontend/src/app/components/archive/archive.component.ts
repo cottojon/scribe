@@ -36,6 +36,10 @@ export class ArchiveComponent implements OnInit {
     this.clipDisplays = [];
   }
 
+  clearResults(): void {
+    this.clipDisplays = [];
+  }
+
   getClips(): void {
 
     let channel = new Channel();
