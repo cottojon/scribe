@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-12">
-    <div class="row">
+    <div class="row" cdkDrag>
       <div class="col-12" style="margin-left: 3px; margin-bottom: 5px; margin-top: -18px;">
         <button *ngFor="let channel of addedChannels" class="channel-button btn text-center"
           [ngClass]="getColor(channel.id)" (click)="setActiveChannelById(channel.id)">
           {{channel.name}}
         </button>
-        <button class="add-channel-button btn btn-primary text-center" (click)="open(addChannelModal)">
+        <button class="add-channel-button btn btn-secondary text-center" (click)="open(addChannelModal); searchForChannel()">
           <span class="fa fa-plus"></span>
         </button>
       </div>
@@ -87,7 +87,7 @@
       <div class="col" style="padding:0px">
         <div class="input-group">
           <input [(ngModel)]="channelSearchInput" (keyup.enter)="searchForChannel()" name="channelSearchInput"
-            type="text" class="form-control" placeholder="Search Terms">
+            type="text" class="form-control" placeholder="Search Channels">
           <div class="input-group-append">
             <button class="btn btn-primary" type="button" (click)="searchForChannel()">
               <span class="fa fa-search"></span>&nbsp;Search </button>
@@ -109,7 +109,7 @@
             <td>{{channel.name}}</td>
             <td>
               <button class="btn btn-primary" (click)="addChannel(channel)">
-                <span class="fa fa-plus"></span>&nbsp;Add </button>
+                <span class="fa fa-plus"></span>&nbsp;Add</button>
             </td>
           </tr>
         </tbody>
