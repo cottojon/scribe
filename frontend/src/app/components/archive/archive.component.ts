@@ -112,4 +112,14 @@ export class ArchiveComponent implements OnInit {
     this.channel_name = clipDisplay.clip.channel.name;
     this.getClips();
   }
+  
+  showRevisedText(clipDisplay: ClipDisplay): void {
+    clipDisplay.displayed_text = clipDisplay.clip.revised_text;
+    clipDisplay.displayingOriginalText = false;
+  }
+
+  showOriginalText(clipDisplay: ClipDisplay): void {
+    clipDisplay.displayed_text = clipDisplay.clip.text;
+    clipDisplay.displayingOriginalText = true;
+  }
 }
