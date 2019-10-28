@@ -65,15 +65,23 @@ export class ChannelService {
         parameters.end_date = maxDate;
       }
     }
-    return this.http.get<Array<Clip>>(this.clipsUrl, {
+
+    let filteredArray: EventEmitter<Array<Clip>> = new EventEmitter();
+    
+    let query = this.http.get<Array<Clip>>(this.clipsUrl, {
       headers: this.authService.getAuthorizationHeader(),
       params: {
         text: (parameters.text === undefined ? '' : parameters.text),
         speaker: (parameters.speaker === undefined ? '' : parameters.speaker),
-        start_date: parameters.start_date.toJSON(),
-        end_date: (parameters.end_date.toString() === 'Invalid Date' ? maxDate.toJSON() : parameters.end_date.toJSON())
+        channel_name: (parameters.channel_name === undefined ? '' : parameters.channel_name)
       }
     });
+
+    query.subscribe((clips) => {
+      filteredArray.emit(clips.filter((clip) => new Date(clip.created_at) >= parameters.start_date && new Date(clip.created_at) <= parameters.end_date));
+    });
+
+    return filteredArray;
   }
 
   saveClip(clip: Clip) {
@@ -136,8 +144,6 @@ export class ChannelService {
         const searchParams = new SearchParams();
         searchParams.start_date = new Date();
         searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 15);
-
-        console.log(searchParams);
 
         this.getClips(channel, searchParams).subscribe((response: Array<Clip>) => {
           response.forEach(clip => {

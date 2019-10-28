@@ -3,4 +3,4 @@ To build the docker image (when you make changes):
 docker build . -t kepter/scribe
 
 To run docker image:
-docker run -p 80:80 kepter/scribe
+docker run -p 80:80 kepter/scribe -v hostpath:containerpath
