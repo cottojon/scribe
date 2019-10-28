@@ -41,10 +41,6 @@ export class ArchiveComponent implements OnInit {
   }
 
   getClips(): void {
-
-    let channel = new Channel();
-    channel.name = this.channel_name;
-
     let searchParams = new SearchParams();
     searchParams.text = this.text;
     searchParams.channel_name = this.channel_name;
@@ -53,7 +49,7 @@ export class ArchiveComponent implements OnInit {
     searchParams.end_date = new Date(this.end_date);
 
     let newClipDisplays: ClipDisplay[] = [];
-    this.channelService.getClips(channel, searchParams).subscribe(clips => {
+    this.channelService.getClips(searchParams).subscribe(clips => {
       clips.forEach(clip => {
         newClipDisplays.push(new ClipDisplay(clip, clip.channelId));
       });
@@ -98,7 +94,6 @@ export class ArchiveComponent implements OnInit {
 
   saveCorrection(clipDisplay: ClipDisplay): void {
     clipDisplay.editing = false;
-    console.log("Writing update of text = " + clipDisplay.clip.text);
     this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.clip.text);
   }
 

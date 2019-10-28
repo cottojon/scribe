@@ -47,7 +47,7 @@ export class LiveComponent implements OnInit {
       this.lastActiveIdx = 0;
       this.setActiveChannelByIdx(this.lastActiveIdx);
 
-      this.channelService.subscribedChannelsUpdates.subscribe((channels) => { 
+      this.channelService.subscribedChannelsUpdates.subscribe((channels) => {
         this.addedChannels = channels;
         this.setActiveChannelByIdx(this.lastActiveIdx);
       });
@@ -192,5 +192,14 @@ export class LiveComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.setActiveChannelByIdx(this.lastActiveIdx);
+  }
+
+  makeCorrection(clipDisplay: ClipDisplay): void {
+    clipDisplay.editing = true;
+  }
+
+  saveCorrection(clipDisplay: ClipDisplay): void {
+    clipDisplay.editing = false;
+    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.clip.text);
   }
 }
