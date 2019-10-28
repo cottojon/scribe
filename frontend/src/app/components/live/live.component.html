@@ -41,10 +41,10 @@
                       <span class="fa fa-thumbs-up"></span>
                     </button>
 
-                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary clip-btn">
+                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary clip-btn" (click)="makeCorrection(clipDisplay)">
                       <span class="fa fa-edit"></span>
                     </button>
-                    <button *ngIf="clipDisplay.editing" class="btn btn-success clip-btn">
+                    <button *ngIf="clipDisplay.editing" class="btn btn-success clip-btn" (click)="saveCorrection(clipDisplay)" >
                       <span class="fa fa-edit"></span>
                     </button>
 

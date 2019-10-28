@@ -45,7 +45,7 @@ export class ChannelService {
   public displayedClipsUpdates: EventEmitter<Array<ClipDisplay>> = new EventEmitter();
   public likedClipsUpdates: EventEmitter<Array<LikedClip>> = new EventEmitter();
 
-  getClips(channel: Channel, parameters: SearchParams): Observable<Array<Clip>> {
+  getClips(parameters: SearchParams): Observable<Array<Clip>> {
     this.authService.checkAndNavigateToLogin();
     const minDate = (new Date('1/1/0001'));
     const maxDate = (new Date('12/30/9999'));
@@ -139,8 +139,9 @@ export class ChannelService {
         const searchParams = new SearchParams();
         searchParams.start_date = new Date();
         searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 15);
+        searchParams.channel_name = channel.name;
 
-        this.getClips(channel, searchParams).subscribe((response: Array<Clip>) => {
+        this.getClips(searchParams).subscribe((response: Array<Clip>) => {
           response.forEach(clip => {
             newDisplayedClips.push(new ClipDisplay(clip, channel.id));
           });
@@ -158,8 +159,9 @@ export class ChannelService {
       const searchParams = new SearchParams();
       searchParams.start_date = new Date();
       searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 1);
+      searchParams.channel_name = channel.name;
 
-      this.getClips(channel, searchParams).subscribe((response: Array<Clip>) => {
+      this.getClips(searchParams).subscribe((response: Array<Clip>) => {
         response.forEach(clip => {
           newDisplayedClips = newDisplayedClips.concat(
             new ClipDisplay(clip, channel.id)
