@@ -84,13 +84,13 @@ export class ChannelService {
     return filteredArray;
   }
 
-  updateClip(clipId: number, revisedText: string): void {
+  updateClip(clipId: number, revisedText: string): Observable<any> {
     this.authService.checkAndNavigateToLogin();
     if (clipId === undefined || revisedText === undefined) return null;
 
     let body = new HttpParams().set('revised_text', revisedText);
     let headers = this.authService.getAuthorizationHeader().set('Content-Type', 'application/x-www-form-urlencoded');
-    this.http.patch(this.clipsUrl + '/' + clipId + '/revised_text', body, { headers: headers }).subscribe((v) => console.log(v));
+    return this.http.patch(this.clipsUrl + '/' + clipId + '/revised_text', body, { headers: headers });
   }
 
   getChannels(search: string): Observable<Array<Channel>> {
@@ -126,6 +126,11 @@ export class ChannelService {
     }
   }
 
+  ReinitalizeService(): void {
+    this.initalizeChannels();
+    this.initalized = true;
+  }
+
   initalizeChannels(): void {
     this.getSubscribedChannels().subscribe(channels => {
       let newSubscribedChannels = [];
@@ -134,6 +139,7 @@ export class ChannelService {
 
       this.updateLikedClips();
 
+      this.displayedClips = [];
       let newDisplayedClips = [];
       this.subscribedChannels.forEach((channel) => {
         const searchParams = new SearchParams();

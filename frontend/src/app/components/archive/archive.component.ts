@@ -94,7 +94,10 @@ export class ArchiveComponent implements OnInit {
 
   saveCorrection(clipDisplay: ClipDisplay): void {
     clipDisplay.editing = false;
-    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.clip.text);
+    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.displayed_text).subscribe(() => {
+      this.channelService.ReinitalizeService();
+      this.getClips();
+    });
   }
 
   playClip(clipDisplay: ClipDisplay): void {
