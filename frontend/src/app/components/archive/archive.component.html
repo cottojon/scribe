@@ -64,16 +64,19 @@
           </div>
           <div class="card-footer">
             <span class="fa fa-user"></span>&nbsp;Speaker: {{clipDisplay.clip.speaker}}&nbsp;&nbsp;&nbsp;
-            <span class="fa fa-volume-up"></span>&nbsp;Channel: {{clipDisplay.clip.channel_id}}&nbsp;&nbsp;&nbsp;
+            <span class="fa fa-volume-up"></span>&nbsp;Channel: {{clipDisplay.clip.channel.name}}&nbsp;&nbsp;&nbsp;
             <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}
             <div class="pull-right">
 
+              <!-- View in channel context Button -->
+              <button class="btn btn-primary" (click)="viewInChannel(clipDisplay)">Show Full Channel</button>
+
               <!-- Make/Save Correction Buttons -->
-              <button *ngIf="!clipDisplay.editing" class="btn btn-primary" (click)="makeCorrection(clipDisplay)">
+              <button *ngIf="!clipDisplay.editing" class="btn btn-primary" (click)="makeCorrection(clipDisplay)" style="margin-left:5px">
                 Make Correction&nbsp;
                 <span class="fa fa-edit"></span>
               </button>
-              <button *ngIf="clipDisplay.editing" class="btn btn-success" (click)="saveCorrection(clipDisplay)">
+              <button *ngIf="clipDisplay.editing" class="btn btn-success" (click)="saveCorrection(clipDisplay)" style="margin-left:5px">
                 Save Correction&nbsp;
                 <span class="fa fa-edit"></span>
               </button>
