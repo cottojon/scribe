@@ -89,7 +89,7 @@
           <input [(ngModel)]="channelSearchInput" (keyup.enter)="searchForChannel()" name="channelSearchInput"
             type="text" class="form-control" placeholder="Search Channels">
           <div class="input-group-append">
-            <button class="btn btn-primary" type="button" (click)="searchForChannel()">
+            <button class="btn btn-secondary" type="button" (click)="searchForChannel()">
               <span class="fa fa-search"></span>&nbsp;Search </button>
           </div>
         </div>
@@ -107,9 +107,17 @@
         <tbody>
           <tr *ngFor="let channel of channelSearchResults">
             <td>{{channel.name}}</td>
-            <td>
-              <button class="btn btn-primary" (click)="addChannel(channel)">
-                <span class="fa fa-plus"></span>&nbsp;Add</button>
+            <td>               
+
+              <div *ngIf="isActive(channel); else elseBlock">
+                <button class="btn btn-secondary" (click)="removeChannel(channel)">
+                  <span class="fa fa-trash-o"></span>&nbsp;Remove</button>
+              </div>
+              <ng-template #elseBlock>
+                <button class="btn btn-primary" (click)="addChannel(channel)">
+                    <span class="fa fa-plus"></span>&nbsp;Add</button>
+              </ng-template>
+
             </td>
           </tr>
         </tbody>

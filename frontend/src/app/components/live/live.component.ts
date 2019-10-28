@@ -116,6 +116,16 @@ export class LiveComponent implements OnInit {
     this.activeChannels = this.addedChannels.filter((_, i) => i >= idx && i < idx + maxDisplayedChannels);
   }
 
+  isActive(channel: Channel): boolean {
+    let idx = this.addedChannels.findIndex(x => x.id === channel.id);
+
+    if(idx === -1)
+      return false;
+    else
+      return true;
+    //return idx === -1 ? false : true; 
+  }
+
   searchForChannel(): void {
     this.channelService.getChannels(this.channelSearchInput)
       .subscribe(
