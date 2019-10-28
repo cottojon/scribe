@@ -108,4 +108,13 @@ export class ArchiveComponent implements OnInit {
     audio.load();
     audio.play();
   }
+
+  viewInChannel(clipDisplay: ClipDisplay): void {
+    this.text = '';
+    this.speaker = '';
+    this.start_date = undefined;
+    this.end_date = undefined;
+    this.channel_name = clipDisplay.clip.channel.name;
+    this.getClips();
+  }
 }
