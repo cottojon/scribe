@@ -3,4 +3,6 @@ To build the docker image (when you make changes):
 docker build . -t kepter/scribe
 
 To run docker image:
-docker run -p 80:80 kepter/scribe -v hostpath:containerpath
+docker run -p 80:80 --mount type=bind,src="C:/Users/Kepter/Documents/Schoolwork/SD2/scribe/dev-clips",dst=/usr/src/app/dist/Scribe/assets/clips kepter/scribe
+
+NOTICE: the docker container will NOT stop when you ctrl+C to exit the console application. To stop it you must run "docker ps" and find container name, then kill it with "docker kill <container-name>"
