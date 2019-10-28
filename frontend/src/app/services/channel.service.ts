@@ -180,11 +180,8 @@ export class ChannelService {
   }
 
   updateLikedClips(): void {
-    this.likesService.getLikedClips().subscribe(x => {
-      this.likedClipsUpdates.pipe(map((likedClips) => {
-        likedClips = x;
-        return likedClips;
-      }));
+    this.likesService.getLikedClips().subscribe(likedClips => {
+      this.likedClipsUpdates.emit(likedClips);
     });
   }
 }
