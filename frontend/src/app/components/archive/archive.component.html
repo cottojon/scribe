@@ -1,34 +1,34 @@
-<div class="py-5">
-  <div class="container">
+<div>
+  <div *ngIf="clipDisplays.length == 0" class="container py-5">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header"> Search</div>
           <div class="card-body">
-              <div class="form-group">
-                <label>
-                  <span class="fa fa-comment"></span>&nbsp;Text</label>
-                <input [(ngModel)]="text" type="text" class="form-control" placeholder="Text"> </div>
-              <div class="form-group">
-                <label>
-                  <span class="fa fa-user"></span>&nbsp;Speaker</label>
-                <input [(ngModel)]="speaker" type="text" class="form-control" placeholder="Speaker"> </div>
-              <div class="form-group">
-                <label>
-                  <span class="fa fa-volume-up"></span>&nbsp;Channel</label>
-                <input [(ngModel)]="channel_name" type="text" class="form-control" placeholder="Channel"> </div>
-              <div class="form-group">
-                <label>
-                  <span class="fa fa-calendar"></span>&nbsp;Date/Time Range</label>
-                <div class="row">
-                  <div class="col">
-                    <input [(ngModel)]="start_date" class="form-control" placeholder="Start"> </div>&nbsp;-&nbsp;
-                  <div class="col">
-                    <input [(ngModel)]="end_date" class="form-control" placeholder="End"> </div>
-                </div>
+            <div class="form-group">
+              <label>
+                <span class="fa fa-comment"></span>&nbsp;Text</label>
+              <input [(ngModel)]="text" type="text" class="form-control" placeholder="Text"> </div>
+            <div class="form-group">
+              <label>
+                <span class="fa fa-user"></span>&nbsp;Speaker</label>
+              <input [(ngModel)]="speaker" type="text" class="form-control" placeholder="Speaker"> </div>
+            <div class="form-group">
+              <label>
+                <span class="fa fa-volume-up"></span>&nbsp;Channel</label>
+              <input [(ngModel)]="channel_name" type="text" class="form-control" placeholder="Channel"> </div>
+            <div class="form-group">
+              <label>
+                <span class="fa fa-calendar"></span>&nbsp;Date/Time Range</label>
+              <div class="row">
+                <div class="col">
+                  <input [(ngModel)]="start_date" class="form-control" placeholder="Start"> </div>&nbsp;-&nbsp;
+                <div class="col">
+                  <input [(ngModel)]="end_date" class="form-control" placeholder="End"> </div>
               </div>
-              <button (click)="getClips()" class="btn btn-primary pull-right">
-                <span class="fa fa-search"></span>&nbsp;Search</button>
+            </div>
+            <button (click)="getClips()" class="btn btn-primary pull-right">
+              <span class="fa fa-search"></span>&nbsp;Search</button>
           </div>
         </div>
         <br>
@@ -37,52 +37,55 @@
   </div>
 </div>
 
-<div *ngIf="clipDisplays.length > 0" class="offset-md-1 col-md-10">
-  <div class="card">
-    <div class="card-header"> Search Results <button (click)="getClips()" class="pull-right btn btn-primary"><span class="fa fa-refresh"></span></button></div>
-    <div class="card-body">
-      <div class="">
-        <div class="" style="max-height:70vh; overflow-y: scroll;">
-
-          <!-- Display details for each clip -->
-
-          <div *ngFor="let clipDisplay of clipDisplays">
-
-            <div class="card bg-secondary" style="margin-bottom:10px">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-lg-1 d-none d-lg-block">
-                    <img class="img" style="width:100%" src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
-                  </div>
-                  <div class="col-12 col-lg-11">
-                    <textarea *ngIf="clipDisplay.editing" class="form-control" [(ngModel)]="clipDisplay.clip.text"></textarea>
-                    <div *ngIf="!clipDisplay.editing">{{clipDisplay.clip.text}}</div>
-                  </div>
-                </div>
+<div *ngIf="clipDisplays.length > 0" class="offset-md-1 col-md-10 results-container">
+  <div class="card" style="height: 100%">
+    <div class="card-header"> Search Results
+      <div class="float-right">
+        <button (click)="clearResults()" class="btn btn-primary px-2">New Search</button>
+        <button (click)="getClips()" class="btn btn-primary px-2" style="margin-left:5px"><span
+            class="fa fa-refresh"></span></button>
+      </div>
+    </div>
+    <div class="card-body" style="overflow-y: auto;">
+      <div *ngFor="let clipDisplay of clipDisplays">
+        <div class="card bg-white">
+          <div class="card-body" style="overflow-y: auto;">
+            <div class="row">
+              <div class="col-lg-1 d-none d-lg-block">
+                <img class="img" style="width:100%"
+                  src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
               </div>
-              <div class="card-footer">
-                <span class="fa fa-user"></span>&nbsp;Speaker: {{clipDisplay.clip.speaker}}&nbsp;&nbsp;&nbsp;
-                <span class="fa fa-volume-up"></span>&nbsp;Channel: {{clipDisplay.clip.channel_id}}&nbsp;&nbsp;&nbsp;
-                <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}
-                <div class="pull-right">
-
-                  <!-- Make/Save Correction Buttons -->
-                  <button *ngIf="!clipDisplay.editing" class="btn btn-primary" (click)="makeCorrection(clipDisplay)"> Make Correction&nbsp;
-                    <span class="fa fa-edit"></span>
-                  </button>
-                  <button *ngIf="clipDisplay.editing" class="btn btn-success" (click)="saveCorrection(clipDisplay)"> Save Correction&nbsp;
-                    <span class="fa fa-edit"></span>
-                  </button>
-
-                  <!-- Play Clip Button -->
-                  <button class="btn btn-primary" (click)="playClip(clipDisplay)" style="margin-left:5px">Play &nbsp;
-                    <span class="fa fa-play"></span>
-                  </button>
-
-                </div>
+              <div class="col-12 col-lg-11">
+                <textarea *ngIf="clipDisplay.editing" class="form-control"
+                  [(ngModel)]="clipDisplay.clip.text"></textarea>
+                <div *ngIf="!clipDisplay.editing">{{clipDisplay.clip.text}}</div>
               </div>
             </div>
+          </div>
+          <div class="card-footer">
+            <span class="fa fa-user"></span>&nbsp;Speaker: {{clipDisplay.clip.speaker}}&nbsp;&nbsp;&nbsp;
+            <span class="fa fa-volume-up"></span>&nbsp;Channel: {{clipDisplay.clip.channel.name}}&nbsp;&nbsp;&nbsp;
+            <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}
+            <div class="pull-right">
 
+              <!-- View in channel context Button -->
+              <button class="btn btn-primary" (click)="viewInChannel(clipDisplay)">Show Full Channel</button>
+
+              <!-- Make/Save Correction Buttons -->
+              <button *ngIf="!clipDisplay.editing" class="btn btn-primary" (click)="makeCorrection(clipDisplay)" style="margin-left:5px">
+                Make Correction&nbsp;
+                <span class="fa fa-edit"></span>
+              </button>
+              <button *ngIf="clipDisplay.editing" class="btn btn-success" (click)="saveCorrection(clipDisplay)" style="margin-left:5px">
+                Save Correction&nbsp;
+                <span class="fa fa-edit"></span>
+              </button>
+
+              <!-- Play Clip Button -->
+              <button class="btn btn-primary" (click)="playClip(clipDisplay)" style="margin-left:5px">Play &nbsp;
+                <span class="fa fa-play"></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

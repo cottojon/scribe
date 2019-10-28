@@ -7,7 +7,7 @@ import { Observable, Subscription, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { SubscribedChannel } from '../classes/subscribed-channel';
 import { ClipDisplay } from '../classes/clip-display';
@@ -65,29 +65,32 @@ export class ChannelService {
         parameters.end_date = maxDate;
       }
     }
-    return this.http.get<Array<Clip>>(this.clipsUrl, {
+
+    let filteredArray: EventEmitter<Array<Clip>> = new EventEmitter();
+
+    let query = this.http.get<Array<Clip>>(this.clipsUrl, {
       headers: this.authService.getAuthorizationHeader(),
       params: {
         text: (parameters.text === undefined ? '' : parameters.text),
         speaker: (parameters.speaker === undefined ? '' : parameters.speaker),
-        start_date: parameters.start_date.toJSON(),
-        end_date: (parameters.end_date.toString() === 'Invalid Date' ? maxDate.toJSON() : parameters.end_date.toJSON())
+        channel_name: (parameters.channel_name === undefined ? '' : parameters.channel_name)
       }
     });
+
+    query.subscribe((clips) => {
+      filteredArray.emit(clips.filter((clip) => new Date(clip.created_at) >= parameters.start_date && new Date(clip.created_at) <= parameters.end_date));
+    });
+
+    return filteredArray;
   }
 
-  saveClip(clip: Clip) {
+  updateClip(clipId: number, revisedText: string): void {
     this.authService.checkAndNavigateToLogin();
-    return this.http.put(this.clipsUrl, {
-      'text': clip.text.toString(),
-      'id': clip.id.toString()
-    })
-      .subscribe(data => {
-        console.log('PUT Request is successful ', data);
-      },
-        error => {
-          console.log('Error', error);
-        });
+    if (clipId === undefined || revisedText === undefined) return null;
+
+    let body = new HttpParams().set('revised_text', revisedText);
+    let headers = this.authService.getAuthorizationHeader().set('Content-Type', 'application/x-www-form-urlencoded');
+    this.http.patch(this.clipsUrl + '/' + clipId + '/revised_text', body, { headers: headers }).subscribe((v) => console.log(v));
   }
 
   getChannels(search: string): Observable<Array<Channel>> {
@@ -136,8 +139,6 @@ export class ChannelService {
         const searchParams = new SearchParams();
         searchParams.start_date = new Date();
         searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 15);
-
-        console.log(searchParams);
 
         this.getClips(channel, searchParams).subscribe((response: Array<Clip>) => {
           response.forEach(clip => {

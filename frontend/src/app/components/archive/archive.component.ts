@@ -36,11 +36,29 @@ export class ArchiveComponent implements OnInit {
     this.clipDisplays = [];
   }
 
-  getClips(): void {
-    let newClipDisplays: ClipDisplay[] = [];
+  clearResults(): void {
+    this.clipDisplays = [];
+  }
 
-    const channel = new Channel();
+  getClips(): void {
+
+    let channel = new Channel();
     channel.name = this.channel_name;
+
+    let searchParams = new SearchParams();
+    searchParams.text = this.text;
+    searchParams.channel_name = this.channel_name;
+    searchParams.speaker = this.speaker;
+    searchParams.start_date = new Date(this.start_date);
+    searchParams.end_date = new Date(this.end_date);
+
+    let newClipDisplays: ClipDisplay[] = [];
+    this.channelService.getClips(channel, searchParams).subscribe(clips => {
+      clips.forEach(clip => {
+        newClipDisplays.push(new ClipDisplay(clip, clip.channelId));
+      });
+      this.clipDisplays = newClipDisplays;
+    });
     /*
     if (channel !== null) {
       const searchParams = new SearchParams();
@@ -80,7 +98,8 @@ export class ArchiveComponent implements OnInit {
 
   saveCorrection(clipDisplay: ClipDisplay): void {
     clipDisplay.editing = false;
-    //this.clipService.saveClip(clipDisplay.clip);
+    console.log("Writing update of text = " + clipDisplay.clip.text);
+    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.clip.text);
   }
 
   playClip(clipDisplay: ClipDisplay): void {
@@ -88,5 +107,14 @@ export class ArchiveComponent implements OnInit {
     audio.src = ('../../../assets/clips/' + clipDisplay.clip.path_to_file.toString());
     audio.load();
     audio.play();
+  }
+
+  viewInChannel(clipDisplay: ClipDisplay): void {
+    this.text = '';
+    this.speaker = '';
+    this.start_date = undefined;
+    this.end_date = undefined;
+    this.channel_name = clipDisplay.clip.channel.name;
+    this.getClips();
   }
 }
