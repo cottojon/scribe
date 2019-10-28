@@ -7,7 +7,7 @@ import { Observable, Subscription, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { SubscribedChannel } from '../classes/subscribed-channel';
 import { ClipDisplay } from '../classes/clip-display';
@@ -67,7 +67,7 @@ export class ChannelService {
     }
 
     let filteredArray: EventEmitter<Array<Clip>> = new EventEmitter();
-    
+
     let query = this.http.get<Array<Clip>>(this.clipsUrl, {
       headers: this.authService.getAuthorizationHeader(),
       params: {
@@ -84,18 +84,13 @@ export class ChannelService {
     return filteredArray;
   }
 
-  saveClip(clip: Clip) {
+  updateClip(clipId: number, revisedText: string): void {
     this.authService.checkAndNavigateToLogin();
-    return this.http.put(this.clipsUrl, {
-      'text': clip.text.toString(),
-      'id': clip.id.toString()
-    })
-      .subscribe(data => {
-        console.log('PUT Request is successful ', data);
-      },
-        error => {
-          console.log('Error', error);
-        });
+    if (clipId === undefined || revisedText === undefined) return null;
+
+    let body = new HttpParams().set('revised_text', revisedText);
+    let headers = this.authService.getAuthorizationHeader().set('Content-Type', 'application/x-www-form-urlencoded');
+    this.http.patch(this.clipsUrl + '/' + clipId + '/revised_text', body, { headers: headers }).subscribe((v) => console.log(v));
   }
 
   getChannels(search: string): Observable<Array<Channel>> {
