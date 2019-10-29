@@ -26,7 +26,7 @@ RUN npm run build
 #copy the config(yml) folder for database, etc
 COPY config ./dist/
 #copy over into container
-COPY wait-for-it.sh ./dist/
+# COPY wait-for-it.sh ./dist/
 
 #change working directory
 WORKDIR ./dist
