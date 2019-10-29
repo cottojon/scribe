@@ -22,7 +22,7 @@
 
         <p>
             <ul>
-                <li v-for='msg of messages'>{{msg}}</li>
+                <li v-for='clip of clips'>{{clip.text}}</li>
             </ul>
         </p>
     </div>
@@ -35,7 +35,8 @@
             data: {
                 title: 'WebSockets Tester',
                 text: '', //message text to be sent in the input
-                messages: [],
+                messages: new Map(), //messages map
+                clips: [], //array to display clips
                 socket: {chat: null}, //we will have two sockets this time to deal with the two namespaces we will create
 
 
@@ -46,8 +47,13 @@
                     this.text = ''; //clear input
                 },
                 receivedChatMessage(msg) {
-                    this.
-                    this.messages.push(msg); // add to array
+                    //delete duplicate clip id
+                    this.messages.delete(msg.id);
+                    // add clip id
+                    this.messages.set(msg.id, msg);
+
+                    //update clip
+                    this.clips = Array.from(this.messages.values());
 
                 }
             },
