@@ -19,4 +19,4 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/dist/Scribe'));
 
 const server = http.createServer(app);
-server.listen(port,() => console.log('Running...'));
+server.listen(port,() => console.log(`Running on port ${port}...`));

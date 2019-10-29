@@ -3,10 +3,10 @@
 from __future__ import absolute_import, division, print_function
 from deepspeech import Model
 from json import loads
-from kafka import KafkaConsumer 
+from kafka import KafkaConsumer
 from timeit import default_timer as timer
 
-import argparse, shlex, os, pg8000, subprocess, sys, time, wave
+import argparse, datetime, shlex, os, pg8000, subprocess, sys, time, wave
 import numpy as np
 
 try:
@@ -47,18 +47,17 @@ def metadata_to_string(metadata):
 def notify_db(filename, transcription):
     currTime = int(time.time())
     conn = pg8000.connect(user=username, password=passw, host=dbhost, port=dbport, database=database)
-	cursor = conn.cursor()
+    cursor = conn.cursor()
 
-    cursor.execute("""
-        INSERT INTO clip (text, revised_text, speaker, created_at, revised_at, revised, path_to_file, channel_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """ , (transcription, '', '', currTime, currTime, False, filename, chanID)
-    )
+    currTime = datetime.datetime.utcfromtimestamp(currTime).strftime("%Y-%m-%d %H:%M:%S")
+
+    cursor.execute("INSERT INTO clip (text, speaker, created_at, revised_at, revised, path_to_file, channel_id) VALUES (%s, %s, %s, %s, %s, %s, %s)", (transcription, 1, currTime, currTime, False, filename, chanID))
 
     conn.commit()
     cursor.close()
     conn.close()
 
-	print(str([filename, transcription]))
+    print(str([filename, transcription]))
 
 def transcribe(ds, audioFile):
     fin = wave.open(audioFile, 'rb')
