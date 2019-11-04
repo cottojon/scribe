@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, InternalServerErrorException, ConflictException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
@@ -54,6 +54,20 @@ export class AuthService {
         }
 
         return;
+    }
+
+    //get a username by just id
+    async getUsernameById(id: number): Promise<{username}>{
+        //grab user by id
+        const user = await this.userRepository.findOne({ id });
+
+        //check if the user exist and then validate the user password
+        if (user) {
+            return {username: user.username};
+        } else {
+            throw new ConflictException('User does not exist'); //status code 409
+
+        }
     }
 
 

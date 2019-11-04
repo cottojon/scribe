@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UsePipes, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Get, Res } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Get, Res, ParseIntPipe, Param } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { GetUser } from './get-user.decorator';
@@ -56,8 +56,15 @@ export class AuthController {
         delete user.salt;
         delete user.password;
         delete user.image;
-        delete user.id;
         return user;
+    }
+
+
+    //get username by userId
+    @Get('/:id')
+    @UseGuards(AuthGuard())
+    getUsernameById(@Param('id', ParseIntPipe) id: number): Promise<{username}> {
+        return this.authService.getUsernameById(id);
     }
 
 
