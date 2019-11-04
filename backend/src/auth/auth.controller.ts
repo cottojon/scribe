@@ -1,10 +1,11 @@
-import { Controller, Post, Body, UsePipes, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Get, Res } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Get, Res, ParseIntPipe, Param } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { GetUser } from './get-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from './user.entity';
+import { ChangeAuthCredentialsDto } from './dto/change-auth-credentials.dto';
 
 
 var fs = require('fs');  // file system
@@ -55,16 +56,24 @@ export class AuthController {
         delete user.salt;
         delete user.password;
         delete user.image;
-        delete user.id;
         return user;
+    }
+
+
+    //get username by userId
+    @Get('/:id')
+    @UseGuards(AuthGuard())
+    getUsernameById(@Param('id', ParseIntPipe) id: number): Promise<{username}> {
+        return this.authService.getUsernameById(id);
     }
 
 
     // reset the password
     // currently only a new password needs t be provided
     @Post('/password_reset')
-    changePassword(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<void>{
-        return this.authService.changePassword(authCredentialsDto);
+    @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
+    changePassword(@Body(ValidationPipe) changeAuthCredentialsDto: ChangeAuthCredentialsDto, @GetUser() user: User): Promise<void>{
+        return this.authService.changePassword(changeAuthCredentialsDto, user);
     }
 
 }
