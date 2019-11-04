@@ -5,6 +5,7 @@ import { GetUser } from './get-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from './user.entity';
+import { ChangeAuthCredentialsDto } from './dto/change-auth-credentials.dto';
 
 
 var fs = require('fs');  // file system
@@ -63,8 +64,9 @@ export class AuthController {
     // reset the password
     // currently only a new password needs t be provided
     @Post('/password_reset')
-    changePassword(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<void>{
-        return this.authService.changePassword(authCredentialsDto);
+    @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
+    changePassword(@Body(ValidationPipe) changeAuthCredentialsDto: ChangeAuthCredentialsDto, @GetUser() user: User): Promise<void>{
+        return this.authService.changePassword(changeAuthCredentialsDto, user);
     }
 
 }

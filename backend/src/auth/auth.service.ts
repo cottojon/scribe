@@ -5,6 +5,7 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import { User } from './user.entity';
+import { ChangeAuthCredentialsDto } from './dto/change-auth-credentials.dto';
 
 @Injectable()
 export class AuthService {
@@ -56,7 +57,7 @@ export class AuthService {
     }
 
 
-    async changePassword(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-        return await this.userRepository.changePassword(authCredentialsDto);
+    async changePassword(changeAuthCredentialsDto: ChangeAuthCredentialsDto, user: User): Promise<void> {
+        return await this.userRepository.changePassword(changeAuthCredentialsDto, user);
     }
 }
