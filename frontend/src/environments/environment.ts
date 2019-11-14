@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  api_endpoint: "http://scribe.us-east-2.elasticbeanstalk.com"
+  api_endpoint: "http://scribe.us-east-2.elasticbeanstalk.com",
+  ws_url: 'http://localhost:3000/chat' //will eventually be the ===>  api_endpoint/chat
 };
+
 
 /*
  * In development mode, to ignore zone related error stack frames such as
