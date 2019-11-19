@@ -4,7 +4,6 @@ import { AuthCredentialsDto } from "./dto/auth-credentials.dto";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 import * as bcrypt from 'bcryptjs';
 import { ChangeAuthCredentialsDto } from "./dto/change-auth-credentials.dto";
-import { unaryExpression } from "@babel/types";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
