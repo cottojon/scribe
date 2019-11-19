@@ -42,11 +42,22 @@ export class AuthController {
     // 
     @Get('/image')
     @UseGuards(AuthGuard()) // guard/require authorization using jwt strategy class
-    getUserImage(@GetUser() user: User, @Res() res) {
-        res.contentType('image/jpeg'); // we only respond jpeg images
+    getUserImage(@GetUser() user: User, @Res() res): Promise<void> {
+        res.contentType('image/jpeg'); // we only respond jpeg/png images
         res.send(user.image);
+        return;
     }
 
+    //get user image by id
+    //get username by userId
+    @Get('/image/:id')
+    @UseGuards(AuthGuard())
+    async getImageById(@Param('id', ParseIntPipe) id: number, @Res() res): Promise<void> {
+        res.contentType('image/jpeg'); // we only respond jpeg/png image
+        console.log(await this.authService.getImageById(id));
+        res.send(await this.authService.getImageById(id));
+        return;
+    }
 
 
     // get username from accessToken ..

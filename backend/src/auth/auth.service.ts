@@ -70,6 +70,19 @@ export class AuthService {
         }
     }
 
+    async getImageById(id: number): Promise<Buffer>{
+        //grab user by id
+        const user = await this.userRepository.findOne({ id });
+
+        //check if the user exist and then validate the user password
+        if (user) {
+            return user.image;
+        } else {
+            throw new ConflictException('User does not exist'); //status code 409
+
+        }
+    }
+
 
     async changePassword(changeAuthCredentialsDto: ChangeAuthCredentialsDto, user: User): Promise<void> {
         return await this.userRepository.changePassword(changeAuthCredentialsDto, user);
