@@ -124,7 +124,7 @@ export class ChannelService {
     if (!this.initalized && this.authService.checkToken()) {
       this.initalizeChannels();
       this.realtimeClipService.clips.subscribe((clip: Clip) => {
-        console.log("Recieved Clip: ");
+        console.log("Recieved Clip via Websocket: ");
         console.log(clip);
         this.displayedClipsUpdates.emit(this.displayedClips.concat(new ClipDisplay(clip, clip.channelId)));
 
@@ -166,7 +166,7 @@ export class ChannelService {
   }
 
   refreshSubscribedChannels(): void {
-    console.log("REFRESH");
+    console.log("POLLING FOR CLIPS");
     this.updateLikedClips();
 
     let newDisplayedClips = [];
