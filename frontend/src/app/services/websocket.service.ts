@@ -16,6 +16,9 @@ export class WebsocketService {
   connect() : Rx.Subject<MessageEvent> {
     this.socket = io(environment.ws_url);
 
+    if(this.socket)
+      console.log("websocket connected" , this.socket);
+
 
     //create an observer and observable for our subject
 
@@ -28,6 +31,7 @@ export class WebsocketService {
 
       return () => {
         this.socket.disconnect(); //disconnect
+        console.log('websocket disconnected');
       }
     });
 
