@@ -14,6 +14,7 @@ import { ClipDisplay } from '../classes/clip-display';
 import { LikedClip } from '../classes/liked-clip';
 import { LikesService } from './likes.service';
 import { EventEmitter } from '@angular/core';
+import { RealtimeService } from './realtime.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class ChannelService {
   constructor(
     private http: HttpClient,
     private authService: AuthenticationService,
-    private likesService: LikesService) {
+    private likesService: LikesService,
+    private realtimeClipService: RealtimeService) {
     this.subscribedChannelsUpdates.subscribe(channels => this.subscribedChannels = channels);
     this.displayedClipsUpdates.subscribe(clips => this.displayedClips = clips);
     this.likedClipsUpdates.subscribe(likedClips => this.likedClips = likedClips);
@@ -121,7 +123,13 @@ export class ChannelService {
   initalizeServiceIfNeeded(): void {
     if (!this.initalized && this.authService.checkToken()) {
       this.initalizeChannels();
-      this.clipRefreshTrigger = interval(this.clipRefreshRateMs).subscribe(() => this.refreshSubscribedChannels());
+      this.realtimeClipService.clips.subscribe((clip: Clip) => {
+        console.log("Recieved Clip: ");
+        console.log(clip);
+        this.displayedClipsUpdates.emit(this.displayedClips.concat(new ClipDisplay(clip, clip.channelId)));
+
+      });
+      // this.clipRefreshTrigger = interval(this.clipRefreshRateMs).subscribe(() => this.refreshSubscribedChannels());
       this.initalized = true;
     }
   }
@@ -151,13 +159,14 @@ export class ChannelService {
           response.forEach(clip => {
             newDisplayedClips.push(new ClipDisplay(clip, channel.id));
           });
-          this.displayedClipsUpdates.emit(this.displayedClips.concat(newDisplayedClips));
+          this.displayedClipsUpdates.emit(newDisplayedClips);
         });
       });
     });
   }
 
   refreshSubscribedChannels(): void {
+    console.log("REFRESH");
     this.updateLikedClips();
 
     let newDisplayedClips = [];

@@ -36,8 +36,7 @@ export class LiveComponent implements OnInit {
     private channelService: ChannelService,
     private modalService: NgbModal,
     private authService: AuthenticationService,
-    private likesService: LikesService, 
-    private realtimeClipService: RealtimeService
+    private likesService: LikesService
   ) { }
 
   ngOnInit() {
@@ -57,18 +56,6 @@ export class LiveComponent implements OnInit {
       this.channelService.likedClipsUpdates.subscribe((likedClips) => { this.likedClips = likedClips; });
       this.channelService.initalizeServiceIfNeeded();
     }
-
-
-    //the realtime service which connects to the websocket on init
-    this.realtimeClipService.clips.subscribe(msg => {
-      console.log(msg);
-    })
-  }
-
-
-  //this is just to make sure we can send messages for testing, but actual websocket messages will be sent in production
-  sendMessage() {
-    this.realtimeClipService.sendMessage("Hello Backend");
   }
 
   open(content) {

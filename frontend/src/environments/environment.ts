@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   api_endpoint: "http://scribe.us-east-2.elasticbeanstalk.com",
-  ws_url: 'http://localhost:3000/chat' //will eventually be the ===>  api_endpoint/chat
+  ws_url: 'http://scribe.us-east-2.elasticbeanstalk.com/chat'
 };
 
 

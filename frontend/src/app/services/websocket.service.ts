@@ -22,7 +22,7 @@ export class WebsocketService {
     //this observable will handle all the new messages coming from our websocket gateway
     let observable = new Observable(observer => {
       this.socket.on('chatToClient', (data) => {
-        console.log("Received Message from websocket gateway");
+        // console.log("Received Message from websocket gateway");
         observer.next(data);
       })
 
