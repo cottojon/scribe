@@ -52,7 +52,13 @@ export class LiveComponent implements OnInit {
         this.addedChannels = channels;
         this.setActiveChannelByIdx(this.lastActiveIdx);
       });
-      this.channelService.displayedClipsUpdates.subscribe((clips) => { this.clipDisplays = clips; });
+
+      this.channelService.displayedClipsUpdates.subscribe((clips) => { 
+        this.clipDisplays = clips.sort((a, b) => {
+          return (a.created_at > b.created_at) ? 1 : ((a.created_at < b.created_at) ? -1 : (a.clip.id - b.clip.id)); 
+        })
+      });
+
       this.channelService.likedClipsUpdates.subscribe((likedClips) => { this.likedClips = likedClips; });
       this.channelService.initalizeServiceIfNeeded();
     }

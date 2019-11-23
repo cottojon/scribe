@@ -22,19 +22,19 @@
                 style="margin-bottom: 5px;">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-1 d-none d-lg-block">
-                      <img class="img" style="width:50px"
+                    <div class="col d-none d-lg-block" style="flex: 0 0 60px;">
+                      <img class="img" style="width: 60px;"
                         src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
                     </div>
-                    <div class="col-11 pl-3">
+                    <div class="col pl-0">
                       <textarea *ngIf="clipDisplay.editing" class="form-control"
                         [(ngModel)]="clipDisplay.displayed_text"></textarea>
                       <div *ngIf="!clipDisplay.editing">{{clipDisplay.displayed_text}}</div>
                       <div *ngIf="clipDisplay.isRevised && !clipDisplay.displayingOriginalText" style="font-size: 12px">
-                        (Edited, <span class="fake-link" (click)="showOriginalText(clipDisplay)">show original</span>)
+                        (Edited, <span class="btn-link" (click)="showOriginalText(clipDisplay)">show original</span>)
                       </div>
                       <div *ngIf="clipDisplay.isRevised && clipDisplay.displayingOriginalText" style="font-size: 12px">
-                        (Edited, <span class="fake-link" (click)="showRevisedText(clipDisplay)">show revised</span>)
+                        (Edited, <span class="btn-link" (click)="showRevisedText(clipDisplay)">show revised</span>)
                       </div>
                     </div>
                   </div>

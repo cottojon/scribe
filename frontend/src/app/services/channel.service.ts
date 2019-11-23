@@ -126,8 +126,9 @@ export class ChannelService {
       this.realtimeClipService.clips.subscribe((clip: Clip) => {
         console.log("Recieved Clip via Websocket: ");
         console.log(clip);
-        this.displayedClipsUpdates.emit(this.displayedClips.concat(new ClipDisplay(clip, clip.channelId)));
 
+        let newDisplayedClips = this.displayedClips.filter((displayedClip) => displayedClip.clip.id !== clip.id).concat(new ClipDisplay(clip, clip.channelId));
+        this.displayedClipsUpdates.emit(newDisplayedClips);
       });
       // this.clipRefreshTrigger = interval(this.clipRefreshRateMs).subscribe(() => this.refreshSubscribedChannels());
       this.initalized = true;

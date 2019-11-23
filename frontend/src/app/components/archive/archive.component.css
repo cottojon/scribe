@@ -2,9 +2,3 @@
     height: calc(100vh - 110px);
     overflow: hidden;
 }
-
-.fake-link{
-    cursor:pointer;
-    color:blue;
-    text-decoration:underline;
-}
