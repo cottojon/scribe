@@ -18,11 +18,12 @@
           <div class="card bg-light mb-3" style="height: 100%">
             <div class="card-header channel-header" [ngClass]="getColor(channel.id)">{{channel.name}}</div>
             <div class="card-body bg-light" style="overflow-y: auto;">
+
               <div *ngFor="let clipDisplay of getCurrentClipsForChannel(channel.id)" class="card bg-light"
                 style="margin-bottom: 5px;">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col d-none d-lg-block" style="flex: 0 0 60px;">
+                    <div class="col" style="flex: 0 0 60px;">
                       <img class="img" style="width: 60px;"
                         src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
                     </div>
@@ -44,7 +45,7 @@
                   <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}&nbsp;
                   <div class="pull-right">
 
-                    <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-primary clip-btn"
+                    <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-secondary clip-btn"
                       (click)="this.likeClip(clipDisplay)">
                       <span class="fa fa-thumbs-up"></span>
                     </button>
@@ -53,7 +54,7 @@
                       <span class="fa fa-thumbs-up"></span>
                     </button>
 
-                    <button *ngIf="!clipDisplay.editing" class="btn btn-primary clip-btn"
+                    <button *ngIf="!clipDisplay.editing" class="btn btn-secondary clip-btn"
                       (click)="makeCorrection(clipDisplay)">
                       <span class="fa fa-edit"></span>
                     </button>
@@ -62,7 +63,7 @@
                       <span class="fa fa-edit"></span>
                     </button>
 
-                    <button class="btn btn-primary clip-btn" (click)="playClip(clipDisplay)">
+                    <button class="btn btn-secondary clip-btn" (click)="playClip(clipDisplay)">
                       <span class="fa fa-play"></span>
                     </button>
                   </div>
@@ -70,7 +71,7 @@
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-secondary" (click)="removeChannel(channel)">
+              <button class="btn btn-danger" (click)="removeChannel(channel)">
                 <span class="fa fa-trash-o"></span>
               </button>
             </div>
@@ -124,11 +125,11 @@
             <td>               
 
               <div *ngIf="isActive(channel); else elseBlock">
-                <button class="btn btn-secondary" (click)="removeChannel(channel)">
+                <button class="btn btn-danger" (click)="removeChannel(channel)">
                   <span class="fa fa-trash-o"></span>&nbsp;Remove</button>
               </div>
               <ng-template #elseBlock>
-                <button class="btn btn-primary" (click)="addChannel(channel)">
+                <button class="btn btn-secondary" (click)="addChannel(channel)">
                     <span class="fa fa-plus"></span>&nbsp;Add</button>
               </ng-template>
 
@@ -139,6 +140,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="c('Save click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Save click')">Close</button>
   </div>
 </ng-template>
