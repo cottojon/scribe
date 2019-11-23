@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { SigninResponse } from '../classes/signin-response';
 import { Router } from '@angular/router';
+import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,12 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
 
   constructor(
-    private client: HttpClient,
+    private http: HttpClient,
     private router: Router) { }
 
   private token = "";
   private url = environment.api_endpoint+'/auth';
+  private loginPingUrl = this.url+"/username";
 
   signin(username: string, password: string): Observable<SigninResponse> {
     let body = new HttpParams()
@@ -26,7 +28,7 @@ export class AuthenticationService {
     let header = new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded');
 
-    let observable = this.client.post<SigninResponse>(this.url+"/signin", body.toString(), {headers: header});
+    let observable = this.http.post<SigninResponse>(this.url+"/signin", body.toString(), {headers: header});
     observable.subscribe(x => {
       this.token = x.accessToken;
     });
@@ -45,6 +47,12 @@ export class AuthenticationService {
 
   checkAndNavigateToLogin(): boolean {
     let result = this.checkToken();
+
+    this.http.get<string>(this.loginPingUrl, {headers: this.getAuthorizationHeader()}).subscribe(() => {}, (error) => {
+      console.log("Failed authorization ping, logging out");
+      this.router.navigate(['']);
+      this.token = "";
+    });
 
     if (!result) {
       this.router.navigate(['']);

@@ -4,24 +4,28 @@ import { Clip } from 'src/app/classes/clip';
 import { ClipDisplay } from 'src/app/classes/clip-display';
 import { Channel } from 'src/app/classes/channel';
 import { ChannelService } from 'src/app/services/channel.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbDateStruct, NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription, interval } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.css']
+  styleUrls: ['./archive.component.css'],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class ArchiveComponent implements OnInit {
   clipDisplays: ClipDisplay[];
+  channels: Channel[];
 
-  start_date: string;
-  end_date: string;
+  start_date: Date;
+  end_date: Date;
   channel_name: string;
   text: string;
   speaker: string;
+  any_channel: Channel;
 
   constructor(
     private channelService: ChannelService,
@@ -34,6 +38,14 @@ export class ArchiveComponent implements OnInit {
     this.authService.checkAndNavigateToLogin();
 
     this.clipDisplays = [];
+
+    this.any_channel = new Channel();
+    this.any_channel.name = "";
+    this.channels = [this.any_channel];
+
+    this.channelService.getChannels("").subscribe((channels) => {
+      this.channels = [this.any_channel].concat(channels);
+    });
   }
 
   clearResults(): void {
@@ -41,12 +53,18 @@ export class ArchiveComponent implements OnInit {
   }
 
   getClips(): void {
+
     let searchParams = new SearchParams();
     searchParams.text = this.text;
     searchParams.channel_name = this.channel_name;
     searchParams.speaker = this.speaker;
-    searchParams.start_date = new Date(this.start_date);
-    searchParams.end_date = new Date(this.end_date);
+    searchParams.start_date = (this.start_date === null || !(this.start_date instanceof Date)) ? undefined : this.start_date;
+    searchParams.end_date = (this.end_date === null || !(this.end_date instanceof Date)) ? undefined : this.end_date;
+
+    console.log("Date: "+this.start_date+" "+this.end_date);
+    console.log(this.start_date);
+    console.log(searchParams.start_date);
+    console.log(searchParams.end_date);
 
     let newClipDisplays: ClipDisplay[] = [];
     this.channelService.getClips(searchParams).subscribe(clips => {
