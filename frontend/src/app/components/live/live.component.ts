@@ -88,7 +88,7 @@ export class LiveComponent implements OnInit {
   }
 
   getMaximumDisplayedChannels(): number {
-    return Math.floor(window.innerWidth / (this.minimumChannelWidth + this.channelMargin * 2));
+    return Math.max(1, Math.floor(window.innerWidth / (this.minimumChannelWidth + this.channelMargin * 2)));
   }
 
   getMaximumChannelWidth(): number {
