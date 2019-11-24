@@ -12,6 +12,8 @@ import { FormGroup } from '@angular/forms';
 import { ClipComment } from 'src/app/classes/clip-comment';
 import { ProfileService } from 'src/app/services/profile.service';
 import { CommentsService } from 'src/app/services/comments.service';
+import { LikedClip } from 'src/app/classes/liked-clip';
+import { LikesService } from 'src/app/services/likes.service';
 
 @Component({
   selector: 'app-archive',
@@ -29,6 +31,7 @@ export class ArchiveComponent implements OnInit {
   text: string;
   speaker: string;
   any_channel: Channel;
+  likedClips: LikedClip[];
 
   constructor(
     private channelService: ChannelService,
@@ -36,13 +39,15 @@ export class ArchiveComponent implements OnInit {
     private authService: AuthenticationService,
     private router: Router,
     private profileSerivce: ProfileService,
-    private commentsService: CommentsService
+    private commentsService: CommentsService,
+    private likesService: LikesService
   ) {}
 
   ngOnInit() {
     this.authService.checkAndNavigateToLogin();
 
     this.clipDisplays = [];
+    this.likedClips = [];
 
     this.any_channel = new Channel();
     this.any_channel.name = "";
@@ -51,13 +56,34 @@ export class ArchiveComponent implements OnInit {
     this.channelService.getChannels("").subscribe((channels) => {
       this.channels = [this.any_channel].concat(channels);
     });
+
+    this.refreshLikedClips();
+  }
+
+  refreshLikedClips(): void {
+    this.likesService.getLikedClips().subscribe((likedClips) => {
+      this.likedClips = likedClips;
+    })
+  }
+
+  likeClip(clipDisplay: ClipDisplay) {
+    this.likesService.likeClip(clipDisplay.clip.id).subscribe(x => this.refreshLikedClips());
+  }
+
+  unlikeClip(clipDisplay: ClipDisplay) {
+    this.likesService.unlikeClip(clipDisplay.clip.id).subscribe(x => this.refreshLikedClips());
   }
 
   clearResults(): void {
     this.clipDisplays = [];
   }
+  
+  checkIfClipIsLiked(clipId: number): boolean {
+    return this.likedClips.some(x => x.clipId === clipId);
+  }
 
   getClips(): void {
+    this.refreshLikedClips();
 
     let searchParams = new SearchParams();
     searchParams.text = this.text;

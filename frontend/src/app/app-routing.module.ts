@@ -8,6 +8,7 @@ import { HelpComponent } from './components/help/help.component'
 
 import { MainViewComponent } from './views/main-view/main-view.component';
 import { CommonModule } from '@angular/common';
+import { LikedClipsComponent } from './components/liked-clips/liked-clips.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent},
@@ -19,6 +20,9 @@ const routes: Routes = [
   ]},
   { path: '', component: MainViewComponent, children: [
     { path: 'help', component: HelpComponent }
+  ]},
+  { path: '', component: MainViewComponent, children: [
+    { path: 'liked-clips', component: LikedClipsComponent }
   ]}
 ];
 
