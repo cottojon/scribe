@@ -15,6 +15,7 @@ import { LikedClip } from '../classes/liked-clip';
 import { LikesService } from './likes.service';
 import { EventEmitter } from '@angular/core';
 import { RealtimeService } from './realtime.service';
+import { CommentsService } from './comments.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class ChannelService {
     private http: HttpClient,
     private authService: AuthenticationService,
     private likesService: LikesService,
-    private realtimeClipService: RealtimeService) {
+    private realtimeClipService: RealtimeService,
+    private commentsService: CommentsService) {
     this.subscribedChannelsUpdates.subscribe(channels => this.subscribedChannels = channels);
     this.displayedClipsUpdates.subscribe(clips => this.displayedClips = clips);
     this.likedClipsUpdates.subscribe(likedClips => this.likedClips = likedClips);
@@ -126,8 +128,13 @@ export class ChannelService {
       this.realtimeClipService.clips.subscribe((clip: Clip) => {
         console.log("Recieved Clip via Websocket: ");
         console.log(clip);
-        this.displayedClipsUpdates.emit(this.displayedClips.concat(new ClipDisplay(clip, clip.channelId)));
 
+        // Get Comments for the new clip and emit the new clips array to the observer
+        this.commentsService.getCommentsByClipId(clip.id).subscribe((comments) => {
+          let newClipDisplay = new ClipDisplay(clip, clip.channelId, comments);
+          let newDisplayedClips = this.displayedClips.filter((displayedClip) => displayedClip.clip.id !== clip.id).concat(newClipDisplay);
+          this.displayedClipsUpdates.emit(newDisplayedClips);
+        });
       });
       // this.clipRefreshTrigger = interval(this.clipRefreshRateMs).subscribe(() => this.refreshSubscribedChannels());
       this.initalized = true;
@@ -155,16 +162,28 @@ export class ChannelService {
         searchParams.start_date.setMinutes(searchParams.start_date.getMinutes() - 15);
         searchParams.channel_name = channel.name;
 
+        let commentRequestCounter = 0;
+        // Get clips for channel
         this.getClips(searchParams).subscribe((response: Array<Clip>) => {
           response.forEach(clip => {
-            newDisplayedClips.push(new ClipDisplay(clip, channel.id));
+
+            // Get comments for clip
+            this.commentsService.getCommentsByClipId(clip.id).subscribe((comments) => {
+              newDisplayedClips.push(new ClipDisplay(clip, channel.id, comments));
+
+              // If we have recieved all comments, emit the clips
+              commentRequestCounter++;
+              if (commentRequestCounter >= response.length){
+                this.displayedClipsUpdates.emit(newDisplayedClips);
+              }
+            });
           });
-          this.displayedClipsUpdates.emit(newDisplayedClips);
         });
       });
     });
   }
 
+  /*
   refreshSubscribedChannels(): void {
     console.log("POLLING FOR CLIPS");
     this.updateLikedClips();
@@ -187,6 +206,7 @@ export class ChannelService {
 
     });
   }
+  */
 
   updateLikedClips(): void {
     this.likesService.getLikedClips().subscribe(likedClips => {

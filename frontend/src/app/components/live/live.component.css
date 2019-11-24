@@ -34,8 +34,6 @@
     margin-right: 2px;
 }
 
-.fake-link{
-    cursor:pointer;
-    color:blue;
-    text-decoration:underline;
+.comments-btn{
+    margin-bottom: 5px;
 }

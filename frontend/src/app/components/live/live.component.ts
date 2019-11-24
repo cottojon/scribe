@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 import { LikesService } from 'src/app/services/likes.service';
 import { LikedClip } from 'src/app/classes/liked-clip';
 import { RealtimeService } from '../../services/realtime.service';
+import { CommentsService } from 'src/app/services/comments.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { ClipComment } from 'src/app/classes/clip-comment';
 
 @Component({
   selector: 'app-live',
@@ -36,7 +39,9 @@ export class LiveComponent implements OnInit {
     private channelService: ChannelService,
     private modalService: NgbModal,
     private authService: AuthenticationService,
-    private likesService: LikesService
+    private likesService: LikesService,
+    private profileSerivce: ProfileService,
+    private commentService: CommentsService
   ) { }
 
   ngOnInit() {
@@ -52,7 +57,13 @@ export class LiveComponent implements OnInit {
         this.addedChannels = channels;
         this.setActiveChannelByIdx(this.lastActiveIdx);
       });
-      this.channelService.displayedClipsUpdates.subscribe((clips) => { this.clipDisplays = clips; });
+
+      this.channelService.displayedClipsUpdates.subscribe((clips) => {
+        this.clipDisplays = clips.sort((a, b) => {
+          return (a.created_at > b.created_at) ? 1 : ((a.created_at < b.created_at) ? -1 : (a.clip.id - b.clip.id));
+        })
+      });
+
       this.channelService.likedClipsUpdates.subscribe((likedClips) => { this.likedClips = likedClips; });
       this.channelService.initalizeServiceIfNeeded();
     }
@@ -120,7 +131,7 @@ export class LiveComponent implements OnInit {
   isActive(channel: Channel): boolean {
     let idx = this.addedChannels.findIndex(x => x.id === channel.id);
 
-    if(idx === -1)
+    if (idx === -1)
       return false;
     else
       return true;
@@ -224,5 +235,43 @@ export class LiveComponent implements OnInit {
   showOriginalText(clipDisplay: ClipDisplay): void {
     clipDisplay.displayed_text = clipDisplay.clip.text;
     clipDisplay.displayingOriginalText = true;
+  }
+
+  toggleShowComments(clipDisplay: ClipDisplay): void {
+    clipDisplay.showingComments = !clipDisplay.showingComments;
+  }
+
+  toggleWritingComment(clipDisplay: ClipDisplay): void {
+    clipDisplay.writingComment = !clipDisplay.writingComment;
+    if (clipDisplay.writingComment){
+      clipDisplay.newCommentText = "";
+      clipDisplay.showingComments = true;
+    }
+  }
+
+  loadCommentUserInfo(comment: ClipComment): void {
+    if (comment.userName === null || comment.userName === undefined || comment.userName === ""){
+      this.profileSerivce.getUsernameById(comment.userId).subscribe((response) => {
+        comment.userName = response["username"];
+      });
+    }
+
+    if (!comment.profileImageLoaded && !comment.profileImageLoading) {
+      comment.profileImageLoading = true;
+      let fileReader = new FileReader();
+      this.profileSerivce.getImageByUserId(comment.userId).subscribe((raw) => {
+        if (raw && raw.size != 0) {
+          fileReader.addEventListener("load", () => { comment.profileImage = fileReader.result; comment.profileImageLoaded = true;}, false);
+          fileReader.readAsDataURL(raw);
+        }
+      });
+    }
+  }
+
+  submitComment(clipDisplay: ClipDisplay): void {
+    this.commentService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe(() => {
+      this.channelService.initalizeChannels();
+    });
+    this.toggleWritingComment(clipDisplay);
   }
 }
