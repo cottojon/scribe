@@ -6,6 +6,7 @@ import { CommentsService } from 'src/app/services/comments.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { ClipComment } from 'src/app/classes/clip-comment';
 import { LikedClip } from 'src/app/classes/liked-clip';
+import { ChannelService } from 'src/app/services/channel.service';
 
 @Component({
   selector: 'app-liked-clips',
@@ -20,7 +21,8 @@ export class LikedClipsComponent implements OnInit {
     private authService: AuthenticationService,
     private likesService: LikesService,
     private commentsService: CommentsService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private channelService: ChannelService
   ) { }
 
   ngOnInit() {
@@ -114,6 +116,25 @@ export class LikedClipsComponent implements OnInit {
   
   checkIfClipIsLiked(clipId: number): boolean {
     return this.likedClips.some(x => x.clipId === clipId);
+  }
+
+  makeCorrection(clipDisplay: ClipDisplay): void {
+    clipDisplay.editing = true;
+  }
+
+  saveCorrection(clipDisplay: ClipDisplay): void {
+    clipDisplay.editing = false;
+    this.channelService.updateClip(clipDisplay.clip.id, clipDisplay.displayed_text).subscribe(() => {
+      this.channelService.ReinitalizeService();
+      this.getClips();
+    });
+  }
+
+  playClip(clipDisplay: ClipDisplay): void {
+    const audio = new Audio();
+    audio.src = ('../../../assets/clips/' + clipDisplay.clip.path_to_file.toString());
+    audio.load();
+    audio.play();
   }
 }
 
