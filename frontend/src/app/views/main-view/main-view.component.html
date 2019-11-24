@@ -29,12 +29,15 @@
             <div class="col-sm-5 pl-3 pr-0">
               <ul class="multi-column-dropdown px-0" style="list-style-type: none">
                 <li style="display: inline-block;">
-                  <img class="img" style="width:80px" [src]="profileImage" *ngIf="profileImageLoaded; else defaultProfileImage"/>
+                  <img class="img" style="width:80px" [src]="profileImage"
+                    *ngIf="profileImageLoaded; else defaultProfileImage" />
                   <ng-template #defaultProfileImage>
-                    <img class="img" style="width:80px" src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200"/>
+                    <img class="img" style="width:80px"
+                      src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200" />
                   </ng-template>
                 </li>
-                <li style="display: inline-block;"><span class="btn-link" style="font-size: 12px" (click)="open(uploadProfileImageModal)">Upload Image</span></li>
+                <li style="display: inline-block;"><span class="btn-link" style="font-size: 12px"
+                    (click)="open(uploadProfileImageModal)">Upload Image</span></li>
               </ul>
             </div>
             <div class="col-sm-7 pl-2 pr-3">
@@ -42,8 +45,10 @@
                 <li class="pt-1">
                   <h3>{{username}}</h3>
                 </li>
-                <li class="pt-2" style="font-size: 12px">Not you? <span class="btn-link" (click)="logout()">Logout</span></li>
-                <li><span class="btn-link" style="font-size: 12px">Change Password</span></li>
+                <li class="pt-2" style="font-size: 12px">Not you? <span class="btn-link"
+                    (click)="logout()">Logout</span></li>
+                <li><span class="btn-link" style="font-size: 12px" (click)="open(changePasswordModal)">Change
+                    Password</span></li>
               </ul>
             </div>
           </div>
@@ -56,16 +61,38 @@
 <router-outlet></router-outlet>
 
 <ng-template #uploadProfileImageModal let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Upload Profile Image</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div class="modal-header">
+    <h4 class="modal-title">Upload Profile Image</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type='file' (change)="onProfileImageSelected($event)">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary"
+      (click)="uploadSelectedImage(); c('Submit click');">Submit</button>
+  </div>
+</ng-template>
+
+<ng-template #changePasswordModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Change Password</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="error-message">
+      {{changePasswordError}}
     </div>
-    <div class="modal-body">
-      <input type='file' (change)="onProfileImageSelected($event)">
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-primary" (click)="uploadSelectedImage(); c('Submit click');">Submit</button>
-    </div>
-  </ng-template>
+    <input [(ngModel)]="currentPasswordField" type="password" class="form-control m-1" placeholder="Current password">
+    <input [(ngModel)]="newPasswordField" type="password" class="form-control m-1" placeholder="New password">
+    <input [(ngModel)]="confirmNewPasswordField" type="password" class="form-control m-1"
+      placeholder="Confirm new password">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="changePassword();">Submit</button>
+  </div>
+</ng-template>

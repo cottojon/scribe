@@ -1,3 +1,7 @@
 .no-margin{
     margin: 0px;
 }
+
+.error-message{
+    color: #D8000C;
+}

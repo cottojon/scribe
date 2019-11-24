@@ -47,4 +47,15 @@ export class ProfileService {
 
     return this.http.post(this.profileUploadImageUrl, body, {headers: this.authService.getAuthorizationHeader()});
   }
+
+  changePassword(currentPassword: string, newPassword:string): Observable<any> {
+    let body = new HttpParams()
+      .set('new_password', newPassword)
+      .set('current_password', currentPassword);
+
+    let header = this.authService.getAuthorizationHeader()
+      .set('Content-Type', 'application/x-www-form-urlencoded');
+
+    return this.http.post(this.changePasswordUrl, body.toString(), {headers: header});
+  }
 }

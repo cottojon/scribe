@@ -16,6 +16,10 @@ export class MainViewComponent implements OnInit {
   profileImageLoaded: boolean;
   fileReader: FileReader;
   selectedImage: any;
+  currentPasswordField: string;
+  newPasswordField: string;
+  confirmNewPasswordField: string;
+  changePasswordError: string;
 
   constructor(private authService: AuthenticationService,
     private profileService: ProfileService,
@@ -25,6 +29,10 @@ export class MainViewComponent implements OnInit {
     this.navToggle = false;
     this.username = "Username";
     this.fileReader = new FileReader();
+
+    this.currentPasswordField = "";
+    this.newPasswordField = "";
+    this.confirmNewPasswordField = "";
 
     this.loadProfileInformation();
   }
@@ -58,8 +66,29 @@ export class MainViewComponent implements OnInit {
   }
 
   uploadSelectedImage(): void {
-    if (this.selectedImage){
+    if (this.selectedImage) {
       this.profileService.uploadProfileImage(this.selectedImage).subscribe(() => { this.loadProfileInformation(); });
     }
+  }
+
+  changePassword(): void {
+    this.changePasswordError = "";
+
+    if (this.newPasswordField == "") {
+      this.changePasswordError = "New password cannot be empty";
+      return;
+    }
+
+    if ((this.newPasswordField != this.confirmNewPasswordField)) {
+      this.changePasswordError = "New passwords do not match";
+      return;
+    }
+
+    this.profileService.changePassword(this.currentPasswordField, this.newPasswordField).subscribe((response) => {
+      this.changePasswordError = ""
+    }, (error) => {
+      console.log(error);
+      this.changePasswordError = "Incorrect current password or new password is too weak";
+    });
   }
 }
