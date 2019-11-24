@@ -259,7 +259,6 @@ export class LiveComponent implements OnInit {
     if (!comment.profileImageLoaded && !comment.profileImageLoading) {
       comment.profileImageLoading = true;
       let fileReader = new FileReader();
-      console.log("Loading image for user " + comment.userId);
       this.profileSerivce.getImageByUserId(comment.userId).subscribe((raw) => {
         if (raw && raw.size != 0) {
           fileReader.addEventListener("load", () => { comment.profileImage = fileReader.result; comment.profileImageLoaded = true;}, false);

@@ -9,6 +9,9 @@ import { Observable, Subscription, interval } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
+import { ClipComment } from 'src/app/classes/clip-comment';
+import { ProfileService } from 'src/app/services/profile.service';
+import { CommentsService } from 'src/app/services/comments.service';
 
 @Component({
   selector: 'app-archive',
@@ -31,7 +34,9 @@ export class ArchiveComponent implements OnInit {
     private channelService: ChannelService,
     private modalService: NgbModal,
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private profileSerivce: ProfileService,
+    private commentsService: CommentsService
   ) {}
 
   ngOnInit() {
@@ -61,17 +66,24 @@ export class ArchiveComponent implements OnInit {
     searchParams.start_date = (this.start_date === null || !(this.start_date instanceof Date)) ? undefined : this.start_date;
     searchParams.end_date = (this.end_date === null || !(this.end_date instanceof Date)) ? undefined : this.end_date;
 
-    console.log("Date: "+this.start_date+" "+this.end_date);
-    console.log(this.start_date);
-    console.log(searchParams.start_date);
-    console.log(searchParams.end_date);
-
     let newClipDisplays: ClipDisplay[] = [];
+
+    let commentRequestCounter = 0;
+    // Get clips for search params
     this.channelService.getClips(searchParams).subscribe(clips => {
       clips.forEach(clip => {
-        newClipDisplays.push(new ClipDisplay(clip, clip.channelId));
+
+        // Get comments for clip
+        this.commentsService.getCommentsByClipId(clip.id).subscribe((comments) => {
+          newClipDisplays.push(new ClipDisplay(clip, clip.channelId, comments));
+
+          // If we have recieved all comments, emit the clips
+          commentRequestCounter++;
+          if (commentRequestCounter >= clips.length) {
+            this.clipDisplays = newClipDisplays;
+          }
+        });
       });
-      this.clipDisplays = newClipDisplays;
     });
     /*
     if (channel !== null) {
@@ -142,5 +154,43 @@ export class ArchiveComponent implements OnInit {
   showOriginalText(clipDisplay: ClipDisplay): void {
     clipDisplay.displayed_text = clipDisplay.clip.text;
     clipDisplay.displayingOriginalText = true;
+  }
+
+  toggleShowComments(clipDisplay: ClipDisplay): void {
+    clipDisplay.showingComments = !clipDisplay.showingComments;
+  }
+
+  toggleWritingComment(clipDisplay: ClipDisplay): void {
+    clipDisplay.writingComment = !clipDisplay.writingComment;
+    if (clipDisplay.writingComment){
+      clipDisplay.newCommentText = "";
+      clipDisplay.showingComments = true;
+    }
+  }
+
+  loadCommentUserInfo(comment: ClipComment): void {
+    if (comment.userName === null || comment.userName === undefined || comment.userName === ""){
+      this.profileSerivce.getUsernameById(comment.userId).subscribe((response) => {
+        comment.userName = response["username"];
+      });
+    }
+
+    if (!comment.profileImageLoaded && !comment.profileImageLoading) {
+      comment.profileImageLoading = true;
+      let fileReader = new FileReader();
+      this.profileSerivce.getImageByUserId(comment.userId).subscribe((raw) => {
+        if (raw && raw.size != 0) {
+          fileReader.addEventListener("load", () => { comment.profileImage = fileReader.result; comment.profileImageLoaded = true;}, false);
+          fileReader.readAsDataURL(raw);
+        }
+      });
+    }
+  }
+
+  submitComment(clipDisplay: ClipDisplay): void {
+    this.commentsService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe(() => {
+      this.getClips();
+    });
+    this.toggleWritingComment(clipDisplay);
   }
 }

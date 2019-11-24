@@ -27,9 +27,10 @@
               <div class="row">
                 <div class="col pr-0">
                   <input type="text" ngbDatepicker #a="ngbDatepicker" [(ngModel)]="start_date" class="form-control">
-                </div><button (click)="a.toggle()" class="btn btn-sm"><span class="fa fa-calendar"></span></button>&nbsp;-&nbsp;
+                </div><button (click)="a.toggle()" class="btn btn-sm"><span
+                    class="fa fa-calendar"></span></button>&nbsp;-&nbsp;
                 <div class="col pr-0">
-                  <input type="text" ngbDatepicker #b="ngbDatepicker" [(ngModel)]="end_date" class="form-control"> 
+                  <input type="text" ngbDatepicker #b="ngbDatepicker" [(ngModel)]="end_date" class="form-control">
                 </div><button (click)="b.toggle()" class="btn btn-sm"><span class="fa fa-calendar"></span></button>
               </div>
             </div>
@@ -78,8 +79,16 @@
           <span class="fa fa-user"></span>&nbsp;{{clipDisplay.clip.speaker}}&nbsp;&nbsp;&nbsp;
           <span class="fa fa-volume-up"></span>&nbsp;{{clipDisplay.clip.channel.name}}&nbsp;&nbsp;&nbsp;
           <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}
-          <div class="pull-right">
+          <span (click)="this.toggleShowComments(clipDisplay)"
+            *ngIf="clipDisplay.comments.length > 0 && !clipDisplay.showingComments" type="text"
+            class="btn btn-link comments-btn">Show comments ({{clipDisplay.comments.length}})&nbsp;<span
+              class="fa fa-angle-down"></span></span>
+          <span (click)="this.toggleShowComments(clipDisplay)"
+            *ngIf="clipDisplay.comments.length > 0 && clipDisplay.showingComments" type="text"
+            class="btn btn-link comments-btn">Hide comments &nbsp;<span
+              class="fa fa-angle-up"></span></span>
 
+          <span class="pull-right">
             <!-- View in channel context Button -->
             <button class="btn btn-secondary" (click)="viewInChannel(clipDisplay)">Show Full Channel</button>
 
@@ -97,7 +106,48 @@
             <button class="btn btn-secondary" (click)="playClip(clipDisplay)" style="margin-left:5px">
               <span class="fa fa-play"></span>
             </button>
+
+            <!-- Add Comment Button -->
+            <button class="btn btn-secondary" (click)="toggleWritingComment(clipDisplay)" style="margin-left:5px">Add
+              Comment</button>
+          </span>
+
+          <!-- Clip comments sections -->
+          <div class="row">
+            <div class="col mt-1" *ngIf="clipDisplay.showingComments || clipDisplay.writingComment">
+              <div *ngFor="let comment of clipDisplay.comments" class="card bg-light" style="margin-bottom: 5px;">
+                <div *ngIf="loadCommentUserInfo(comment)"></div>
+                <div class="card-body p-2">
+                  <div class="row">
+                    <div class="col pl-3" style="flex: 0 0 60px; text-align: center;">
+                      <div class="row justify-content-center">
+                        <img class="img" style="width:40px" [src]="comment.profileImage"
+                          *ngIf="comment.profileImageLoaded; else defaultProfileImage" />
+                        <ng-template #defaultProfileImage>
+                          <img class="img" style="width:40px"
+                            src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200" />
+                        </ng-template>
+                      </div>
+                      <div class="row justify-content-center">
+                        {{comment.userName}}
+                      </div>
+
+                    </div>
+                    <div class="col pl-1" style="overflow-x: hidden;">
+                      <div style="font-size: 10pt;" style="white-space: normal;">{{comment.comment}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add comment area -->
+              <div *ngIf="clipDisplay.writingComment">
+                <textarea class="form-control mt-1 mb-1" [(ngModel)]="clipDisplay.newCommentText"></textarea>
+                <button class="btn-sm btn-secondary pull-right" (click)="submitComment(clipDisplay)">Submit</button>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
