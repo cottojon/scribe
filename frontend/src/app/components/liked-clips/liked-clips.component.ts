@@ -41,7 +41,9 @@ export class LikedClipsComponent implements OnInit {
 
           commentRequestCount++;
           if (commentRequestCount >= clips.length) {
-            this.clipDisplays = clipDisplays;
+            this.clipDisplays = clipDisplays.sort((a, b) => {
+              return (a.created_at > b.created_at) ? 1 : ((a.created_at < b.created_at) ? -1 : (a.clip.id - b.clip.id));
+            });
           }
         });
       });
