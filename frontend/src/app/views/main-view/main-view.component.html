@@ -14,6 +14,9 @@
         <a class="nav-link" routerLink="/archive">Archive</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="/liked-clips">Liked Clips</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" routerLink="/help">Help</a>
       </li>
     </ul>
@@ -22,8 +25,8 @@
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Profile</a>
         <ul class="dropdown-menu dropdown-menu-right multi-column columns-2">
-          <div class="row" style="width: 370px;">
-            <div class="col-sm-4 pl-3">
+          <div class="row" style="width: 250px;">
+            <div class="col-sm-5 pl-3 pr-0">
               <ul class="multi-column-dropdown px-0" style="list-style-type: none">
                 <li style="display: inline-block;">
                   <img class="img" style="width:80px" [src]="profileImage" *ngIf="profileImageLoaded; else defaultProfileImage"/>
@@ -34,7 +37,7 @@
                 <li style="display: inline-block;"><span class="btn-link" style="font-size: 12px" (click)="open(uploadProfileImageModal)">Upload Image</span></li>
               </ul>
             </div>
-            <div class="col-sm-8 pl-2 pr-3">
+            <div class="col-sm-7 pl-2 pr-3">
               <ul class="multi-column-dropdown justify-content-center px-0" style="list-style-type: none">
                 <li class="pt-1">
                   <h3>{{username}}</h3>
