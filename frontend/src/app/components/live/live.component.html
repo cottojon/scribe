@@ -6,7 +6,8 @@
           [ngClass]="getColor(channel.id)" (click)="setActiveChannelById(channel.id)">
           {{channel.name}}
         </button>
-        <button class="add-channel-button btn btn-secondary text-center" (click)="open(addChannelModal); searchForChannel()">
+        <button class="add-channel-button btn btn-secondary text-center"
+          (click)="open(addChannelModal); searchForChannel()">
           <span class="fa fa-plus"></span>
         </button>
       </div>
@@ -41,32 +42,80 @@
                   </div>
                 </div>
                 <div class="card-footer">
-                  <span class="fa fa-user"></span>&nbsp;{{clipDisplay.clip.speaker}}&nbsp;
-                  <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}&nbsp;
-                  <div class="pull-right">
+                  <!-- Clip info and buttons -->
+                  <div class="row">
+                    <div class="col">
+                      <span class="fa fa-user"></span>&nbsp;{{clipDisplay.clip.speaker}}&nbsp;
+                      <span class="fa fa-clock-o"></span>&nbsp;{{clipDisplay.created_at.toLocaleString()}}&nbsp;
+                      <span (click)="this.toggleShowComments(clipDisplay)"
+                        *ngIf="clipDisplay.comments.length > 0 && !clipDisplay.showingComments" type="text"
+                        class="btn btn-link comments-btn">Show comments ({{clipDisplay.comments.length}})&nbsp;<span
+                          class="fa fa-angle-down"></span></span>
+                      <span (click)="this.toggleShowComments(clipDisplay)"
+                        *ngIf="clipDisplay.comments.length > 0 && clipDisplay.showingComments" type="text"
+                        class="btn btn-link comments-btn">Hide comments &nbsp;<span
+                          class="fa fa-angle-up"></span></span>
 
-                    <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-secondary clip-btn"
-                      (click)="this.likeClip(clipDisplay)">
-                      <span class="fa fa-thumbs-up"></span>
-                    </button>
-                    <button *ngIf="checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-success clip-btn"
-                      (click)="this.unlikeClip(clipDisplay)">
-                      <span class="fa fa-thumbs-up"></span>
-                    </button>
+                      <span class="pull-right">
 
-                    <button *ngIf="!clipDisplay.editing" class="btn btn-secondary clip-btn"
-                      (click)="makeCorrection(clipDisplay)">
-                      <span class="fa fa-edit"></span>
-                    </button>
-                    <button *ngIf="clipDisplay.editing" class="btn btn-success clip-btn"
-                      (click)="saveCorrection(clipDisplay)">
-                      <span class="fa fa-edit"></span>
-                    </button>
+                        <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-secondary clip-btn"
+                          (click)="this.likeClip(clipDisplay)">
+                          <span class="fa fa-thumbs-up"></span>
+                        </button>
+                        <button *ngIf="checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-success clip-btn"
+                          (click)="this.unlikeClip(clipDisplay)">
+                          <span class="fa fa-thumbs-up"></span>
+                        </button>
 
-                    <button class="btn btn-secondary clip-btn" (click)="playClip(clipDisplay)">
-                      <span class="fa fa-play"></span>
-                    </button>
+                        <button *ngIf="!clipDisplay.editing" class="btn btn-secondary clip-btn"
+                          (click)="makeCorrection(clipDisplay)">
+                          <span class="fa fa-edit"></span>
+                        </button>
+                        <button *ngIf="clipDisplay.editing" class="btn btn-success clip-btn"
+                          (click)="saveCorrection(clipDisplay)">
+                          <span class="fa fa-edit"></span>
+                        </button>
+
+                        <button class="btn btn-secondary clip-btn" (click)="playClip(clipDisplay)">
+                          <span class="fa fa-play"></span>
+                        </button>
+
+                        <button class="btn btn-secondary">Add Comment</button>
+                      </span>
+                    </div>
                   </div>
+
+                  <!-- Clip comments sections -->
+                  <div class="row">
+                    <div class="col" *ngIf="clipDisplay.showingComments">
+                      <div *ngFor="let comment of clipDisplay.comments" class="card bg-light"
+                        style="margin-bottom: 5px;">
+                        <div *ngIf="loadCommentUserInfo(comment)"></div>
+                        <div class="card-body p-2">
+                          <div class="row">
+                            <div class="col pl-3" style="flex: 0 0 60px; text-align: center;">
+                              <div class="row justify-content-center">
+                                <img class="img" style="width:40px" [src]="comment.profileImage"
+                                  *ngIf="comment.profileImageLoaded; else defaultProfileImage" />
+                                <ng-template #defaultProfileImage>
+                                  <img class="img" style="width:40px"
+                                    src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200" />
+                                </ng-template>
+                              </div>
+                              <div class="row justify-content-center">
+                                {{comment.userName}}
+                              </div>
+
+                            </div>
+                            <div class="col pl-1">
+                              <div style="font-size: 10pt;">{{comment.comment}}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -122,7 +171,7 @@
         <tbody>
           <tr *ngFor="let channel of channelSearchResults">
             <td>{{channel.name}}</td>
-            <td>               
+            <td>
 
               <div *ngIf="isActive(channel); else elseBlock">
                 <button class="btn btn-danger" (click)="removeChannel(channel)">
@@ -130,7 +179,7 @@
               </div>
               <ng-template #elseBlock>
                 <button class="btn btn-secondary" (click)="addChannel(channel)">
-                    <span class="fa fa-plus"></span>&nbsp;Add</button>
+                  <span class="fa fa-plus"></span>&nbsp;Add</button>
               </ng-template>
 
             </td>

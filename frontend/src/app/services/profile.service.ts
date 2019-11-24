@@ -24,9 +24,19 @@ export class ProfileService {
     return this.http.get<string>(this.profileUsernameUrl, {headers: this.authService.getAuthorizationHeader()});
   }
 
+  getUsernameById(id: number) : Observable<any> {
+    this.authService.checkAndNavigateToLogin();
+    return this.http.get<any>(this.profileBaseUrl+"/"+id, {headers: this.authService.getAuthorizationHeader()});
+  }
+
   getImage(): Observable<Blob> {
     this.authService.checkAndNavigateToLogin();
     return this.http.get(this.profileGetImageUrl, {headers: this.authService.getAuthorizationHeader(), responseType: 'blob'});
+  }
+
+  getImageByUserId(id: number) : Observable<Blob> {
+    this.authService.checkAndNavigateToLogin();
+    return this.http.get(this.profileGetImageUrl+"/"+id, {headers: this.authService.getAuthorizationHeader(), responseType: 'blob'});
   }
 
   uploadProfileImage(image): Observable<any> {
