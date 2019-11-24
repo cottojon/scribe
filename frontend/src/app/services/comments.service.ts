@@ -29,7 +29,7 @@ export class CommentsService {
   }
   */
 
-  postCommentToClip(clipId: number, text: string) : Observable<any> {
+  postCommentToClip(clipId: number, text: string) : Observable<ClipComment> {
     let body = new HttpParams()
       .set('text', text)
       .set('clip_id', String(clipId));
@@ -37,6 +37,6 @@ export class CommentsService {
     let header = this.authService.getAuthorizationHeader()
       .set('Content-Type', 'application/x-www-form-urlencoded');
 
-    return this.http.post<any>(this.commentsUrl, body.toString(), {headers: header});
+    return this.http.post<ClipComment>(this.commentsUrl, body.toString(), {headers: header});
   }
 }

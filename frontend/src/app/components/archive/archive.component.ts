@@ -106,7 +106,9 @@ export class ArchiveComponent implements OnInit {
           // If we have recieved all comments, emit the clips
           commentRequestCounter++;
           if (commentRequestCounter >= clips.length) {
-            this.clipDisplays = newClipDisplays;
+            this.clipDisplays = newClipDisplays.sort((a, b) => {
+              return (a.created_at > b.created_at) ? 1 : ((a.created_at < b.created_at) ? -1 : (a.clip.id - b.clip.id));
+            });
           }
         });
       });
@@ -214,8 +216,8 @@ export class ArchiveComponent implements OnInit {
   }
 
   submitComment(clipDisplay: ClipDisplay): void {
-    this.commentsService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe(() => {
-      this.getClips();
+    this.commentsService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe((comment) => {
+      clipDisplay.comments.push(comment);
     });
     this.toggleWritingComment(clipDisplay);
   }

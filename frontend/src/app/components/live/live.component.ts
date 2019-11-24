@@ -52,6 +52,7 @@ export class LiveComponent implements OnInit {
       this.likedClips = this.channelService.likedClips;
       this.lastActiveIdx = 0;
       this.setActiveChannelByIdx(this.lastActiveIdx);
+      this.channelService.refreshComments();
 
       this.channelService.subscribedChannelsUpdates.subscribe((channels) => {
         this.addedChannels = channels;
@@ -61,7 +62,7 @@ export class LiveComponent implements OnInit {
       this.channelService.displayedClipsUpdates.subscribe((clips) => {
         this.clipDisplays = clips.sort((a, b) => {
           return (a.created_at > b.created_at) ? 1 : ((a.created_at < b.created_at) ? -1 : (a.clip.id - b.clip.id));
-        })
+        });
       });
 
       this.channelService.likedClipsUpdates.subscribe((likedClips) => { this.likedClips = likedClips; });
@@ -269,8 +270,8 @@ export class LiveComponent implements OnInit {
   }
 
   submitComment(clipDisplay: ClipDisplay): void {
-    this.commentService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe(() => {
-      this.channelService.initalizeChannels();
+    this.commentService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe((comment) => {
+      clipDisplay.comments.push(comment);
     });
     this.toggleWritingComment(clipDisplay);
   }

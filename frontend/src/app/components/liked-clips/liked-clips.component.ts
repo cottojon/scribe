@@ -90,8 +90,8 @@ export class LikedClipsComponent implements OnInit {
   }
 
   submitComment(clipDisplay: ClipDisplay): void {
-    this.commentsService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe(() => {
-      this.getClips();
+    this.commentsService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe((comment) => {
+      clipDisplay.comments.push(comment);
     });
     this.toggleWritingComment(clipDisplay);
   }

@@ -183,6 +183,14 @@ export class ChannelService {
     });
   }
 
+  refreshComments(): void {
+    this.displayedClips.forEach((clip) => {
+      this.commentsService.getCommentsByClipId(clip.clip.id).subscribe((comments) => {
+        clip.comments = comments;
+      });
+    });
+  }
+
   /*
   refreshSubscribedChannels(): void {
     console.log("POLLING FOR CLIPS");
