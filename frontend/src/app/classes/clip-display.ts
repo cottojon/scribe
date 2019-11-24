@@ -12,6 +12,7 @@ export class ClipDisplay {
   comments: ClipComment[];
   showingComments: boolean;
   writingComment: boolean;
+  newCommentText: string;
 
   constructor(newClip: Clip, channelId: number, comments: ClipComment[] = []) {
     this.clip = newClip;

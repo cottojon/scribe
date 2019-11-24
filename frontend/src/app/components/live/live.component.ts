@@ -40,7 +40,8 @@ export class LiveComponent implements OnInit {
     private modalService: NgbModal,
     private authService: AuthenticationService,
     private likesService: LikesService,
-    private profileSerivce: ProfileService
+    private profileSerivce: ProfileService,
+    private commentService: CommentsService
   ) { }
 
   ngOnInit() {
@@ -240,6 +241,14 @@ export class LiveComponent implements OnInit {
     clipDisplay.showingComments = !clipDisplay.showingComments;
   }
 
+  toggleWritingComment(clipDisplay: ClipDisplay): void {
+    clipDisplay.writingComment = !clipDisplay.writingComment;
+    if (clipDisplay.writingComment){
+      clipDisplay.newCommentText = "";
+      clipDisplay.showingComments = true;
+    }
+  }
+
   loadCommentUserInfo(comment: ClipComment): void {
     if (comment.userName === null || comment.userName === undefined || comment.userName === ""){
       this.profileSerivce.getUsernameById(comment.userId).subscribe((response) => {
@@ -258,5 +267,12 @@ export class LiveComponent implements OnInit {
         }
       });
     }
+  }
+
+  submitComment(clipDisplay: ClipDisplay): void {
+    this.commentService.postCommentToClip(clipDisplay.clip.id, clipDisplay.newCommentText).subscribe(() => {
+      this.channelService.initalizeChannels();
+    });
+    this.toggleWritingComment(clipDisplay);
   }
 }

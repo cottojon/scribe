@@ -183,6 +183,7 @@ export class ChannelService {
     });
   }
 
+  /*
   refreshSubscribedChannels(): void {
     console.log("POLLING FOR CLIPS");
     this.updateLikedClips();
@@ -205,6 +206,7 @@ export class ChannelService {
 
     });
   }
+  */
 
   updateLikedClips(): void {
     this.likesService.getLikedClips().subscribe(likedClips => {

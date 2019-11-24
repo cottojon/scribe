@@ -28,10 +28,10 @@
                       <img class="img" style="width: 60px;"
                         src="https://dt.azadicdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png?200">
                     </div>
-                    <div class="col pl-0">
+                    <div class="col pl-0" style="overflow-x: hidden;">
                       <textarea *ngIf="clipDisplay.editing" class="form-control"
                         [(ngModel)]="clipDisplay.displayed_text"></textarea>
-                      <div *ngIf="!clipDisplay.editing">{{clipDisplay.displayed_text}}</div>
+                      <div *ngIf="!clipDisplay.editing" style="white-space: normal;">{{clipDisplay.displayed_text}}</div>
                       <div *ngIf="clipDisplay.isRevised && !clipDisplay.displayingOriginalText" style="font-size: 12px">
                         (Edited, <span class="btn-link" (click)="showOriginalText(clipDisplay)">show original</span>)
                       </div>
@@ -80,14 +80,14 @@
                           <span class="fa fa-play"></span>
                         </button>
 
-                        <button class="btn btn-secondary">Add Comment</button>
+                        <button class="btn btn-secondary" (click)="toggleWritingComment(clipDisplay)">Add Comment</button>
                       </span>
                     </div>
                   </div>
 
                   <!-- Clip comments sections -->
                   <div class="row">
-                    <div class="col" *ngIf="clipDisplay.showingComments">
+                    <div class="col" *ngIf="clipDisplay.showingComments || clipDisplay.writingComment">
                       <div *ngFor="let comment of clipDisplay.comments" class="card bg-light"
                         style="margin-bottom: 5px;">
                         <div *ngIf="loadCommentUserInfo(comment)"></div>
@@ -107,11 +107,17 @@
                               </div>
 
                             </div>
-                            <div class="col pl-1">
-                              <div style="font-size: 10pt;">{{comment.comment}}</div>
+                            <div class="col pl-1" style="overflow-x: hidden;">
+                              <div style="font-size: 10pt;" style="white-space: normal;">{{comment.comment}}</div>
                             </div>
                           </div>
                         </div>
+                      </div>
+
+                      <!-- Add comment area -->
+                      <div *ngIf="clipDisplay.writingComment">
+                          <textarea class="form-control mt-1 mb-1" [(ngModel)]="clipDisplay.newCommentText"></textarea>
+                          <button class="btn-sm btn-secondary pull-right" (click)="submitComment(clipDisplay)">Submit</button>
                       </div>
                     </div>
                   </div>
