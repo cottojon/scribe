@@ -18,6 +18,7 @@ import { InMemoryDataService } from './services/in-memory-data.service';
 import { LoginComponent } from './components/login/login.component';
 import { MainViewComponent } from './views/main-view/main-view.component';
 import { CommonModule } from '@angular/common';
+import { LikedClipsComponent } from './components/liked-clips/liked-clips.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CommonModule } from '@angular/common';
     HelpComponent,
     HomeComponent,
     LoginComponent,
-    MainViewComponent
+    MainViewComponent,
+    LikedClipsComponent
   ],
   imports: [
     NgbModule.forRoot(),

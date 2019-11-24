@@ -1,58 +1,6 @@
-<div>
-  <div *ngIf="clipDisplays.length == 0" class="container py-5">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header"> Search</div>
-          <div class="card-body">
-            <div class="form-group">
-              <label>
-                <span class="fa fa-comment"></span>&nbsp;Text</label>
-              <input [(ngModel)]="text" type="text" class="form-control" placeholder="Text"> </div>
-            <div class="form-group">
-              <label>
-                <span class="fa fa-user"></span>&nbsp;Speaker</label>
-              <input [(ngModel)]="speaker" type="text" class="form-control" placeholder="Speaker"> </div>
-            <div class="form-group">
-              <label>
-                <span class="fa fa-volume-up"></span>&nbsp;Channel
-              </label>
-              <select [(ngModel)]="channel_name" class="form-control">
-                <option [value]="channel.name" *ngFor="let channel of channels">{{channel.name}}</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>
-                <span class="fa fa-clock-o"></span>&nbsp;Date Range</label>
-              <div class="row">
-                <div class="col pr-0">
-                  <input type="text" ngbDatepicker #a="ngbDatepicker" [(ngModel)]="start_date" class="form-control">
-                </div><button (click)="a.toggle()" class="btn btn-sm"><span
-                    class="fa fa-calendar"></span></button>&nbsp;-&nbsp;
-                <div class="col pr-0">
-                  <input type="text" ngbDatepicker #b="ngbDatepicker" [(ngModel)]="end_date" class="form-control">
-                </div><button (click)="b.toggle()" class="btn btn-sm"><span class="fa fa-calendar"></span></button>
-              </div>
-            </div>
-            <button (click)="getClips()" class="btn btn-secondary pull-right">
-              <span class="fa fa-search"></span>&nbsp;Search</button>
-          </div>
-        </div>
-        <br>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="clipDisplays.length > 0" class="offset-md-1 col-md-10 results-container">
+<div class="offset-md-1 col-md-10 results-container">
   <div class="card" style="height: 100%">
-    <div class="card-header bg-light"> Search Results
-      <div class="float-right">
-        <button (click)="clearResults()" class="btn btn-secondary px-2">New Search</button>
-        <button (click)="getClips()" class="btn btn-secondary px-2" style="margin-left:5px"><span
-            class="fa fa-refresh"></span></button>
-      </div>
-    </div>
+    <div class="card-header bg-light"> Liked Clips</div>
     <div class="card-body bg-light" style="overflow-y: auto;">
 
       <div *ngFor="let clipDisplay of clipDisplays" class="card bg-light" style="margin-bottom: 5px;">
@@ -88,8 +36,6 @@
             class="btn btn-link comments-btn">Hide comments &nbsp;<span class="fa fa-angle-up"></span></span>
 
           <span class="pull-right">
-            <!-- View in channel context Button -->
-            <button class="btn btn-secondary" (click)="viewInChannel(clipDisplay)">Show Full Channel</button>
 
             <!-- Like clip button -->
             <button *ngIf="!checkIfClipIsLiked(clipDisplay.clip.id)" class="btn btn-secondary clip-btn"
@@ -156,7 +102,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
