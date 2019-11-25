@@ -27,9 +27,6 @@ username = os.getenv('user')
 passw = os.getenv('password')
 dbport = int(os.getenv('dbport'))
 
-chanID = int(os.getenv('channel'))
-
-
 def convert_samplerate(audio_path):
     sox_cmd = 'sox {} --type raw --bits 16 --channels 1 --rate 16000 --encoding signed-integer --endian little --compression 0.0 --no-dither - '.format(quote(audio_path))
     try:
@@ -50,8 +47,9 @@ def notify_db(filename, transcription):
     cursor = conn.cursor()
 
     currTime = datetime.datetime.utcfromtimestamp(currTime).strftime("%Y-%m-%d %H:%M:%S")
+    chanID = filename.split("/")[0]
 
-    cursor.execute("INSERT INTO clip (text, speaker, created_at, revised_at, revised, path_to_file, channel_id) VALUES (%s, %s, %s, %s, %s, %s, %s)", (transcription, 1, currTime, currTime, False, filename, chanID))
+    cursor.execute('INSERT INTO clip (text, speaker, created_at, revised_at, revised, path_to_file, "channelId") VALUES (%s, %s, %s, %s, %s, %s, %s)', (transcription, 1, currTime, currTime, False, filename, chanID))
 
     conn.commit()
     cursor.close()
@@ -60,7 +58,7 @@ def notify_db(filename, transcription):
     print(str([filename, transcription]))
 
 def transcribe(ds, audioFile):
-    fin = wave.open(audioFile, 'rb')
+    fin = wave.open("speech/" + audioFile, 'rb')
     fs = fin.getframerate()
     if fs != 16000:
         fs, audio = convert_samplerate(audioFile)
