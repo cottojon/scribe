@@ -47,6 +47,9 @@ def notify_db(filename, transcription):
     cursor = conn.cursor()
 
     currTime = datetime.datetime.utcfromtimestamp(currTime).strftime("%Y-%m-%d %H:%M:%S")
+    # Just overwrite for now, fix the race conditions
+    currTime = filename.replace("_"," ").replace(filename.split(";")[-1],"").replace(";",":")[:-1]
+    
     chanID = filename.split("/")[0]
 
     cursor.execute('INSERT INTO clip (text, speaker, created_at, revised_at, revised, path_to_file, "channelId") VALUES (%s, %s, %s, %s, %s, %s, %s)', (transcription, 1, currTime, currTime, False, filename, chanID))
@@ -75,9 +78,10 @@ if __name__ == '__main__':
     consumer = KafkaConsumer(
      'audioStream',
      bootstrap_servers=[os.getenv('KAFKA_HOST')+':9092'],
-     auto_offset_reset='earliest',
+     #auto_offset_reset='earliest',
+     max_poll_records=1,
      enable_auto_commit=True,
-     auto_commit_interval_ms=500,
+     auto_commit_interval_ms=250,
      group_id='scribes',
      value_deserializer=lambda x: loads(x.decode('utf-8')))
 
