@@ -49,6 +49,7 @@ def notify_db(filename, transcription):
     currTime = datetime.datetime.utcfromtimestamp(currTime).strftime("%Y-%m-%d %H:%M:%S")
     # Just overwrite for now, fix the race conditions
     currTime = filename.replace("_"," ").replace(filename.split(";")[-1],"").replace(";",":")[:-1]
+    
     chanID = filename.split("/")[0]
 
     cursor.execute('INSERT INTO clip (text, speaker, created_at, revised_at, revised, path_to_file, "channelId") VALUES (%s, %s, %s, %s, %s, %s, %s)', (transcription, 1, currTime, currTime, False, filename, chanID))
